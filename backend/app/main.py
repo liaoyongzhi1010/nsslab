@@ -358,7 +358,8 @@ def list_projects(
 def create_project(
     payload: ProjectCreate, user: Annotated[dict[str, Any], Depends(current_user)]
 ):
-    return platform_service.create_project(payload.name, user["id"])
+    _ = payload
+    return platform_service.create_project(owner_id=user["id"])
 
 
 @app.get("/api/projects/{project_id}")

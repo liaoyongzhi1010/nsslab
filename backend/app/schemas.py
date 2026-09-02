@@ -1,41 +1,23 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class ProjectCreate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
-    name: str = Field(min_length=2, max_length=80)
-
-    @field_validator("name")
-    @classmethod
-    def normalize_name(cls, value: str) -> str:
-        value = value.strip()
-        if len(value) < 2:
-            raise ValueError("实验名称至少需要 2 个字符")
-        return value
+    # 项目名称固定为「我的实验记录」，此字段仅为向后兼容旧客户端而保留，服务端会忽略其值。
+    name: str | None = Field(default=None, max_length=80)
 
 
 class ProjectUpdate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
-    name: str | None = Field(default=None, min_length=2, max_length=80)
     ended: bool | None = None
-
-    @field_validator("name")
-    @classmethod
-    def normalize_name(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        value = value.strip()
-        if len(value) < 2:
-            raise ValueError("实验名称至少需要 2 个字符")
-        return value
 
     @model_validator(mode="after")
     def require_change(self):
-        if self.name is None and self.ended is None:
+        if self.ended is None:
             raise ValueError("至少需要提交一项修改")
         return self
 

@@ -179,11 +179,13 @@ def test_restart_moves_current_experiment_to_history_and_restore_is_recoverable(
         == 400
     )
 
+    # 项目名称已固定，重命名请求（仅 name）不再被接受。
     renamed = client.patch(
         f"/api/projects/{first['id']}", json={"name": "第一次实验（已复盘）"}
     )
-    assert renamed.status_code == 200
-    assert renamed.json()["name"] == "我的实验记录"
+    assert renamed.status_code == 422
+    unchanged = client.get(f"/api/projects/{first['id']}").json()
+    assert unchanged["name"] == "我的实验记录"
     restored = client.patch(f"/api/projects/{first['id']}", json={"ended": False})
     assert restored.status_code == 200
     assert restored.json()["is_ended"] is False

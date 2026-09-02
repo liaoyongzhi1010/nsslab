@@ -270,7 +270,9 @@ class PlatformService:
         if not has_active:
             self.create_project("我的实验记录", owner_id=owner_id)
 
-    def create_project(self, name: str, owner_id: str | None = None) -> dict[str, Any]:
+    def create_project(
+        self, name: str | None = None, owner_id: str | None = None
+    ) -> dict[str, Any]:
         created_at = now_iso()
         # 项目名称统一固定，前端仅作实验记录容器，不允许自定义命名。
         name = "我的实验记录"
