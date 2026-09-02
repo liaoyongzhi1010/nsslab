@@ -13,7 +13,6 @@ const exampleQueries = ["事件 CRYPTO-2026-04 的 KMS 批次和验证标签是�
 
 export function KnowledgeLab() {
   const { bootstrap, project, kb, setKb, refreshProject } = useApp();
-  const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>(defaultDocumentIds);
   const [documents, setDocuments] = useState<Dict[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -95,7 +94,7 @@ export function KnowledgeLab() {
 
   return (
     <div className="lab-page">
-      <div className="page-title"><div><Pill tone="mint">EXPERIMENT 01</Pill><h1>从密码学资料到<span>向量知识库</span></h1><p>把文档加工为可检索知识。重点观察每一步的中间产物，而不只是最终结果。</p></div><div className="page-title-badges"><Pill tone="neutral">LOCAL PIPELINE · 不调用 QWEN</Pill><button className="btn ghost compact" onClick={() => navigate("/")}>返回总览</button></div></div>
+      <div className="page-title"><div><Pill tone="blue">实验 05 · 知识工程</Pill><h1>从密码学资料到<span>向量知识库</span></h1><p>把文档加工为可检索知识。重点观察每一步的中间产物，而不只是最终结果。</p></div></div>
       <Flow steps={["选择资料", "解析文本", "Chunk 切分", "Embedding", "建立索引", "向量检索"]} active={building ? 3 : kb ? 5 : 0} />
 
       <section className={`panel manual-inline ${manualOpen ? "open" : ""}`}>

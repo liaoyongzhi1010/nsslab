@@ -39,7 +39,7 @@ export function ReportPage() {
   const submittedCount = experimentSummary.filter((e) => e.has_report_pdf).length;
 
   return <div className="report-page">
-    <div className="page-title"><div><Pill tone="mint">报告中心</Pill><h1>实验报告<span>中心</span></h1><p>下面 10 个实验各自成卡，点击进入该实验的报告页查看实验要点、撰写 LaTeX 报告并上传 PDF。</p></div></div>
+    <div className="page-title"><div><Pill tone="blue">报告中心</Pill><h1>实验报告<span>中心</span></h1><p>下面 10 个实验各自成卡，点击进入该实验的报告页查看实验要点、撰写 LaTeX 报告并上传 PDF。</p></div></div>
 
     <section className="report-hero panel"><div><span className="report-hero-eyebrow">MY REPORTS</span><h2>{project.name}</h2><p>已提交 {submittedCount} / 10 篇实验报告{project.is_ended ? " · 历史实验（只读）" : ""}</p></div><div className="overall-score"><FileText size={26} /><strong>{submittedCount}<small>/10</small></strong><span>已交报告</span></div></section>
 

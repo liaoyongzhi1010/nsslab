@@ -32,7 +32,7 @@ export function AgentLab() {
 
   return (
     <div className="lab-page agent-page">
-      <div className="page-title"><div><Pill tone="blue">EXPERIMENT 03</Pill><h1>从密码学模型到<span>智能体</span></h1><p>组合 Knowledge、Skills、Tools、Planning 与 Memory，让系统从“会回答”扩展到“会完成任务”。</p></div><div className="page-title-badges"><Pill tone="blue">QWEN · 最终答案生成</Pill><Pill tone="mint"><ShieldCheck size={13} /> SINGLE AGENT · SAFE TOOLS</Pill></div></div>
+      <div className="page-title"><div><Pill tone="blue">实验 · Agent</Pill><h1>从密码学模型到<span>智能体</span></h1><p>组合 Knowledge、Skills、Tools、Planning 与 Memory，让系统从“会回答”扩展到“会完成任务”。</p></div><div className="page-title-badges"><Pill tone="mint"><ShieldCheck size={13} /> 单 Agent · 安全工具</Pill></div></div>
       <Flow steps={["User Request", "Classification", "Plan", "Skill", "Tool", "Observation", "Final"]} active={running ? 4 : agentRun ? 6 : 0} />
 
       <section className="panel agent-builder">
