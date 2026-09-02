@@ -18,8 +18,8 @@ function LlmProviderPage() {
   const configured = Boolean(llm.configured);
 
   const [apiKey, setApiKey] = useState("");
-  const [baseUrl, setBaseUrl] = useState(llm.endpoint_host ? `https://${llm.endpoint_host}/v1` : "https://api.deepseek.com/v1");
-  const [model, setModel] = useState(llm.model || "deepseek-chat");
+  const [baseUrl, setBaseUrl] = useState("");
+  const [model, setModel] = useState("");
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -56,11 +56,11 @@ function LlmProviderPage() {
 
       <div className="provider-divider" />
 
-      <div className="provider-form-head"><h2>切换模型服务</h2><p>填写任意 OpenAI 兼容服务的 Base URL、模型名称与 API Key，保存后立即热切换生效。API Key 仅用于后台调用，不会回显。</p></div>
+      <div className="provider-form-head"><h2>切换模型服务</h2><p>填写任意 OpenAI 兼容服务的 Base URL、模型名称与 API Key，保存后立即热切换生效。三项均为必填，API Key 仅用于后台调用，不会回显。</p></div>
       <div className="provider-form">
-        <label><span>Base URL</span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://api.deepseek.com/v1" maxLength={512} /></label>
-        <label><span>模型名称</span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="deepseek-chat" maxLength={128} /></label>
-        <label className="provider-form-full"><span>API Key</span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={configured ? "留空则不修改（已配置）· 输入新 Key 覆盖" : "sk-..."} autoComplete="off" maxLength={512} /></label>
+        <label><span>Base URL<em className="req">*</em></span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="例如 https://api.deepseek.com/v1" maxLength={512} /></label>
+        <label><span>模型名称<em className="req">*</em></span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="例如 deepseek-chat" maxLength={128} /></label>
+        <label className="provider-form-full"><span>API Key<em className="req">*</em></span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="必填 · sk-..." autoComplete="off" maxLength={512} /></label>
       </div>
       {msg && <div className={`provider-msg ${msg.ok ? "ok" : "err"}`}>{msg.text}</div>}
       <div className="provider-form-foot">
@@ -74,8 +74,8 @@ function LlmProviderPage() {
 function VlmProviderPage() {
   const [status, setStatus] = useState<Dict | null>(null);
   const [apiKey, setApiKey] = useState("");
-  const [baseUrl, setBaseUrl] = useState("https://api.deepseek.com");
-  const [model, setModel] = useState("deepseek-v4-flash-vision-exp");
+  const [baseUrl, setBaseUrl] = useState("");
+  const [model, setModel] = useState("");
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -114,11 +114,11 @@ function VlmProviderPage() {
         {status?.last_error && <span className="provider-error">最近错误：{status.last_error}</span>}
       </div>
       <div className="provider-divider" />
-      <div className="provider-form-head"><h2>切换阅卷模型</h2><p>填写任意 OpenAI 兼容的多模态服务，保存后立即热切换。API Key 仅用于后台调用，不会回显。</p></div>
+      <div className="provider-form-head"><h2>切换阅卷模型</h2><p>填写任意 OpenAI 兼容的多模态服务，保存后立即热切换。三项均为必填，API Key 仅用于后台调用，不会回显。</p></div>
       <div className="provider-form">
-        <label><span>Base URL</span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://api.deepseek.com" maxLength={512} /></label>
-        <label><span>模型名称</span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="deepseek-v4-flash-vision-exp" maxLength={128} /></label>
-        <label className="provider-form-full"><span>API Key</span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={configured ? "留空则不修改（已配置）· 输入新 Key 覆盖" : "sk-..."} autoComplete="off" maxLength={512} /></label>
+        <label><span>Base URL<em className="req">*</em></span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="例如 https://api.deepseek.com" maxLength={512} /></label>
+        <label><span>模型名称<em className="req">*</em></span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="例如 deepseek-v4-flash-vision-exp" maxLength={128} /></label>
+        <label className="provider-form-full"><span>API Key<em className="req">*</em></span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="必填 · sk-..." autoComplete="off" maxLength={512} /></label>
       </div>
       {msg && <div className={`provider-msg ${msg.ok ? "ok" : "err"}`}>{msg.text}</div>}
       <div className="provider-form-foot">

@@ -929,6 +929,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .provider-form label { display: flex; flex-direction: column; gap: 7px; }
 .provider-form label.provider-form-full { grid-column: 1 / -1; }
 .provider-form label span { color: var(--muted); font: 500 12px "IBM Plex Mono"; letter-spacing: .3px; }
+.provider-form label span .req { margin-left: 4px; color: var(--red); font-style: normal; }
 .provider-form input { height: 46px; padding: 0 14px; border: 1px solid var(--line-light); border-radius: 8px; color: var(--text); background: var(--field); font-size: 14px; transition: .18s; }
 .provider-form input::placeholder { color: var(--faint); }
 .provider-form input:focus { outline: 0; border-color: color-mix(in srgb, var(--mint) 60%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--mint) 10%, transparent); }
@@ -965,6 +966,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .grading-console .provider-card,
 .grading-console .grading-rubric,
 .grading-console .grading-queue { margin-bottom: 20px; }
+.grading-queue { padding: 22px 24px; }
 .grading-rubric .panel-head h2 svg,
 .grading-queue .panel-head h2 svg { color: var(--amber); }
 
