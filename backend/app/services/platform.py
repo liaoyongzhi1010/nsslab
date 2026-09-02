@@ -272,6 +272,8 @@ class PlatformService:
 
     def create_project(self, name: str, owner_id: str | None = None) -> dict[str, Any]:
         created_at = now_iso()
+        # 项目名称统一固定，前端仅作实验记录容器，不允许自定义命名。
+        name = "我的实验记录"
         # 创建即代表重新开始：同一用户原有的当前实验完整结束并进入历史。
         ended_projects: list[dict[str, Any]] = []
         if owner_id is not None:
@@ -316,8 +318,8 @@ class PlatformService:
         previous_name = project["name"]
         previous_ended_at = project.get("ended_at")
         ended_projects: list[dict[str, Any]] = []
-        if name is not None:
-            project["name"] = name.strip()
+        # 项目名称固定为「我的实验记录」，忽略任何重命名请求。
+        _ = name
         if ended is True and not project.get("ended_at"):
             project["ended_at"] = now_iso()
         elif ended is False and project.get("ended_at"):

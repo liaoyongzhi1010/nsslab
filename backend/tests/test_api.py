@@ -183,7 +183,7 @@ def test_restart_moves_current_experiment_to_history_and_restore_is_recoverable(
         f"/api/projects/{first['id']}", json={"name": "第一次实验（已复盘）"}
     )
     assert renamed.status_code == 200
-    assert renamed.json()["name"] == "第一次实验（已复盘）"
+    assert renamed.json()["name"] == "我的实验记录"
     restored = client.patch(f"/api/projects/{first['id']}", json={"ended": False})
     assert restored.status_code == 200
     assert restored.json()["is_ended"] is False
@@ -736,7 +736,7 @@ def test_report_exports_real_pdf_and_docx_with_conclusion():
     assert docx.content.startswith(b"PK")
     document = Document(BytesIO(docx.content))
     text = "\n".join(paragraph.text for paragraph in document.paragraphs)
-    assert "验收项目 · 密码学实验报告" in text
+    assert "我的实验记录 · 密码学实验报告" in text
     assert conclusion in text
 
 

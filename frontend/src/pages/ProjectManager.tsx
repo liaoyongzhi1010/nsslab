@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { Archive, ArrowRight, CalendarDays, Clock3, FileClock, FileText, Pencil, Plus, RotateCcw, Search } from "lucide-react";
+import { Archive, ArrowRight, CalendarDays, Clock3, FileClock, FileText, Plus, RotateCcw, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { Pill } from "../components/UI";
 import { useApp } from "../context/AppContext";
 import type { ProjectStatus } from "../types";
 
-type ProjectAction = "create" | "rename" | "end" | "restore" | null;
+type ProjectAction = "create" | "end" | "restore" | null;
 
 const formatDate = (value: string | null) => value
   ? new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(new Date(value))
@@ -29,7 +29,6 @@ export function ProjectManager() {
   const [tab, setTab] = useState<"current" | "history">("current");
   const [action, setAction] = useState<ProjectAction>(null);
   const [target, setTarget] = useState<ProjectStatus | null>(null);
-  const [name, setName] = useState("我的 Mini Crypto Agent");
   const [saving, setSaving] = useState(false);
 
   const load = async () => {
@@ -54,22 +53,16 @@ export function ProjectManager() {
   const historyCount = items.length - currentCount;
 
   const openCreate = () => {
-    setTarget(null); setName("我的 Mini Crypto Agent"); setAction("create"); setError("");
-  };
-  const openRename = (item: ProjectStatus) => {
-    setTarget(item); setName(item.name); setAction("rename"); setError("");
+    setTarget(null); setAction("create"); setError("");
   };
   const closeModal = () => { if (!saving) { setAction(null); setTarget(null); } };
 
   const submit = async () => {
-    if ((action === "create" || action === "rename") && name.trim().length < 2) return;
     setSaving(true); setError("");
     try {
       if (action === "create") {
-        await createProject(name.trim());
+        await createProject("我的实验记录");
         setTab("current");
-      } else if (action === "rename" && target) {
-        await updateProject(target.id, { name: name.trim() });
       } else if (action === "end" && target) {
         await updateProject(target.id, { ended: true });
         setTab("history");
@@ -122,7 +115,6 @@ export function ProjectManager() {
         <div className="project-record-actions">
           {!item.is_ended ? <button className="btn primary compact" onClick={() => continueProject(item)}>继续实验 <ArrowRight size={14} /></button> : <button className="btn primary compact" onClick={() => { setTarget(item); setAction("restore"); }}>恢复为当前</button>}
           <button className="btn ghost compact" onClick={() => navigate(`/report/${item.id}`)}><FileText size={14} />查看报告</button>
-          <button className="btn ghost compact" onClick={() => openRename(item)}><Pencil size={14} />重命名</button>
           {!item.is_ended && <button className="project-end-button" onClick={() => { setTarget(item); setAction("end"); }}><Archive size={14} />结束实验</button>}
         </div>
       </article>)}
@@ -130,14 +122,12 @@ export function ProjectManager() {
 
     {action && <div className="modal-backdrop" onMouseDown={closeModal}><div className="modal" onMouseDown={(event) => event.stopPropagation()}>
       <div className="modal-icon">{action === "end" ? <Archive /> : <RotateCcw />}</div>
-      <span>{action === "create" ? "NEW EXPERIMENT" : action === "rename" ? "RENAME EXPERIMENT" : action === "end" ? "COMPLETE EXPERIMENT" : "RESTORE EXPERIMENT"}</span>
-      <h2>{action === "create" ? (currentCount ? "重新开始新实验" : "开始新实验") : action === "rename" ? "重命名实验" : action === "end" ? "结束当前实验" : "恢复历史实验"}</h2>
-      {action === "create" && <p>{currentCount ? "创建后，当前实验会结束并进入历史；已有实验数据不会删除。" : "三个实验将共享同一项目、知识库和运行记录。"}</p>}
-      {action === "rename" && <p>仅修改显示名称，不影响已有资料、运行记录和报告。</p>}
+      <span>{action === "create" ? "NEW EXPERIMENT" : action === "end" ? "COMPLETE EXPERIMENT" : "RESTORE EXPERIMENT"}</span>
+      <h2>{action === "create" ? (currentCount ? "重新开始新实验" : "开始新实验") : action === "end" ? "结束当前实验" : "恢复历史实验"}</h2>
+      {action === "create" && <p>{currentCount ? "创建后，当前实验会结束并进入历史；已有实验数据不会删除。新实验统一命名为「我的实验记录」。" : "十个实验将共享同一项目「我的实验记录」、知识库和运行记录。"}</p>}
       {action === "end" && <p>“{target?.name}”将进入历史实验并停止写入，之后仍可查看报告或恢复。</p>}
       {action === "restore" && <p>“{target?.name}”将恢复为当前实验；现有当前实验会同时结束并进入历史。</p>}
-      {(action === "create" || action === "rename") && <label>实验名称<input aria-label="实验名称" value={name} onChange={(event) => setName(event.target.value)} autoFocus maxLength={80} /></label>}
-      <div className="modal-actions"><button className="btn ghost" onClick={closeModal}>取消</button><button className="btn primary" disabled={saving || ((action === "create" || action === "rename") && name.trim().length < 2)} onClick={submit}>{saving ? "正在保存…" : action === "create" ? "确认并开始" : action === "rename" ? "保存名称" : action === "end" ? "确认结束" : "确认恢复"}</button></div>
+      <div className="modal-actions"><button className="btn ghost" onClick={closeModal}>取消</button><button className="btn primary" disabled={saving} onClick={submit}>{saving ? "正在保存…" : action === "create" ? "确认并开始" : action === "end" ? "确认结束" : "确认恢复"}</button></div>
     </div></div>}
   </div>;
 }
