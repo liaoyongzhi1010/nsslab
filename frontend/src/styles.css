@@ -998,6 +998,11 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .rubric-prompt textarea { min-height: 88px; padding: calc(10px * var(--font-scale)) 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg-soft); color: var(--text); font-size: calc(13px * var(--font-scale)); line-height: 1.6; resize: vertical; }
 
 .grading-queue .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.grading-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: calc(10px * var(--font-scale)) 0 calc(12px * var(--font-scale)); border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.grading-filters label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: calc(12px * var(--font-scale)); font-weight: 600; }
+.grading-filters label svg { color: var(--mint); }
+.grading-filters select { margin-left: 4px; padding: calc(6px * var(--font-scale)) 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); color: var(--text); font-size: calc(12px * var(--font-scale)); }
+.grading-filter-count { margin-left: auto; color: var(--faint); font-size: calc(12px * var(--font-scale)); }
 .grading-table { display: flex; flex-direction: column; }
 .grading-table-head,
 .grading-table-row { display: grid; grid-template-columns: 1.2fr .9fr 1.4fr .9fr .8fr 1.6fr; align-items: center; gap: 10px; padding: calc(10px * var(--font-scale)) 6px; }
@@ -1046,9 +1051,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .objectives-head h2 { margin: 0 0 4px; font-size: calc(16px * var(--font-scale)); }
 .objectives-head p { margin: 0; color: #6f8981; font-size: calc(12px * var(--font-scale)); line-height: 1.6; }
 .objectives-list { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: obj; }
-.objectives-list li { display: flex; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); border-left: 3px solid color-mix(in srgb, var(--mint) 55%, var(--line)); border-radius: 8px; background: rgba(255,255,255,.012); }
-.objectives-list li > span { display: grid; width: 24px; height: 24px; flex: none; place-items: center; border: 1px solid color-mix(in srgb, var(--mint) 40%, var(--line)); border-radius: 50%; color: var(--mint); font: 600 12px "IBM Plex Mono"; }
-.objectives-list li > p { margin: 2px 0 0; color: #b3c1c7; font-size: calc(13px * var(--font-scale)); line-height: 1.6; }
+.objectives-list li { display: flex; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); border-left: 3px solid var(--mint); border-radius: 8px; background: var(--panel-2); }
+.objectives-list li > span { display: grid; width: 24px; height: 24px; flex: none; place-items: center; border: 1px solid color-mix(in srgb, var(--mint) 45%, var(--line)); border-radius: 50%; color: var(--mint); font: 600 12px "IBM Plex Mono"; }
+.objectives-list li > p { margin: 2px 0 0; color: var(--text); font-size: calc(13px * var(--font-scale)); line-height: 1.6; }
 .rubric-panel { margin-bottom: 16px; overflow: hidden; }
 .rubric-panel-head { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 22px; border: 0; background: transparent; color: var(--text); cursor: pointer; text-align: left; }
 .rubric-panel-title { display: flex; align-items: center; gap: 9px; color: var(--text); }

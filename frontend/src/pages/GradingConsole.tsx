@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, ClipboardCheck, Cpu, Plus, Radio, RefreshCw, Save, Server, ShieldCheck, Trash2 } from "lucide-react";
+import { ClipboardCheck, Filter, RefreshCw, Save, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, LoadingBlock, Pill } from "../components/UI";
@@ -14,57 +14,6 @@ const STATUS_LABEL: Record<string, string> = {
 const STATUS_TONE: Record<string, "mint" | "amber" | "red" | "neutral"> = {
   graded: "mint", pending: "amber", failed: "red", ungraded: "neutral",
 };
-
-function VlmCard() {
-  const [status, setStatus] = useState<Dict | null>(null);
-  const [apiKey, setApiKey] = useState("");
-  const [baseUrl, setBaseUrl] = useState("https://dashscope.aliyuncs.com/compatible-mode/v1");
-  const [model, setModel] = useState("qwen-vl-max");
-  const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
-
-  const load = useCallback(() => { api.vlmStatus().then(setStatus); }, []);
-  useEffect(() => { load(); }, [load]);
-
-  const configured = Boolean(status?.configured);
-
-  const save = async () => {
-    if (!apiKey.trim() || !baseUrl.trim() || !model.trim()) { setMsg({ ok: false, text: "请完整填写 Base URL、模型名称和 API Key" }); return; }
-    setSaving(true); setMsg(null);
-    try {
-      await api.updateVlmProvider({ api_key: apiKey.trim(), base_url: baseUrl.trim(), model: model.trim() });
-      setApiKey("");
-      await load();
-      setMsg({ ok: true, text: "已保存并切换阅卷视觉大模型，后续评分将使用新配置。" });
-    } catch (e) { setMsg({ ok: false, text: (e as Error).message }); }
-    finally { setSaving(false); }
-  };
-
-  return <section className="panel provider-card">
-    <div className="panel-head"><div><h2><Server size={18} /> 阅卷视觉大模型（VLM）</h2><p>阅卷模型与学生侧对话模型相互独立。报告 PDF 会被逐页转为图片后送入该多模态模型评分（不做 OCR）。</p></div></div>
-    <div className="provider-current">
-      <div className="provider-current-item"><i><Server size={16} /></i><div><small>Provider</small><strong>{status?.provider || "未配置"}</strong></div></div>
-      <div className="provider-current-item"><i><Cpu size={16} /></i><div><small>模型</small><strong>{status?.model || "未配置"}</strong></div></div>
-      <div className="provider-current-item"><i><Radio size={16} /></i><div><small>接入点</small><strong>{status?.endpoint_host || "未配置"}</strong></div></div>
-    </div>
-    <div className={`provider-health ${configured ? "ok" : "warn"}`}>
-      {configured ? <><CheckCircle2 size={16} /> 已连接，上传报告后将自动触发 VLM 评分。</> : <><ShieldCheck size={16} /> 尚未配置阅卷模型，学生报告将标记为“待处理”，可稍后重新评分。</>}
-      {status?.last_error && <span className="provider-error">最近错误：{status.last_error}</span>}
-    </div>
-    <div className="provider-divider" />
-    <div className="provider-form-head"><h2>切换阅卷模型</h2><p>填写任意 OpenAI 兼容的多模态服务，保存后立即热切换。API Key 仅用于后台调用，不会回显。</p></div>
-    <div className="provider-form">
-      <label><span>Base URL</span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://.../v1" maxLength={512} /></label>
-      <label><span>模型名称</span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="qwen-vl-max" maxLength={128} /></label>
-      <label className="provider-form-full"><span>API Key</span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={configured ? "留空则不修改（已配置）· 输入新 Key 覆盖" : "sk-..."} autoComplete="off" maxLength={512} /></label>
-    </div>
-    {msg && <div className={`provider-msg ${msg.ok ? "ok" : "err"}`}>{msg.text}</div>}
-    <div className="provider-form-foot">
-      <button className={`btn primary ${saving ? "is-running" : ""}`} onClick={save} disabled={saving} aria-busy={saving}>{saving ? "正在保存并切换…" : <>保存并切换<Save size={16} /></>}</button>
-      <small>在线配置在服务运行期间生效；后端重启后回到环境变量 <code>VLM_BASE_URL</code> / <code>VLM_MODEL</code> / <code>VLM_API_KEY</code> 的默认配置。</small>
-    </div>
-  </section>;
-}
 
 function OverrideEditor({ submission, onClose, onSaved }: { submission: Dict; onClose: () => void; onSaved: () => void }) {
   const [rubric, setRubric] = useState<Dict | null>(null);
@@ -144,6 +93,8 @@ function SubmissionQueue() {
   const [rows, setRows] = useState<Dict[] | null>(null);
   const [active, setActive] = useState<Dict | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [expFilter, setExpFilter] = useState("");
+  const [studentFilter, setStudentFilter] = useState("");
 
   const load = useCallback(() => { api.adminSubmissions().then(setRows); }, []);
   useEffect(() => { load(); }, [load]);
@@ -155,14 +106,46 @@ function SubmissionQueue() {
     finally { setBusy(null); }
   };
 
+  const expOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const r of rows || []) map.set(String(r.exp_id), `实验 ${r.exp_id}${r.label ? ` · ${r.label}` : ""}`);
+    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [rows]);
+  const studentOptions = useMemo(() => {
+    const set = new Set<string>();
+    for (const r of rows || []) { const n = String(r.student_name || r.owner_id || "").trim(); if (n) set.add(n); }
+    return [...set].sort();
+  }, [rows]);
+  const filtered = useMemo(() => (rows || []).filter((r) => {
+    if (expFilter && String(r.exp_id) !== expFilter) return false;
+    if (studentFilter && String(r.student_name || r.owner_id || "") !== studentFilter) return false;
+    return true;
+  }), [rows, expFilter, studentFilter]);
+
   if (!rows) return <section className="panel"><LoadingBlock label="正在加载提交队列…" /></section>;
 
   return <section className="panel grading-queue">
     <div className="panel-head"><div><h2><ClipboardCheck size={18} /> 提交与评分队列</h2><p>所有学生的实验报告提交。可重新触发自动评分或人工复核每一项分数。</p></div>
       <button className="btn ghost compact" type="button" onClick={load}><RefreshCw size={14} /> 刷新</button></div>
-    {rows.length === 0 ? <EmptyState title="暂无提交">学生上传实验报告 PDF 后会自动出现在这里。</EmptyState> : <div className="grading-table">
+    <div className="grading-filters">
+      <label><Filter size={13} /> 实验
+        <select value={expFilter} onChange={(e) => setExpFilter(e.target.value)}>
+          <option value="">全部实验</option>
+          {expOptions.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+        </select>
+      </label>
+      <label><Filter size={13} /> 学生
+        <select value={studentFilter} onChange={(e) => setStudentFilter(e.target.value)}>
+          <option value="">全部学生</option>
+          {studentOptions.map((n) => <option key={n} value={n}>{n}</option>)}
+        </select>
+      </label>
+      {(expFilter || studentFilter) && <button className="btn ghost compact" type="button" onClick={() => { setExpFilter(""); setStudentFilter(""); }}>清除筛选</button>}
+      <span className="grading-filter-count">共 {filtered.length} / {rows.length} 条</span>
+    </div>
+    {filtered.length === 0 ? <EmptyState title="暂无提交">{rows.length === 0 ? "学生上传实验报告 PDF 后会自动出现在这里。" : "没有符合当前筛选条件的提交。"}</EmptyState> : <div className="grading-table">
       <div className="grading-table-head"><span>学生</span><span>实验</span><span>报告</span><span>状态</span><span>总分</span><span>操作</span></div>
-      {rows.map((row) => {
+      {filtered.map((row) => {
         const key = `${row.project_id}:${row.exp_id}`;
         return <div className="grading-table-row" key={key}>
           <span className="grading-cell-student">{row.student_name || row.owner_id || "—"}</span>
@@ -188,10 +171,9 @@ export function GradingConsole() {
 
   return <div className="lab-page grading-console">
     <div className="page-title">
-      <div><Pill tone="blue">管理员 · 成绩管理</Pill><h1>实验报告<span>阅卷与评分</span></h1><p>配置阅卷视觉大模型，并对学生提交的报告进行自动评分与人工复核。每个实验的评分细则在对应实验页配置。</p></div>
+      <div><Pill tone="blue">管理员 · 成绩管理</Pill><h1>实验报告<span>阅卷与评分</span></h1><p>对学生提交的报告进行自动评分与人工复核。每个实验的评分细则在对应实验页配置，阅卷视觉大模型在 Provider 配置页设置。</p></div>
       <div className="page-title-badges"><Pill tone="amber"><ClipboardCheck size={13} /> 阅卷控制台</Pill></div>
     </div>
-    <VlmCard />
     <SubmissionQueue />
   </div>;
 }
