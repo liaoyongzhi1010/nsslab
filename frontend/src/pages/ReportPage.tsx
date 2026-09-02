@@ -7,6 +7,8 @@ import { RichTextEditor } from "../components/RichTextEditor";
 import { useApp } from "../context/AppContext";
 import type { Dict, ProjectStatus } from "../types";
 
+const catAccent: Dict = { data: "mint", training: "blue", knowledge: "purple", harness: "amber" };
+
 export function ReportPage() {
   const { project: activeProject, bootstrap } = useApp();
   const { projectId } = useParams();
@@ -74,7 +76,6 @@ export function ReportPage() {
   const categories: Dict[] = bootstrap?.experiment_categories || [];
   const completedCount = experimentSummary.filter((e) => e.run_count > 0).length;
   const observedCount = experimentSummary.filter((e) => e.has_observation).length;
-  const catColors = ["#49dcb1", "#7c9cff", "#bc8cff", "#ffb766"];
 
   const saveBlob = (blob: Blob, filename: string) => {
     const url = URL.createObjectURL(blob);
@@ -113,15 +114,15 @@ export function ReportPage() {
 
     <section className="report-hero panel"><div><span>CRYPTO LAB PROGRESS</span><h2>{project.name}</h2><p>{completedCount} / 10 个实验已运行 · {observedCount} 篇实验观察{project.is_ended ? " · 历史实验（只读）" : ""}</p></div><div className="overall-score"><Gauge /><strong>{Math.round(completedCount / 10 * 100)}<small>%</small></strong><span>实验完成度</span></div></section>
 
-    {categories.map((cat, catIndex) => <section className="report-cat-block" key={cat.id}>
-      <div className="category-label"><span className="cat-dot" style={{ background: catColors[catIndex % catColors.length] }} /><h3>{cat.name}</h3><i /></div>
+    {categories.map((cat) => { const tone = catAccent[cat.id] || "mint"; return <section className={`report-cat-block cat-panel cat-panel-${tone}`} key={cat.id}>
+      <div className="category-label"><span className={`cat-dot cat-${tone}`} /><h3>{cat.name}</h3><span className="cat-count">{(cat.experiments as Dict[]).length} 个实验</span><i /></div>
       <div className="report-exp-grid">
         {(cat.experiments as Dict[]).map((exp) => {
           const expId = String(exp.index).padStart(2, "0");
           const s = summaryById[expId];
           const ran = s && s.run_count > 0;
           const observed = s && s.has_observation;
-          return <button className={`report-exp-card ${ran ? "ran" : ""}`} key={expId} onClick={() => navigate(exp.route)} style={{ ["--cat-color" as string]: catColors[catIndex % catColors.length] }}>
+          return <button className={`report-exp-card ${ran ? "ran" : ""}`} key={expId} onClick={() => navigate(exp.route)}>
             <div className="report-exp-top"><span className="exp-index">实验 {expId}</span><Pill tone={exp.mode === "真实" ? "mint" : exp.mode === "仿真" ? "neutral" : "blue"}>{exp.mode}</Pill></div>
             <strong>{exp.title}</strong>
             <div className="report-exp-ab"><span className="ab-off">{exp.off}</span><GitCompareArrows size={13} /><span className="ab-on">{exp.on}</span></div>
@@ -132,7 +133,7 @@ export function ReportPage() {
           </button>;
         })}
       </div>
-    </section>)}
+    </section>; })}
 
     <div className="report-grid"><section className="panel run-history"><div className="panel-head"><div><span className="step-label">RUN HISTORY</span><h2>全部运行记录</h2></div><Pill tone="blue">{report.runs.length} RUNS</Pill></div>{report.runs.length ? report.runs.slice().reverse().map((run: Dict) => <div className="history-row" key={run.id}><i><Check size={13} /></i><div><strong>{runLabel(run.type)}</strong><p>{run.input?.query || run.input?.task_id || (run.input?.documents ? `${run.input.documents.length} 份密码学资料` : "A/B 对比实验")}</p><small>{new Date(run.created_at).toLocaleString("zh-CN")} · {run.id}</small></div><Pill tone="mint">SUCCESS</Pill></div>) : <EmptyState title="暂无运行记录">进入任意实验运行后会自动写入。</EmptyState>}</section>
       <section className="panel markdown-report"><div className="panel-head"><div><span className="step-label">MARKDOWN PREVIEW</span><h2>可移交实验报告</h2></div><button className="icon-btn" aria-label="复制报告" onClick={() => { void persistObservation().then((ready) => navigator.clipboard.writeText(ready.markdown)).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1400); }).catch((error) => setExportError(error instanceof Error ? error.message : "报告保存失败")); }}>{copied ? <Check /> : <Clipboard />}</button></div><pre>{reportMarkdown}</pre></section></div>
