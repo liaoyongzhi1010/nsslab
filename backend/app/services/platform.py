@@ -176,7 +176,7 @@ class PlatformService:
                 "embedding": self.embedding.name,
                 "embedding_dimension": self.embedding.dimension,
                 "rerank": self.reranker.name,
-                "mode": "remote-with-local-fallback"
+                "mode": "remote"
                 if getattr(self.llm, "is_remote", False)
                 else "offline-teaching",
             },
@@ -209,7 +209,6 @@ class PlatformService:
             base_url=base_url.strip().rstrip("/"),
             model=model.strip(),
             api_key=api_key.strip(),
-            fallback_to_local=True,
         )
         if not new_settings.remote_configured:
             raise ValueError("请完整填写 API Key、Base URL 和模型名称")

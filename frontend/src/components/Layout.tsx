@@ -114,7 +114,7 @@ export function Layout() {
         <div className="sidebar-foot">
           <div className="provider-dot"><Radio size={14} /> {bootstrap?.providers.llm_status?.configured ? "云端大模型" : "本地教学模型"}</div>
           <div className="provider-name">{bootstrap?.providers.llm || "正在连接…"}</div>
-          <small>{bootstrap?.providers.llm_status?.configured ? "已接入 · 异常自动回退本地" : "无需 API Key · 教学模拟"}</small>
+          <small>{bootstrap?.providers.llm_status?.configured ? "已接入 · 实验使用真实模型推理" : "无需 API Key · 教学模拟"}</small>
         </div>
       </aside>
       <main className="main-shell">

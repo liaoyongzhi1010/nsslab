@@ -26,21 +26,24 @@ class OpenAICompatibleLLMProvider(LLMProvider):
 
     is_remote = True
 
-    def __init__(self, settings: LLMSettings, client: httpx.Client | None = None) -> None:
+    def __init__(
+        self, settings: LLMSettings, client: httpx.Client | None = None
+    ) -> None:
         if not settings.remote_configured:
             raise ValueError("OpenAI-compatible Provider 配置不完整")
         self.settings = settings
         self.name = f"{settings.provider_name} · {settings.model}"
         self._client = client or httpx.Client(timeout=settings.timeout_seconds)
-        self._fallback = LocalLLMProvider()
         self.last_provider_name = self.name
         self.last_error: str | None = None
 
-    def generate(self, prompt: str, *, context: list[dict[str, Any]] | None = None) -> str:
+    def generate(
+        self, prompt: str, *, context: list[dict[str, Any]] | None = None
+    ) -> str:
         messages: list[dict[str, str]] = [{"role": "system", "content": SYSTEM_PROMPT}]
         if context:
             context_text = "\n\n".join(
-                f"<source chunk_id=\"{item['id']}\" document=\"{item['document_title']}\" section=\"{item['section']}\">\n{item['text']}\n</source>"
+                f'<source chunk_id="{item["id"]}" document="{item["document_title"]}" section="{item["section"]}">\n{item["text"]}\n</source>'
                 for item in context
             )
             messages.append(
@@ -55,7 +58,10 @@ class OpenAICompatibleLLMProvider(LLMProvider):
         try:
             response = self._client.post(
                 f"{self.settings.base_url}/chat/completions",
-                headers={"Authorization": f"Bearer {self.settings.api_key}", "Content-Type": "application/json"},
+                headers={
+                    "Authorization": f"Bearer {self.settings.api_key}",
+                    "Content-Type": "application/json",
+                },
                 json={
                     "model": self.settings.model,
                     "messages": messages,
@@ -74,10 +80,7 @@ class OpenAICompatibleLLMProvider(LLMProvider):
             return content.strip()
         except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError) as error:
             self.last_error = self._safe_error(error)
-            if not self.settings.fallback_to_local:
-                raise RuntimeError(self.last_error) from error
-            self.last_provider_name = f"{self._fallback.name} · Fallback"
-            return self._fallback.generate(prompt, context=context)
+            raise RuntimeError(self.last_error) from error
 
     def status(self) -> dict[str, Any]:
         return {
@@ -86,7 +89,6 @@ class OpenAICompatibleLLMProvider(LLMProvider):
             "protocol": "OpenAI-compatible",
             "model": self.settings.model,
             "endpoint_host": urlparse(self.settings.base_url).hostname,
-            "fallback_enabled": self.settings.fallback_to_local,
             "last_provider": self.last_provider_name,
             "last_error": self.last_error,
         }
@@ -118,7 +120,6 @@ def provider_status(provider: LLMProvider) -> dict[str, Any]:
         "protocol": "offline-teaching",
         "model": provider.name,
         "endpoint_host": None,
-        "fallback_enabled": False,
         "last_provider": provider.name,
         "last_error": None,
     }

@@ -27,11 +27,12 @@ class LLMSettings:
     timeout_seconds: float
     temperature: float
     max_tokens: int
-    fallback_to_local: bool
 
     @property
     def remote_configured(self) -> bool:
-        return self.provider == "openai_compatible" and bool(self.api_key and self.base_url and self.model)
+        return self.provider == "openai_compatible" and bool(
+            self.api_key and self.base_url and self.model
+        )
 
     @classmethod
     def from_env(cls) -> "LLMSettings":
@@ -44,7 +45,6 @@ class LLMSettings:
             timeout_seconds=float(os.getenv("LLM_TIMEOUT_SECONDS", "60")),
             temperature=float(os.getenv("LLM_TEMPERATURE", "0.2")),
             max_tokens=int(os.getenv("LLM_MAX_TOKENS", "1800")),
-            fallback_to_local=_as_bool(os.getenv("LLM_FALLBACK_TO_LOCAL"), True),
         )
 
 
@@ -68,16 +68,25 @@ class AppSettings:
     def from_env(cls) -> "AppSettings":
         return cls(
             environment=os.getenv("APP_ENV", "development").strip().lower(),
-            database_url=os.getenv("DATABASE_URL", "postgresql+psycopg://cryptolab:cryptolab@127.0.0.1:5432/cryptolab").strip(),
+            database_url=os.getenv(
+                "DATABASE_URL",
+                "postgresql+psycopg://cryptolab:cryptolab@127.0.0.1:5432/cryptolab",
+            ).strip(),
             database_auto_create=_as_bool(os.getenv("DATABASE_AUTO_CREATE"), False),
-            upload_dir=Path(os.getenv("UPLOAD_DIR", str(BACKEND_DIR / "uploads"))).expanduser().resolve(),
+            upload_dir=Path(os.getenv("UPLOAD_DIR", str(BACKEND_DIR / "uploads")))
+            .expanduser()
+            .resolve(),
             registration_enabled=_as_bool(os.getenv("REGISTRATION_ENABLED"), True),
             session_ttl_hours=int(os.getenv("SESSION_TTL_HOURS", "12")),
             session_cookie_secure=_as_bool(os.getenv("SESSION_COOKIE_SECURE"), False),
             admin_username=os.getenv("AUTH_ADMIN_USERNAME", "").strip().lower(),
             admin_password=os.getenv("AUTH_ADMIN_PASSWORD", ""),
-            admin_display_name=os.getenv("AUTH_ADMIN_DISPLAY_NAME", "平台管理员").strip(),
+            admin_display_name=os.getenv(
+                "AUTH_ADMIN_DISPLAY_NAME", "平台管理员"
+            ).strip(),
             student_username=os.getenv("AUTH_STUDENT_USERNAME", "").strip().lower(),
             student_password=os.getenv("AUTH_STUDENT_PASSWORD", ""),
-            student_display_name=os.getenv("AUTH_STUDENT_DISPLAY_NAME", "实验学生").strip(),
+            student_display_name=os.getenv(
+                "AUTH_STUDENT_DISPLAY_NAME", "实验学生"
+            ).strip(),
         )

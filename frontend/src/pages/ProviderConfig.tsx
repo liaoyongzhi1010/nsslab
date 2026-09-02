@@ -32,7 +32,7 @@ export function ProviderConfig() {
   return <div className="lab-page">
     <div className="page-title">
       <div><Pill tone="blue">Provider 配置</Pill><h1>模型<span>接入配置</span></h1><p>平台通过 OpenAI 兼容协议接入云端大模型，作为 RAG / Skills / Tools / Agent 等实验的真实推理引擎。可在此在线切换。</p></div>
-      <div className="page-title-badges"><Pill tone={configured ? "mint" : "amber"}><Radio size={13} /> {configured ? "云端已连接" : "本地回退模式"}</Pill></div>
+      <div className="page-title-badges"><Pill tone={configured ? "mint" : "amber"}><Radio size={13} /> {configured ? "云端已连接" : "未配置模型"}</Pill></div>
     </div>
 
     <section className="panel provider-card">
@@ -43,7 +43,7 @@ export function ProviderConfig() {
       </div>
 
       <div className={`provider-health ${configured ? "ok" : "warn"}`}>
-        {configured ? <><CheckCircle2 size={16} /> 连接正常，实验将使用真实模型推理{llm.fallback_enabled ? "；异常时自动回退本地教学模型。" : "。"}</> : <><ShieldCheck size={16} /> 当前使用本地离线模型，回答质量有限，仅用于教学演示。填写下方配置后可获得真实模型能力。</>}
+        {configured ? <><CheckCircle2 size={16} /> 连接正常，实验将使用真实模型推理。</> : <><ShieldCheck size={16} /> 当前使用本地离线模型，回答质量有限，仅用于教学演示。填写下方配置后可获得真实模型能力。</>}
         {llm.last_error && <span className="provider-error">最近错误：{llm.last_error}</span>}
       </div>
 
