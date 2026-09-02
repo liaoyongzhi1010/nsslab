@@ -32,7 +32,14 @@
 /* 每实验报告页 */
 .exp-report-page .back-link { display: inline-flex; align-items: center; gap: 5px; margin-bottom: 8px; padding: 0; border: 0; background: transparent; color: var(--faint); font-size: 13px; cursor: pointer; }
 .exp-report-page .back-link:hover { color: var(--mint); }
-.exp-report-summary, .exp-report-writing, .exp-report-observation { margin-bottom: 16px; padding: 22px 24px; }
+.exp-report-summary, .exp-report-writing, .exp-report-observation, .exp-objectives { margin-bottom: 16px; padding: 22px 24px; }
+.exp-objectives .panel-head h2 { display: inline-flex; align-items: center; gap: 8px; }
+.exp-objectives .panel-head h2 svg { color: var(--mint); }
+.objective-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.objective-list li { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); }
+.objective-list .obj-num { display: grid; width: 24px; height: 24px; flex: none; place-items: center; border-radius: 50%; background: var(--mint); color: #06110e; font: 700 12px "IBM Plex Mono"; }
+.objective-list p { margin: 0; padding-top: 2px; color: var(--text); font-size: 14px; line-height: 1.65; }
+.report-hero-eyebrow { color: var(--mint); font: 600 11px "IBM Plex Mono"; letter-spacing: 1.5px; }
 .exp-report-ab { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; margin-bottom: 16px; }
 .exp-report-ab .ab-col { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); }
 .exp-report-ab .ab-col.on { border-color: rgba(73,220,177,.3); background: color-mix(in srgb, var(--mint) 6%, var(--bg-soft)); }

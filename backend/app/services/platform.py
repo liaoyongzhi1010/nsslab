@@ -1939,6 +1939,24 @@ class PlatformService:
         "10": "多智能体协同",
     }
 
+    EXPERIMENT_OBJECTIVES: dict[str, list[str]] = {
+        f"{exp['index']:02d}": list(exp.get("objectives", []))
+        for cat in EXPERIMENT_CATEGORIES
+        for exp in cat["experiments"]
+    }
+
+    EXPERIMENT_TITLES: dict[str, str] = {
+        f"{exp['index']:02d}": exp["title"]
+        for cat in EXPERIMENT_CATEGORIES
+        for exp in cat["experiments"]
+    }
+
+    EXPERIMENT_AB: dict[str, dict[str, str]] = {
+        f"{exp['index']:02d}": {"off": exp.get("off", ""), "on": exp.get("on", "")}
+        for cat in EXPERIMENT_CATEGORIES
+        for exp in cat["experiments"]
+    }
+
     def experiment_report(self, project_id: str, exp_id: str) -> dict[str, Any]:
         project = self.get_project(project_id)
         run_type = self.EXPERIMENT_RUN_TYPE_MAP.get(exp_id)
@@ -1951,6 +1969,9 @@ class PlatformService:
         return {
             "exp_id": exp_id,
             "label": self.EXPERIMENT_LABELS[exp_id],
+            "title": self.EXPERIMENT_TITLES.get(exp_id, self.EXPERIMENT_LABELS[exp_id]),
+            "objectives": self.EXPERIMENT_OBJECTIVES.get(exp_id, []),
+            "ab": self.EXPERIMENT_AB.get(exp_id, {"off": "", "on": ""}),
             "run_type": run_type,
             "run_count": len(runs),
             "latest_run": latest_run,
