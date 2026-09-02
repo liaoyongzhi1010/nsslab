@@ -57,8 +57,8 @@ export function Dashboard() {
       <section className="journey-section">
         <div className="section-heading"><div><span>LEARNING PATH</span><h2>一条完整的垂域大模型构建链路</h2></div><p>每个实验都是独立的对照实验，可单独进入运行。</p></div>
         {categories.map((cat) => (
-          <div className="category-block" key={cat.id}>
-            <div className="category-label"><span className={`cat-dot cat-${catAccent[cat.id] || "mint"}`} /><h3>{cat.name}</h3><i /></div>
+          <div className={`category-block cat-panel cat-panel-${catAccent[cat.id] || "mint"}`} key={cat.id}>
+            <div className="category-label"><span className={`cat-dot cat-${catAccent[cat.id] || "mint"}`} /><h3>{cat.name}</h3><span className="cat-count">{cat.experiments.length} 个实验</span><i /></div>
             <div className="lab-grid">
               {cat.experiments.map((exp: Dict) => (
                 <article className={`lab-card card-${catAccent[cat.id] || "mint"}`} key={exp.id} onClick={() => navigate(exp.route)}>
