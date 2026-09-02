@@ -70,7 +70,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .sidebar nav { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; scrollbar-width: thin; scrollbar-color: #263946 transparent; }
 .sidebar nav::-webkit-scrollbar { width: 6px; }
 .sidebar nav::-webkit-scrollbar-thumb { background: #263946; border-radius: 3px; }
-.nav-section { display: flex; align-items: center; gap: 8px; padding: 8px 12px 7px; color: #52656f; font: 600 10px "IBM Plex Mono"; letter-spacing: 1.6px; }
+.nav-section { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 8px 12px 7px; color: #6b7d86; font-family: Inter, "Noto Sans SC", sans-serif; font-size: 14px; font-weight: 750; letter-spacing: .5px; }
 .nav-section.secondary { margin-top: 20px; }
 .nav-section-dot { width: 9px; height: 9px; flex: none; border-radius: 50%; background: currentColor; box-shadow: 0 0 9px currentColor; }
 .nav-group.tone-mint { --nav-tone: var(--mint); }
@@ -350,7 +350,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 :root[data-theme="light"] .topbar-context b { color: var(--faint); }
 :root[data-theme="light"] .topbar-context-icon { border-color: rgba(8,127,99,.2); background: rgba(8,127,99,.055); }
 :root[data-theme="light"] .topbar-project-name { color: #2f463e; }
-:root[data-theme="light"] .nav-section { color: #9aaca5; }
+:root[data-theme="light"] .nav-section { color: #7c8f88; }
 :root[data-theme="light"] .nav-group[class*="tone-"] > .nav-section { color: var(--nav-tone); }
 :root[data-theme="light"] .nav-link { color: #687d75; }
 :root[data-theme="light"] .nav-link:hover { color: #23483e; background: rgba(8, 127, 99, .045); }
