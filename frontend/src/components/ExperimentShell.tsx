@@ -8,12 +8,12 @@ interface ExperimentShellProps {
   title: ReactNode;
   intro: string;
   badges?: ReactNode;
-  flowSteps: string[];
-  flowActive: number;
+  flowSteps?: string[];
+  flowActive?: number;
   children?: ReactNode;
 }
 
-export function ExperimentHeader({ tag, title, intro, badges, flowSteps, flowActive }: ExperimentShellProps) {
+export function ExperimentHeader({ tag, title, intro, badges, flowSteps, flowActive = 0 }: ExperimentShellProps) {
   return <>
     <div className="page-title">
       <div>
@@ -23,7 +23,7 @@ export function ExperimentHeader({ tag, title, intro, badges, flowSteps, flowAct
       </div>
       {badges && <div className="page-title-badges">{badges}</div>}
     </div>
-    <Flow steps={flowSteps} active={flowActive} />
+    {flowSteps?.length ? <Flow steps={flowSteps} active={flowActive} /> : null}
   </>;
 }
 
