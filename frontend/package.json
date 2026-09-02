@@ -1,0 +1,30 @@
+{
+  "name": "cryptolab-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "test:auth": "node scripts/e2e-auth.mjs",
+    "test:register": "node scripts/e2e-register.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "0.468.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-markdown": "9.0.1",
+    "react-router-dom": "7.18.2",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@vitejs/plugin-react": "4.3.4",
+    "playwright-core": "1.54.2",
+    "typescript": "5.7.2",
+    "vite": "6.0.5"
+  }
+}

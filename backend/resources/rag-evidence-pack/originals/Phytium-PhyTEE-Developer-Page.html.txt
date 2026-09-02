@@ -1,0 +1,1764 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google" content="notranslate">
+    <meta http-equiv="content-language" content="zh-Hans">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    
+        <title>
+    开发者平台-数字飞腾门户
+</title>
+    
+    <!--[if lt IE 9]>
+    <script src="/static/js/html5shiv.min-3.7.3.js"></script>
+    <script src="/static/js/respond-1.4.2.min.js"></script>
+    <![endif]-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?939324ed362773bce3b97f3a3d4efe16";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3365fc76d6fefc5f7b5ade5623d22f44";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.4.1.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select-1.12.4.min.css">
+    <link rel="stylesheet" href="/static/css/local_site.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/static/css/fileinput.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/sweet-alert.css">
+    <link rel="stylesheet" href="/static/css/ie9.css">
+    
+    <link rel="stylesheet" href="/static/css/page/page.css?v=1722392412137">
+    <link rel="stylesheet" href="/static/css/developer/style.css?v=1722394022917">
+    <style>
+        .cke_editable {
+            font-size: 22px !important;
+            line-height: 1.6;
+            word-wrap: break-word;
+            width: 1180px !important;
+        }
+
+        .cke_editable * {
+            font-size: 22px !important;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+            line-height: 30px !important;
+            margin: 0 !important;
+        }
+
+        .download-document-list .headlines {
+            position: relative;
+            margin-bottom: 20px;
+            background: rgb(245, 245, 245);
+            padding: 42px 130px 42px 20px !important;
+        }
+
+        #ftKitUserAgreement {
+            z-index: 10005;
+        }
+
+        #ftApplicationKitUserAgreement {
+            z-index: 10005;
+        }
+
+        .agreement {
+            display: inline-block !important;
+            width: auto !important;
+            height: auto !important;
+            margin-right: 10px !important;
+        }
+
+        .modal-content-div {
+            background: #f8f9fc;
+            border-radius: 8px;
+            border: 1px solid #e8e7e7;
+            padding: 15px 24px;
+            max-height: 90vh;
+        }
+
+        .sweet-alert {
+            z-index: 10001 !important;
+        }
+
+        .modal-content-div span {
+            color: #575757;
+            font-size: 30px;
+            font-weight: 600;
+            text-transform: none;
+            position: relative;
+            margin: 25px 0;
+            padding: 0;
+            line-height: 40px;
+            display: block;
+            text-align: left;
+        }
+
+        .modal-content-div h2, p {
+            text-align: left;
+        }
+
+        .modal-content-div .modal-header-div {
+            overflow-y: auto;
+            max-height: 76vh;
+            margin-bottom: 30px;
+        }
+
+        .modal-content-div .modal-header-div span {
+            color: #575757;
+            font-size: 30px;
+            font-weight: 600;
+            margin: 0;
+            padding: 0;
+            line-height: 40px;
+            display: block;
+            text-align: center;
+        }
+
+        .thumb-title {
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            display: block;
+            color: #e60021;
+            padding: 0;
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .developer-link-hover {
+            width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: none !important;
+            cursor: pointer;
+            color: #23527c !important;
+        }
+
+        .developer-link-hover:hover {
+            color: #e60021 !important;
+        }
+
+        .thumbnail:hover {
+            box-shadow: 0px 10px 10px rgb(0 0 0 / 10%);
+        }
+
+        @media (max-width: 1200px) {
+            .page-title .cke_editable {
+                width: auto !important;
+            }
+        }
+
+    </style>
+    <style>
+        /* 容器设置自定义属性 --layout-content-width */
+        .sec-body {
+            --layout-content-width: 100%; /* 默认宽度，可响应式覆盖 */
+        }
+
+        /* 外层 flex 布局 */
+        .architecture-img {
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* 左右列宽度 */
+        .architecture-img > .left-img {
+            flex: 2;
+            text-align: center;
+            
+            
+            
+        }
+        .architecture-img > .architecture { flex: 1; }
+
+        /* 图片自适应 */
+        .left-img img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 右侧文字容器 */
+        .architecture-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-y: auto;
+            /* 高度按照左侧图片比例计算：height = 宽度 * 图片高宽比 */
+            max-height: calc(var(--layout-content-width));
+            min-height: 100%; /* 内容少时占满高度 */
+        }
+    </style>
+    <style>
+        .suite-title {
+            margin-top: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .suite-title .col-md-3 {
+            margin-bottom: 15px;
+            height: 50px;
+        }
+
+        .suite-title .col-md-3 .bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            background: rgb(242,242,242);
+            color: rgb(63,63,63);
+            cursor: pointer;
+        }
+
+        .suite-title .col-md-3 .bg.active {
+            background: #e60021;
+            position: relative;
+        }
+
+        .suite-title .col-md-3 .bg.active .glyphicon {
+            display: block;
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            margin-left: -25px;
+            color: #e60021;
+            font-size: 50px;
+            top: 17px;
+        }
+
+        .suite-title .col-md-3 p {
+            text-align: center;
+        }
+
+        .suite-title .col-md-3 .bg.active .title {
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .suite-title .col-md-3 .bg .title{
+            margin-bottom: 0;
+            font-weight: bold;
+            padding: 0 10px;
+            word-break: break-word;
+            overflow: hidden;
+            display: -webkit-inline-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        .suite-title .col-md-3 .bg .glyphicon {
+            display: none;
+        }
+
+        .download-document-list .headlines:before {
+            display: none !important;
+        }
+    </style>
+    <style>
+        #imageModal .modal-content img {
+            width: 100%;
+            max-height: 80vh; /* 限制图片高度 */
+            /* Use a fallback technique for object-fit */
+            display: block;
+            -ms-interpolation-mode: bicubic; /* For IE */
+        }
+
+        .display_drawing_pic .img_pic {
+            max-width: 100%;
+            max-height: 100%;
+            /* Ensure image resizes properly */
+        }
+
+        #imageModal .modal-dialog {
+            max-width: 90vw; /* Adjust modal width */
+        }
+
+        #imageModal .modal-body {
+            height: 80vh; /* 调整模态框主体的高度 */
+            overflow: auto; /* 确保内容可以滚动 */
+            text-align: center; /* 居中图片 */
+            /* flex替代方案 */
+            display: -ms-grid;
+            display: grid;
+            -ms-grid-columns: 1fr;
+            grid-template-columns: 1fr;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #imageModal .modal-body img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+        }
+
+        #imageModal .img-overlay {
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        #imageModal .prev-image, .next-image {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%); /* 垂直居中对齐 */
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #imageModal .bi-x-lg {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #imageModal .prev-image {
+            left: 0;
+            margin-left: 10px; /* 为按钮留出一些空间 */
+        }
+
+        #imageModal .next-image {
+            right: 0;
+            margin-right: 10px; /* 为按钮留出一些空间 */
+        }
+
+        #imageModal .carousel-control.left,#imageModal .carousel-control.right {
+            background-image: none
+        }
+
+        #imageModal .image-container {
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            display: -ms-grid;
+            display: grid;
+        }
+
+        #imageModal .image-container .glyphicon {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 30px;
+        }
+
+        #imageModal .image-container .glyphicon:before {
+            position: relative;
+            top: 10px;
+        }
+    </style>
+
+    <style>
+        @media screen and (max-width: 768px) {
+            .info-text {
+                font-size: x-small !important;
+            }
+        }
+
+        .ant-drawer {
+            z-index: 1002;
+        }
+
+        .navbar-header {
+            float: left;
+        }
+
+        .collapse.navbar-collapse {
+            float: left;
+            width: calc(100% - 190px);
+            min-width: 560px;
+        }
+
+        .no-records-found p {
+            color: #999 !important;
+        }
+        #_ft_global-alert-container>.alert.alert-dismissible {
+            max-width: unset;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button
+					type="button"
+					class="navbar-toggle collapsed"
+					data-toggle="collapse"
+					data-target="#navbar"
+					aria-expanded="false"
+					aria-controls="navbar"
+			>
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/homepage/index/">
+				<img class="logo" style="width: auto; height: 50px;" src="/static/img/homepage/logo.png">
+			</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navigation" style="float: none;">
+				
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产品 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu CPU">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>CPU系列</h4>
+                            <a href="/homepage/production/list/0"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高性能服务器CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/18">飞腾腾云S5000C-E</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/13">飞腾腾云S5000C</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/4">飞腾腾云S2500</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/3">FT-2000+/64</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/2">FT-1500A/16</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/production/list/1"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高效能桌面CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/16">飞腾腾锐D3000M</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/15">飞腾腾锐D3000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/1">飞腾腾锐D2000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/6">FT-2000/4</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/5">FT-1500A/4</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/production/list/2"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高端嵌入式 CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/12">飞腾腾珑E2000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/9">FT-2000A/2</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu suit">
+                        <h4>套片</h4>
+                            <a href="/homepage/production/list/3"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾套片</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/11">X100</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu ihv">
+                        <h4>伙伴产品</h4>
+                            <a href="/ihv_product/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>制造商产品</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu ihv">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/phytium_pie/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾派</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">生态 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu ecology">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu system">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾生态体系</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/interest/">飞腾生态伙伴计划</a></li>
+                        
+                            <li><a class=" " href="/eco/partner/">飞腾生态伙伴</a></li>
+                        
+                            <li><a class=" " href="/eco/pengteng/">鹏腾生态伙伴计划</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu authenticate">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>认证</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/hardware/hardware/list">硬件适配列表</a></li>
+                        
+                            <li><a class=" " href="/product/">软件适配认证</a></li>
+                        
+                            <li><a class=" " href="/partner/self/">联合认证</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>产业创新</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/empowerment_center/">生态服务中心</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu service">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>服务</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/ecological_home/">生态家园</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">方案 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu program">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu joint_solutions">
+                        <h4>&nbsp;</h4>
+                            <a href="/solution/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>联合解决方案</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/solution/industry/36/">党政</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/3/">电信</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/4/">金融</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/9/">电力</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/17/">能源</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/5/">交通</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/16/">教育</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu selected_solutions">
+                        <h4>&nbsp;</h4>
+                            <a href="/lab/selected_solutions/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>精选解决方案</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">支持 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu support">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>开案一站式平台</h4>
+                            <a href="https://serviceplus.phytium.com.cn"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>技术支持平台</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/technicalSupport">项目支持</a></li>
+                        
+                            <li><a class=" " href="/quality_appeal/appeal_list/">质量申诉</a></li>
+                        
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/knowledgeBase/kbList?action=more&type=0">知识库</a></li>
+                        
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/contactUS">联系我们</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu software_developer">
+                        <h4>&nbsp;</h4>
+                            <a href="/developer/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>开发者平台</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/developer/suite_home/">应用使能套件</a></li>
+                        
+                            <li><a class=" " href="/developer/repository/">软件仓库</a></li>
+                        
+                            <li><a class=" " href="/developer/support/">软件支持</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/quality/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>质量可靠性</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu homepage_download">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>下载</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/download/">资料下载</a></li>
+                        
+                            <li><a class="software-download" href="/developer/suite/">软件下载</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu second">
+                        <h4>&nbsp;</h4>
+                            <a href="/lab/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>开放实验室</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/lab/my_apply/">适配资源申请</a></li>
+                        
+                            <li><a class=" " href="#">5G通信</a></li>
+                        
+                            <li><a class=" " href="#">智能计算</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu second">
+                        <h4>&nbsp;</h4>
+                            <a href="/workOrder/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>服务工单</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赋能 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu training">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>赋能首页</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/course/explore"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>在线学习</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/article"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>赋能动态</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/query/certificate"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>证书查询</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">新闻 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu news">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/news/list"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>企业新闻</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/media/report"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>媒体报道</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/marketingmanagement/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>市场活动</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu about-us">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/about_us"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>公司简介</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/honor"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>荣誉历程</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/recruitment/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>人才招聘</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/connection"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>联系我们</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+				<li>
+					<span class="english"></span>
+					<span class="icon_search"></span>
+				</li>
+				<li class="dropdown user-center" style="float: right;">
+
+				
+					<a style="font-weight: bold;" href="/en/index/" class="login-btn">EN</a>
+					<a href="/login/?next=" class="login-btn">登录</a>
+					<a style="border-radius: 10px;" href="/register/?next=" class="reg-btn">注册</a>
+				
+
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<link href="/static/css/homepage/public.css" rel="stylesheet"/>
+<link href="/static/css/homepage/theme.css" rel="stylesheet"/>
+<link href="/static/css/homepage/style.css?v=1722394022917" rel="stylesheet"/>
+<link href="/static/css/homepage/slider-pro.css" rel="stylesheet"/>
+<script>
+
+</script>
+
+    <div class="banner">
+        <img src="/static/img/banner-support.jpg"/>
+        <h3>开发者平台</h3>
+    </div>
+    <ol class="breadcrumb">
+        <li><a href="/">主页</a></li>
+        <li>支持</li>
+        <li><a href="/developer/">开发者平台</a></li>
+        <li><a href="/developer/suite_home/">应用使能套件</a></li>
+        <li class="active">安全</li>
+    </ol>
+    <div class="row page-title">
+        <div class="page-header center">
+            <h2 style="text-align: center;">安全</h2>
+        </div>
+        <div class="container theme-showcase" role="main">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cke_editable">
+                <p>以飞腾安全处理器打造芯片级安全底座，构建可信、密码、机密计算一体化安全生态，赋能政务、金融、能源等关键行业落地国产化信息安全建设。</p>
+            </div>
+        </div>
+    </div>
+
+<div class="container" style="margin-top: 20px;" id="cont">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+            
+            <div class="all-content">
+                <div class="col-xs-12 col-sm-12">
+                    
+    <div class="row">
+        <div class="developer">
+            
+                <div style="width: 100%;">
+                    <div class="page-header center">
+                        <h2 style="text-align: center;" id="id_performance_optimize_list">场景介绍</h2>
+                    </div>
+                    
+                        <div class="row tab-content">
+                            <div class="container sec-body">
+                                <div class="architecture-img">
+                                    <!-- 左侧图片 -->
+                                    
+                                    <div class="left-img">
+                                        <a href="#" data-toggle="modal" data-target="#imageModal"
+                                           data-image="/page/getdownloadurl/?filepath=2026/06/02/63551783-645e-4624-9a6c-9b4c3e39fcd0/安全.png">
+                                            <img src="/page/getdownloadurl/?filepath=2026/06/02/63551783-645e-4624-9a6c-9b4c3e39fcd0/安全.png" alt="img" id="architecture-left-img">
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- 右侧文字 -->
+                                    
+                                    <div class="architecture">
+                                        <div class="architecture-item">
+                                            <p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'"><span style="font-family:宋体">一、核心安全底座</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'"><span style="font-family:宋体">以飞腾安全处理器为核心，通过芯片级硬安全组件构建底层根基：</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">1.PhyTCM/PhyTPCM<span style="font-family:宋体">：提供硬件可信根，保障系统启动与运行的可信基础</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">2.PhyCrypto<span style="font-family:宋体">：承载</span></span></span><span style="font-size:12.0000pt"><span style="font-family:宋体"><span style="font-family:宋体">密码</span></span></span><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'"><span style="font-family:宋体">算法加速能力，为密码应用提供硬件级支撑</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">3.PhyTEE/PhyCCA<span style="font-family:宋体">：构建可信执行环境与机密计算架构，实现数据隔离与安全运行</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'"><span style="font-family:宋体">二、核心安全生态</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">1.<span style="font-family:宋体">可信生态：以硬件可信根为起点，实现系统全生命周期可信度量，从源头筑牢系统安全</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">2.<span style="font-family:宋体">密码生态：依托硬件加速，搭建全栈密码框架，适配主流标准接口，满足行业合规要求</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">3.<span style="font-family:宋体">机密计算生态：构建高等级隔离环境，实现数据 </span><span style="font-family:Times New Roman,Times,serif">&ldquo;</span><span style="font-family:宋体">可用不可见</span><span style="font-family:Times New Roman,Times,serif">&rdquo;</span><span style="font-family:宋体">，破解数据安全与流通的核心矛盾</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'"><span style="font-family:宋体">三、核心优势与价值</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">1.<span style="font-family:宋体">自主可控：全栈自主研发，摆脱外部依赖，保障核心技术安全</span></span></span></span></span></p>
+
+<p><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">2.<span style="font-family:宋体">全栈覆盖：整合三大安全能力，覆盖信息安全全生命周期需求</span></span></span></span></span></p>
+
+<p><span style="font-size:12.0000pt"><span style="font-family:'Times New Roman'">3.<span style="font-family:宋体">场景适配：深度兼容国产生态，降低迁移成本，高效赋能金融、政务、能源等关键行业</span></span></span></p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="row suite-title" id="scene_optimize_target">
+                            
+                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                <div data-id="1" title="飞腾天衣可信执行环境" class="bg active">
+                                    <p class="title">飞腾天衣可信执行环境</p>
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                <div data-id="2" title="飞腾商用密码模块" class="bg ">
+                                    <p class="title">飞腾商用密码模块</p>
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                <div data-id="3" title="飞腾可信密码模块" class="bg ">
+                                    <p class="title">飞腾可信密码模块</p>
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-3 col-md-3">
+                                <div data-id="4" title="飞腾可信平台控制模块" class="bg ">
+                                    <p class="title">飞腾可信平台控制模块</p>
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div id="id_performance_optimize">
+                        </div>
+                    
+                </div>
+            
+            
+            <br>
+
+            
+            <br>
+
+            
+                <div style="width: 100%" class="developer-doc download-document-list">
+                    <div class="page-header center">
+                        <h2 style="text-align: center;" id="id_show_documents_list">文档</h2>
+                    </div>
+                    <div class="row tab-content" id="id_show_documents">
+                    </div>
+                    <!--		        <div class='col-xs-12 col-md-12 col-lg-12 headlines'>-->
+                    <!--			        <a download href="/homepage/files/download//"><h4 title=""></h4></a>-->
+                    <!--			        <p>更新时间：</p>-->
+                    <!--			        <a class="download-btn" download href="/homepage/files/download/<%= value.id %>/">下载</a>-->
+                    <!--		        </div>-->
+                </div>
+            
+        </div>
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="image-container">
+                            <img src="" alt="..." class="img-overlay">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <i class="bi bi-x-lg" data-dismiss="modal"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="protocol-modal" tabindex="-1" role="dialog" aria-labelledby="protocol-modal-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="protocol-modal-title">用户须知</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="checkbox protocol-content">
+                            
+                                <div>
+                                    <iframe src="/static/file/飞腾开发者平台用户许可协议.pdf#toolbar=0&scrollbars=0"
+                                            style="width: 100%; height: 500px; border: 0;" class="agreement2"></iframe>
+                                    <iframe src="/static/file/飞腾应用使能套件许可协议.pdf#toolbar=0&scrollbars=0"
+                                            style="width: 100%; height: 500px; border: 0;" class="agreement1"></iframe>
+                                </div>
+                            
+                            <label>
+                                <input type="checkbox" name="checkbox" class="protocol-select">
+                                我已阅读并同意<a href="/static/file/飞腾开发者平台用户许可协议.pdf" target="_blank"
+                                          class="user-center-color agreement2">《飞腾开发者平台用户许可协议》</a><a
+                                    href="/static/file/飞腾应用使能套件许可协议.pdf"
+                                    target="_blank" class="user-center-color agreement1">《飞腾应用使能套件许可协议》</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary input-sm-lg protocol-agree">同意</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+<footer>
+	<div class="foo_container">
+		<div class="foo_con1 clearfix">
+			<div class="row">
+				<p class="gft"><img src="/static/img/homepage/gft.png"/></p>
+			</div>
+			<div class="row">
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/connection/">销售联系</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/product/">生态适配</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/developer/">开发者平台</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/ihv_product/index/">合作产品</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/recruitment/">人才招聘</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/university_enterprise_cooperation/">校企合作</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/connection/">联系我们</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/static/用户服务协议.pdf" target="_blank">用户服务协议</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/static/隐私政策.pdf" target="_blank">隐私政策</a></div>
+			</div>
+		</div>
+		<div class="foo_con2">
+			<ul class="add_list row">
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="天津市滨海新区海缘路信息安全产业园5号楼 电话：022-59080100">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon1.png"></span>
+					<span class="add_span1" data-toggle="tooltip" data-placement="right">天津总公司</span> <i class="add_line"></i>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="北京市海淀区知春路27号量子芯座8层 电话：010-62001812">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon2.png"></span>
+					<span class="add_span1 company" >北京子公司</span> <i class="add_line"></i>
+				</li>
+				
+				<li class="clearfix col-xs-6 address"  data-toggle="tooltip" data-placement="right" title="长沙市开福区东风路街道芙蓉中路一段303号富兴·世界金融中心T2栋22层 电话：0731-84930100">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon3.png"></span>
+					<span class="add_span1 company">长沙子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="广东省广州市黄埔区联和街道 开泰大道266号归谷科技园C3栋2001号 电话：020-31801507">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon4.png"></span>
+					<span class="add_span1 company">广州子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="成都市高新区天府大道北段1777号7栋1单元25层2501号">
+					<span class="add_icon" ><img src="/static/img/homepage/a1_1.png"></span>
+					<span class="add_span1 company">成都子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="深圳市宝安区新安街道海旺社区宝兴路88号星通大厦1801">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon6.png" style="max-height:90px" /></span>
+					<span class="add_span1 company">深圳子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="上海市浦东新区郭守敬路 498 号西侧 1 号楼 2 层">
+					<span class="add_icon"><img src="/static/img/homepage/shanghai.png"></span>
+					<span class="add_span1 company">上海子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="陕西省西安市高新区团结南路 11 号中晶科技广场 A 座 19 层 AB 单元">
+					<span class="add_icon" style="padding-top: 11px;"><img src="/static/img/homepage/xian.png"></span>
+					<span class="add_span1 company">西安子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="江苏省南京市建邺区永初路 8 号 T4 栋 1311 室">
+					<span class="add_icon" style="padding-top: 11px;"><img src="/static/img/homepage/nanjing.png"></span>
+					<span class="add_span1 company">南京子公司</span>
+					<div class="remark"></div>
+				</li>
+			
+			</ul>
+		</div>
+		
+		<p class="footer-share">
+			<span class="footer-logo"><a><img src="/static/img/homepage/logo.png" style="height: 30px; margin-top:10px" /> </a></span>
+			<span class="share-icon" style="float: right">
+				<a class="weixin">
+					<img class="qrcode" src="/static/img/homepage/qrcode.png">
+				</a>
+				<a href="https://weibo.com/u/7589331641" class="weibo"></a>
+				<a href="https://www.toutiao.com/c/user/token/MS4wLjABAAAAjCRlkglCvxbgW8gkQHxSnaoe3Egph4EuQ9kOkp62L6I/?" class="toutiao"></a>
+				<a href="https://www.zhihu.com/org/phytiumfei-teng" class="zhihu"></a>
+				<a href="https://space.bilibili.com/1920123999" class="bilibi"></a>
+			</span>
+		</p>
+		<p class="banquan">本网站由基于飞腾腾云S2500的服务器提供算力支撑</p>
+		<p class="gft"><img src="/static/img/homepage/s2500.png" style="height: 100px;"/></p>
+		<p class="banquan">2024©飞腾信息技术有限公司
+			<a class="link" href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2022010272号-2</a>&nbsp;&nbsp;&nbsp;
+			<a class="link" target="_blank">内容使用授权声明</a>
+		</p>
+	</div>
+	
+</footer>
+
+<script src="/static/js/jquery-1.12.4.min.js"></script>
+<!--<script src="/static/js/popper.min.js"></script>-->
+<script src="/static/js/bootstrap-3.4.1.min.js"></script>
+<script src="/static/js/bootstrap-select-1.12.4.min.js"></script>
+<script src="/static/js/bootstrap-table.min.js"></script>
+<script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="/static/js/piexif.min.js"></script>
+<!--[if gte IE 9]>
+<script src="/static/js/sortable.min.js"></script>
+<![endif]-->
+<script src="/static/js/fileinput.min.js"></script>
+<script src="/static/js/zh.js"></script>
+
+<script src="/static/js/common.js"></script>
+
+<!--低版本的sweet适配ie8-->
+<script src="/static/js/sweet-alert.min.js"></script>
+
+<script src="/static/js/template-web.js"></script>
+
+<!--[if lte IE 9]>
+<script src="/static/js/polyfill.min.js"></script>
+<script src="/static/js/homepage/index.js"></script>
+<![endif]-->
+
+<script>
+    $('body').on('click', '.to-be-developed', function (e) {
+        e.preventDefault();
+        swal({
+            title: ' ',
+            text: "此版块正在开发中，敬请期待",
+            buttons: '',
+            timer: 1000
+        })
+    })
+    if ($('[data-toggle="tooltip"]').tooltip().length > 0) {
+        $('[data-toggle="tooltip"]').tooltip()
+    }
+
+    $(document).ready(function () {
+        $('body').on('click', '.software-download', function () {
+            window.localStorage.removeItem('repository_key')
+        })
+    })
+
+    $.ajaxSetup({
+        statusCode: {
+            429: function(error) {
+                // 处理返回码为 429 的情况，直接略过不做任何处理
+                sweetAlert({
+                    title: "",
+                    text: error.responseJSON.statusText,
+                    type: "success",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    html: false
+                },function(){
+                    window.location.reload();
+                });
+            }
+        }
+    });
+
+    // 全局消息提示，用法showFtAlert('消息内容', 'danger', 4000)
+    (function() {
+        function ensureContainer() {
+            if ($('#_ft_global-alert-container').length === 0) {
+                $('body').append(
+                '<div id="_ft_global-alert-container" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:1050;"></div>'
+                );
+            }
+        }
+      
+        window.showFtAlert = function(message, type='success', duration=3000) {
+          ensureContainer();
+          var id = 'alert-' + Date.now() + Math.random().toString(36).substr(2,5);
+          var html = 
+            '<div id="'+id+'" class="alert alert-'+type+' alert-dismissible fade in" role="alert" style="min-width:250px;margin-bottom:10px;">'
+            + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+            +   '<span aria-hidden="true">&times;</span>'
+            + '</button>'
+            + message
+            + '</div>';
+          $('#_ft_global-alert-container').append(html);
+      
+          setTimeout(function() {
+            $('#' + id).alert('close');
+          }, duration);
+        }
+    })();
+</script>
+
+
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: 'ViULARHWLBt7OYt85E1tRdN4in5gznQoolvy2GPKUgXtlsHSnPJXG5FmgfyVuVMr'},
+            headers: {"X-CSRFToken": 'ViULARHWLBt7OYt85E1tRdN4in5gznQoolvy2GPKUgXtlsHSnPJXG5FmgfyVuVMr'},
+        });
+
+        function showImage(img) {
+            $('#imageModal').find('.modal-body img').attr('src', img);
+        }
+
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var link = $(event.relatedTarget);
+            showImage(link.data('image'));
+        });
+
+        var protocol_dict =
+        {}
+        var interval;
+
+        $(document).ready(function () {
+            if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+            )) {
+                $('.developer').addClass("mobile");
+                $('.tooltip-toogle').data('toggle', 'tooltip').tooltip()
+            }
+
+            get_open_sources(1);
+            get_show_documents(1);
+            get_independent_softwares(1);
+            const match = window.location.search.match(/id=(\d+)/);
+            const id = match ? match[1] : null;
+            // 判断是否包含指定锚点
+            if (id && id !== '1') {
+                //get_performance(id);
+                if ($('.suite-title .bg[data-id='+id+']').length > 0) {
+                    $('.suite-title .bg[data-id='+id+']').trigger('click');
+                } else {
+                    get_performance('1');
+                }
+            } else {
+                get_performance('1');
+            }
+        });
+
+        $('body').on('click', '.download_patch', function () {
+            location.href = '/login/?next=/developer/8/'
+        })
+
+        $('body').on('click', '.download_document', function () {
+            location.href = '/login/?next=/developer/8/'
+        })
+
+        function downloadInfo(id, content_num, show_protocol) {
+            //$('.protocol-agree').data('page_info', page_info)
+            $('.protocol-agree').data('id', id)
+            $('.protocol-agree').data('content_num', content_num)
+            if (content_num === '1') {
+                $('.agreement1').show()
+                $('.agreement2').hide()
+                var file_name1 = $('.protocol-content label .agreement1').text()
+                $('.protocol-agree').data('file_name', file_name1)
+            } else {
+                $('.agreement1').hide()
+                $('.agreement2').show()
+                var file_name2 = $('.protocol-content label .agreement2').text()
+                $('.protocol-agree').data('file_name', file_name2)
+            }
+            var key = 'developer_' + $('.protocol-agree').data('file_name') + '_' + ''
+            if (show_protocol === 'True' && protocol_dict[key] === undefined) {
+                var ng_content = $('.protocol-content')
+                var ng_select = $('.protocol-select')
+                $('#protocol-error').remove()
+                ng_content.removeClass('has-error');
+                var n = 5
+                $('.protocol-agree').text('同意(' + n + ')')
+                $('.protocol-agree').prop('disabled', true)
+                clearInterval(interval)
+                interval = setInterval(function () {
+                    n = n - 1
+                    if (n === 0) {
+                        clearInterval(interval)
+                        $('.protocol-agree').text('同意')
+                        $('.protocol-agree').prop('disabled', false)
+                        return
+                    }
+                    $('.protocol-agree').text('同意(' + n + ')')
+                }, 1000);
+                $('.protocol-select').prop('checked', false)
+                $('#protocol-modal').modal('show')
+            } else {
+                //var page_info = $('.protocol-agree').data('page_info')
+                var id = $('.protocol-agree').data('id')
+                var content_num = $('.protocol-agree').data('content_num')
+                download_content(id, content_num)
+            }
+        }
+
+        function independent_downloadInfo(id, content_num) {
+            $.ajax({
+                url: "/developer/independent_software_download",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "ViULARHWLBt7OYt85E1tRdN4in5gznQoolvy2GPKUgXtlsHSnPJXG5FmgfyVuVMr");
+                },
+                data: JSON.stringify({
+                    //'page_info': page_info,
+                    'id': id,
+                    'content_num': content_num
+                }),
+                success: function (data) {
+                    if (data.status === 200) {
+                        window.open(data.message);
+                    } else {
+                        sweetAlert({
+                            title: "下载失败",
+                            text: data.message,
+                            type: 'error',
+                            allowOutsideClick: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            html: false
+                        });
+                    }
+                },
+                error: function (error) {
+                    sweetAlert({
+                        title: "下载失败",
+                        text: error.status + ' ' + error.statusText,
+                        type: 'error',
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false,
+                        html: false
+                    });
+                }
+            })
+        }
+
+        function validateCheckBox() {
+            var ng_content = $('.protocol-content')
+            var ng_select = $('.protocol-select')
+            $('#protocol-error').remove()
+            ng_content.removeClass('has-error');
+            if (ng_select.is(':checked')) {
+                return true
+            } else {
+                ng_content.addClass('has-error');
+                ng_content.append("<span style='color: darkred;display: block' id='protocol-error'>请阅读并勾选许可协议</span>");
+                return false
+            }
+        }
+
+        $('body').on('change', '.protocol-select', function () {
+            validateCheckBox()
+        })
+
+        $('body').on('click', '.protocol-agree', function (e) {
+            if (validateCheckBox() === false) {
+                return
+            }
+
+            //var page_info = $(this).data('page_info')
+            var id = $(this).data('id')
+            var content_num = $(this).data('content_num')
+            var file_name = $(this).data('file_name')
+            $('.protocol-agree').prop('disabled', true)
+            $.ajax({
+                url: '/developer/protocol/',
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    'name': file_name,
+                }),
+                success: function (data) {
+                    $('#protocol-modal').modal('hide')
+                    download_content(id, content_num)
+                    if (data.status === 200) {
+                        protocol_dict['developer_' + file_name + '_' + ""] = 1
+                    }
+                },
+                error: function (error) {
+                    sweetAlert({
+                        title: "您的请求出错了",
+                        text: error.status + ' ' + error.statusText,
+                        type: "error",
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false,
+                        html: false
+                    });
+                },
+                complete: function () {
+                    $('.protocol-agree').prop('disabled', false)
+                }
+            })
+        })
+
+        function download_content(id, content_num) {
+            if (content_num === "1") {
+                window.location.href = '/developer/patch/' + id + '/3'
+            } else if (content_num === "2") {
+                $.ajax({
+                    url: "/developer/show_document_download",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "ViULARHWLBt7OYt85E1tRdN4in5gznQoolvy2GPKUgXtlsHSnPJXG5FmgfyVuVMr");
+                    },
+                    data: JSON.stringify({
+                        //'page_info': page_info,
+                        'id': id,
+                        'content_num': content_num
+                    }),
+                    success: function (data) {
+                        if (data.status === 200) {
+                            window.open(data.message);
+                            swal.close();
+                        } else {
+                            sweetAlert({
+                                title: "下载失败",
+                                text: data.message,
+                                type: 'error',
+                                allowOutsideClick: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "确认",
+                                closeOnConfirm: false,
+                                html: false
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        sweetAlert({
+                            title: "下载失败",
+                            text: error.status + ' ' + error.statusText,
+                            type: 'error',
+                            allowOutsideClick: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            html: false
+                        });
+                    }
+                })
+            }
+        }
+
+        function get_open_sources(page) {
+            $.ajax({
+                type: 'GET',
+                url: '/developer/open_sources/',
+                dataType: 'JSON',
+                data: {
+                    'page': page,
+                    'developer_id': '8'
+                },
+                success: function (result) {
+                    if (result.status === 200) {
+                        open_sources_html = result.open_sources_html
+                        $("#id_open_sources").html(open_sources_html);
+                    } else {
+                        sweetAlert({
+                            title: "提示",
+                            text: result.message,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                },
+                error: function (error) {
+                    if (error.status !== 0 || error.statusText == "timeout") {
+                        sweetAlert({
+                            title: "提示",
+                            text: error.status + ' ' + error.statusText,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                }
+            })
+        }
+
+        function get_show_documents(page) {
+            $.ajax({
+                type: 'GET',
+                url: '/developer/show_documents/',
+                dataType: 'JSON',
+                data: {
+                    'page': page,
+                    'developer_id': '8'
+                },
+                success: function (result) {
+                    if (result.status === 200) {
+                        show_documents_html = result.show_documents_html
+                        $("#id_show_documents").html(show_documents_html);
+                    } else {
+                        sweetAlert({
+                            title: "提示",
+                            text: result.message,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                },
+                error: function (error) {
+                    if (error.status !== 0 || error.statusText == "timeout") {
+                        sweetAlert({
+                            title: "提示",
+                            text: error.status + ' ' + error.statusText,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                }
+            })
+        }
+
+        function get_independent_softwares(page) {
+            $.ajax({
+                type: 'GET',
+                url: '/developer/independent_softwares/',
+                dataType: 'JSON',
+                data: {
+                    'page': page,
+                    'developer_id': '8'
+                },
+                success: function (result) {
+                    if (result.status === 200) {
+                        independent_softwares_html = result.independent_softwares_html
+                        $("#id_independent_softwares").html(independent_softwares_html);
+                    } else {
+                        sweetAlert({
+                            title: "提示",
+                            text: result.message,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                },
+                error: function (error) {
+                    if (error.status !== 0 || error.statusText == "timeout") {
+                        sweetAlert({
+                            title: "提示",
+                            text: error.status + ' ' + error.statusText,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                }
+            })
+        }
+
+        $('body').on('click', '.open_source_point' ,function () {
+            $.ajax({
+                url: '/developer/open_source/statistics/',
+                method: "GET",
+                dataType: "json",
+                data: {
+                    "id": $(this).data('id'),
+                    "content": $(this).text(),
+                },
+                success: function (data) {
+                }
+            })
+        })
+
+        // 获取左侧图片宽度，动态设置 --layout-content-width
+        function updateLayoutWidth() {
+            const container = document.querySelector('.sec-body');
+            const leftImg = document.getElementById('architecture-left-img');
+            if (!leftImg || !leftImg.complete) return;
+            // 获取左侧图片实际显示宽度
+            const height = leftImg.offsetHeight;
+            // 设置 CSS 变量
+            container.style.setProperty('--layout-content-width', height + 'px');
+        }
+
+        // 图片加载完成时计算一次
+        if (document.getElementById('architecture-left-img')) {
+            document.getElementById('architecture-left-img').addEventListener('load', updateLayoutWidth);
+        }
+
+        // 页面加载完成尝试计算一次
+        window.addEventListener('load', updateLayoutWidth);
+
+        // 窗口大小变化时重新计算
+        window.addEventListener('resize', updateLayoutWidth);
+
+        $('body').on('click', '.suite-title .bg', function () {
+            var $dom = $(this)
+            var id = $dom.data('id');
+            $('.suite-title .bg').removeClass('active')
+            $dom.addClass('active')
+            $('.suite-block').removeClass("active");
+            $('.suite-block').eq(id).addClass('active')
+            $('.suite-block.active .col-md-4').css('height', 'auto');
+            get_performance(id);
+
+        })
+
+        function get_performance(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/developer/get_performances/',
+                dataType: 'JSON',
+                data: {
+                    'performance_id': id,
+                },
+                success: function (result) {
+                    if (result.status === 200) {
+                        performance_html = result.performance_html
+                        $("#id_performance_optimize").html(performance_html);
+                    } else {
+                        sweetAlert({
+                            title: "提示",
+                            text: result.message,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                },
+                error: function (error) {
+                    if (error.status !== 0 || error.statusText == "timeout") {
+                        sweetAlert({
+                            title: "提示",
+                            text: error.status + ' ' + error.statusText,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            html: false
+                        });
+                    }
+                }
+            })
+        }
+
+        /**
+         function download_content(page_info, id, content_num) {
+        $.ajax({
+            url: "/developer/show_document_download",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", "ViULARHWLBt7OYt85E1tRdN4in5gznQoolvy2GPKUgXtlsHSnPJXG5FmgfyVuVMr");
+            },
+            data: JSON.stringify({
+                'page_info': page_info,
+                'id': id,
+                'content_num': content_num
+            }),
+            success: function (data) {
+                if (data.status === 200) {
+                    window.open(data.message);
+                    swal.close();
+                } else {
+                    sweetAlert({
+                        title: "下载失败",
+                        text: data.message,
+                        type: 'error',
+                        allowOutsideClick: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false,
+                        html: false
+                    });
+                }
+            },
+            error: function (error) {
+                sweetAlert({
+                    title: "下载失败",
+                    text: error.status + ' ' + error.statusText,
+                    type: 'error',
+                    allowOutsideClick: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false,
+                    html: false
+                });
+            }
+        })
+    }**/
+    </script>
+
+
+</body>
+</html>

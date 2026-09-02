@@ -1,0 +1,184 @@
+{
+  "pack_id": "cryptollmlab-rag-evidence-2026-08-15",
+  "frozen_at": "2026-08-15T18:00:00+08:00",
+  "notes": "中文教学摘编用于向量库；官方 PDF、网页文本快照和代码仓文档用于离线核验。",
+  "documents": [
+    {
+      "id": "nist_fips203",
+      "publisher": "NIST",
+      "source_date": "2024-08-13",
+      "source_url": "https://doi.org/10.6028/NIST.FIPS.203",
+      "original_path": "originals/NIST-FIPS-203.pdf",
+      "original_bytes": 1252341,
+      "original_sha256": "fe1f12f32a7e44ec9fdebbf400cda843a40b506dee676725234dc6f7923b6cac",
+      "excerpt_path": "excerpts/NIST-FIPS-203-ML-KEM.zh-CN.md",
+      "excerpt_sha256": "e054d3f7cc269d229322f5702c1c2c94bd86f931bc7062d572cd97a5e9ba8606"
+    },
+    {
+      "id": "nist_ir8547",
+      "publisher": "NIST",
+      "source_date": "2024-11-12",
+      "source_url": "https://doi.org/10.6028/NIST.IR.8547.ipd",
+      "original_path": "originals/NIST-IR-8547-ipd.pdf",
+      "original_bytes": 722379,
+      "original_sha256": "6b551b4ff9858a19c1ab48d7deef2ee52d615066b7d187aaf992cb50c5ca0ed6",
+      "excerpt_path": "excerpts/NIST-IR-8547-Transition-Draft.zh-CN.md",
+      "excerpt_sha256": "d62e29e52fd8a54ce6297f1247e7bb35e23792f404e0395be85cffec9a2fffa2"
+    },
+    {
+      "id": "nsa_cnsa20",
+      "publisher": "NSA",
+      "source_date": "2024-12",
+      "source_url": "https://media.defense.gov/2022/Sep/07/2003071836/-1/-1/0/CSI_CNSA_2.0_FAQ_.PDF",
+      "official_page": "https://www.nsa.gov/Press-Room/Digital-Media-Center/Document-Gallery/igphoto/2003071836/",
+      "acquisition_note": "Official CDN returned 403 from this environment; locally retained v2.1 backup was content-checked against official indexed text.",
+      "original_path": "originals/NSA-CNSA-2.0-FAQ-v2.1.pdf",
+      "original_bytes": 441742,
+      "original_sha256": "ca447adb27af022f6bcca70873ef3404a7db0758fa0626fe9cd994451d86f5e0",
+      "excerpt_path": "excerpts/NSA-CNSA-2.0-FAQ-v2.1.zh-CN.md",
+      "excerpt_sha256": "81d178544e7bfe5d121ea7bb303a7eff27007349778c6c3a9c25e478df255837"
+    },
+    {
+      "id": "nist_hqc_2025",
+      "publisher": "NIST",
+      "source_date": "2025-03-11",
+      "source_url": "https://doi.org/10.6028/NIST.IR.8545",
+      "original_path": "originals/NIST-IR-8545.pdf",
+      "original_bytes": 588999,
+      "original_sha256": "d802f4849a52d18001533cef86e0950f31350643cc06881ee62b2382e1ea0e9d",
+      "excerpt_path": "excerpts/NIST-IR-8545-HQC.zh-CN.md",
+      "excerpt_sha256": "054557dc23ffed194690904e48666b61e43191350011ebfa823c38d714439d94"
+    },
+    {
+      "id": "nist_ir8610_2026",
+      "publisher": "NIST",
+      "source_date": "2026-05-14",
+      "source_url": "https://doi.org/10.6028/NIST.IR.8610",
+      "original_path": "originals/NIST-IR-8610.pdf",
+      "original_bytes": 389348,
+      "original_sha256": "580b6f434eb3b617fcf07a2c8ef244d51899313d847eb9583136d602c9b9a068",
+      "excerpt_path": "excerpts/NIST-IR-8610-Additional-Signatures.zh-CN.md",
+      "excerpt_sha256": "804f221c382eb4d4a54c6f65d8d1867d516e7b98708c36603ae211f27eefee81"
+    },
+    {
+      "id": "hailan_crypto_manual",
+      "publisher": "CryptoLLMLab fictional teaching scenario",
+      "source_date": "2026-07-15",
+      "excerpt_path": "excerpts/Hailan-Crypto-Manual-v3.2.zh-CN.md",
+      "excerpt_sha256": "33815b862d6a00fdbcccd8e1056b95feabaaa53c0cc4d12b7d0ff155a616ff25"
+    },
+    {
+      "id": "cn_sm3_gbt32905",
+      "publisher": "国家市场监督管理总局 / 国家标准化管理委员会",
+      "source_date": "2016-08-29",
+      "source_url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=45B1A67F20F3BF339211C391E9278F5E",
+      "original_path": "originals/GBT-32905-2016-SM3.pdf",
+      "original_bytes": 401023,
+      "original_sha256": "a84f7c57ba76f0747ce040cf65c8301eaceeabcc5bb3197772499a22723c9ec9",
+      "excerpt_path": "excerpts/GBT-32905-2016-SM3.zh-CN.md",
+      "excerpt_sha256": "497189f59cf00d64193835fcf80ddc278fe7d34d3791ea368e233cffe257d2c1"
+    },
+    {
+      "id": "cn_sm4_gbt32907",
+      "publisher": "国家市场监督管理总局 / 国家标准化管理委员会",
+      "source_date": "2016-08-29",
+      "source_url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=7803DE42D3BC5E80B0C3E5D8E873D56A",
+      "original_path": "originals/GBT-32907-2016-SM4.pdf",
+      "original_bytes": 294074,
+      "original_sha256": "7844b34640e074fb7c886a14f3223ec15abf21d74513efbb21416370b08b80de",
+      "excerpt_path": "excerpts/GBT-32907-2016-SM4.zh-CN.md",
+      "excerpt_sha256": "87179225c91408e01bf6aed2fc5526545f1a3515519455a83b3586fa5c7ef97c"
+    },
+    {
+      "id": "cn_sm2_gbt35276",
+      "publisher": "国家市场监督管理总局 / 国家标准化管理委员会",
+      "source_date": "2017-12-29",
+      "source_url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=2127A9F19CB5D7F20D17D334ECA63EE5",
+      "original_path": "originals/GBT-35276-2017-SM2-Usage.pdf",
+      "original_bytes": 509452,
+      "original_sha256": "2c08635ae032d6c9fa5805d872e9d70b364124c1f3faf1cf22ca423bcce29382",
+      "excerpt_path": "excerpts/GBT-35276-2017-SM2-Usage.zh-CN.md",
+      "excerpt_sha256": "9feb7c337ec2ab36d6ce6def8522eb4bc9e9f6eee4ba00809510a123143cf7b4"
+    },
+    {
+      "id": "cn_crypto_baseline_gbt39786",
+      "publisher": "国家市场监督管理总局 / 国家标准化管理委员会",
+      "source_date": "2021-03-09",
+      "source_url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=53282C88712CE157043B7A2C590278FC",
+      "original_path": "originals/GBT-39786-2021-Crypto-Application.pdf",
+      "original_bytes": 1271159,
+      "original_sha256": "191f21cb341edf2a76dd7a057e8e80ebc21f0b4e9fd8dad7c648638ed3d05f46",
+      "excerpt_path": "excerpts/GBT-39786-2021-Crypto-Application.zh-CN.md",
+      "excerpt_sha256": "8e2deab28d3801f090dfb65726c06c952bc8d217cd06f48634190e9be2961798"
+    },
+    {
+      "id": "gmit_2023_revision",
+      "publisher": "国家密码管理局",
+      "source_date": "2023-12-23",
+      "source_url": "https://www.sca.gov.cn/sca/xxgk/2023-12/23/content_1061160.shtml",
+      "original_path": "originals/SCA-Announcement-45-2023.html.txt",
+      "original_bytes": 15769,
+      "original_sha256": "1dd01569604b595616565886f8bb56be225df31faab45c4f645c2aa2a048845e",
+      "excerpt_path": "excerpts/SCA-GMT-2023-Revision.zh-CN.md",
+      "excerpt_sha256": "bc9278c1e80d933ef6f434205a51329e936f3457bc23816b7b0210389aa586b2"
+    },
+    {
+      "id": "gmit_eval_2021",
+      "publisher": "国家密码管理局",
+      "source_date": "2021-10-19",
+      "source_url": "https://www.sca.gov.cn/sca/xxgk/2021-10/19/content_1060880.shtml",
+      "original_path": "originals/SCA-Announcement-43-2021.html.txt",
+      "original_bytes": 13035,
+      "original_sha256": "9aed5d3b5987d7a7625001853b9fe70dc22b389e59da5e11291c954052694fec",
+      "excerpt_path": "excerpts/SCA-GMT-0115-0116-2021.zh-CN.md",
+      "excerpt_sha256": "78a6d566f0c2a12048c8b7d6c60de531808c7e0b17215bdfec9c79d2426f5002"
+    },
+    {
+      "id": "kunpeng_secgear_dev",
+      "publisher": "openEuler",
+      "source_date": "2026-08-15 (synced)",
+      "source_url": "https://docs.openeuler.org/zh/docs/24.03_LTS_SP4/server/secgear/developer_guide.html",
+      "original_path": "originals/openEuler-secGear-Kunpeng-Developer-Guide.html.txt",
+      "original_bytes": 72623,
+      "original_sha256": "0f8d970ea0d3682f4ce59cb53c8cd54b640bdb8d7eeca0a4a1ef513dee944dc7",
+      "excerpt_path": "excerpts/openEuler-secGear-Kunpeng.zh-CN.md",
+      "excerpt_sha256": "95e1bba39e7a261a2079f8bfedc792f72a3b679de6f57f1cbadd47495ead0fb4"
+    },
+    {
+      "id": "kunpeng_secgear_attestation",
+      "publisher": "openEuler",
+      "source_date": "2026-08-15 (synced)",
+      "source_url": "https://gitee.com/openeuler/secGear/blob/master/service/attestation/README.md",
+      "original_path": "originals/openEuler-secGear-Attestation.md",
+      "original_bytes": 5451,
+      "original_sha256": "0a2b5c59aebd734e77ac431ec1be0b31079a6b0effba48c03a8c110e3e706a5d",
+      "excerpt_path": "excerpts/openEuler-secGear-Attestation.zh-CN.md",
+      "excerpt_sha256": "7082e86d7c20371f545a5e5e9979ce61bb00b73484550e371cfa73eae4d47830"
+    },
+    {
+      "id": "phytium_phytee_platform",
+      "publisher": "飞腾信息技术有限公司",
+      "source_date": "2026-08-15 (synced)",
+      "source_url": "https://www.phytium.com.cn/developer/8/",
+      "original_path": "originals/Phytium-PhyTEE-Developer-Page.html.txt",
+      "original_bytes": 78302,
+      "original_sha256": "621411e731e923b3e7f9e472b43ca04d20c851c485ba65650bb79fbded5ec7a7",
+      "excerpt_path": "excerpts/Phytium-PhyTEE-Platform.zh-CN.md",
+      "excerpt_sha256": "e23e68b2f6c1630dcd930ee730c3fd2cd3348402319083fbb19596580708cfc9"
+    },
+    {
+      "id": "phytium_tee_architecture",
+      "publisher": "飞腾信息技术有限公司",
+      "source_date": "2026-08-15 (synced)",
+      "source_url": "https://www.phytium.com.cn/solution/detail/?id=110",
+      "original_path": "originals/Phytium-End-to-Cloud-Whitepaper-2.0.pdf",
+      "original_bytes": 15537960,
+      "original_sha256": "8f9a1056c192b5077c7f0adfe4856037e7cba30908519dfae7328ec72cc89445",
+      "supporting_snapshot_path": "originals/Phytium-TEE-Architecture-FT2000-D2000-S2500.html.txt",
+      "supporting_snapshot_bytes": 55208,
+      "supporting_snapshot_sha256": "1bb36f7dbaa888c06d0f7ff4fee588c8b1d27145b4afe305f31c94f4bc574fcf",
+      "excerpt_path": "excerpts/Phytium-TEE-Architecture.zh-CN.md",
+      "excerpt_sha256": "6b99dc0ad80f3dd69662603c26d2af9618455436a7e103913f9e4a04ca8506f1"
+    }
+  ]
+}

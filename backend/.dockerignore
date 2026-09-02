@@ -1,0 +1,8 @@
+.venv
+.env
+cryptolab.db
+uploads
+tests
+__pycache__
+*.pyc
+.pytest_cache

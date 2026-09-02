@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>
+国家密码管理局公告（第45号）_国家密码管理局
+</title>
+<meta name="others" content="页面生成时间 2023-12-23 17:32:36" />
+<meta name="template,templategroup,version" content="8e7c25c537224a4bb78004066d71853a,default,3.6" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="/sca/xhtml/css/common.css">
+<link rel="stylesheet" href="/sca/xhtml/css/common_detail.css">
+<link rel="stylesheet" href="/sca/xhtml/css/cjsfw_detail.css">
+<script type="text/javascript">
+DD_belatedPNG.fix('.pages_print .printIco,background,.gwds_tools_24 a,background');
+</script>
+</head>
+
+<body>
+	<div class="container">
+    	<!--公共头 start-->
+        <div class="header">
+    <div class="top">
+        <div class="top_logo pull-left"><a href="/sca/index.shtml" target="_blank"><img src="/sca/xhtml/images/public/logo.png" alt=""></a></div>
+        <div class="top_right pull-right">
+            <div class="top_right1">
+                <ul>
+                    <li class="li_nobg"><a href="/sca/home/download.shtml" target="_blank"><img src="/sca/xhtml/images/public/header_icon_1.png" alt="">手机端</a></li>
+                    <li><a href="http://weibo.com/u/5994847966?is_hot=1" target="_blank"><img src="/sca/xhtml/images/public/header_icon_2.png" alt="">微博</a></li>
+                    <li><a href="/sca/c100047/weixin_download.shtml" target="_blank"><img src="/sca/xhtml/images/public/header_icon_3.png" alt="">微信</a></li>
+                    <li><a href="http://mail.sca.gov.cn" target="_blank"><img src="/sca/xhtml/images/public/header_icon_4.png" alt="">邮箱</a></li>
+                </ul>
+            </div>
+            
+            <div class="top_right2">
+                <div class="search">
+                 <form action="https://zs.kaipuyun.cn/search5/html/searchResult.html" id="allsearch" target="_blank">
+                   <input type="hidden" name="siteCode" value="N000018881"/>
+                   <input type="text" value="请输入关键字" class="srk" name="searchWord" onclick="if(this.value=='请输入关键字'){this.value='';}" onblur="if(this.value==''){this.value='请输入关键字'" /><a onclick="document.getElementById('allsearch').submit();"  class="btn"  title="" ></a>
+                 </form>
+               </div>
+            </div>
+            
+            <div class="top_right3">
+                <span>热门搜索：</span>
+ 
+               
+                <span><a href="https://zs.kaipuyun.cn/search5/html/searchResult.html?siteCode=N000018881&searchWord=%E5%95%86%E7%94%A8%E5%AF%86%E7%A0%81" target="_blank"  >商用密码</a>
+              </span>
+               
+                <span><a href="https://zs.kaipuyun.cn/search5/html/searchResult.html?siteCode=N000018881&searchWord=%E7%94%B5%E5%AD%90%E8%AE%A4%E8%AF%81" target="_blank"  >电子认证</a>
+              </span>
+               
+                <span><a href="https://zs.kaipuyun.cn/search5/html/searchResult.html?siteCode=N000018881&searchWord=%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D" target="_blank"  >电子签名</a>
+              </span>
+
+              
+            </div>
+        </div>
+    </div>
+    <div class="top_phone">
+        <div class="phone_logo_l pull-left"><a href="/sca/index.shtml" target="_blank"><img class="img_auto" src="/sca/xhtml/images/public/phone_logo.png" alt=""></a></div>
+        <div class="phone_r pull-right"><a href="http://zs.kaipuyun.cn/search5/html/searchResult.html?siteCode=N000018881&searchWord=" ><img class="img_auto" src="/sca/xhtml/images/public/phone_search.png" alt=""></a></div>
+    </div>
+    
+    <div class="nav">
+        <li><a href="/sca/index.shtml" target="_blank">首页</a></li>
+        <li><a href="/sca/jggk/index.shtml" target="_blank">机构概况</a></li>
+        <li><a href="/sca/xwdt/index.shtml" target="_blank">新闻动态</a></li>
+        <li><a href="/sca/xxgk/index.shtml" target="_blank">信息公开</a></li>
+        <li><a href="/sca/zxfw/index.shtml" target="_blank">在线服务</a></li>
+        <li><a href="/sca/hdjl/index.shtml" target="_blank">互动交流</a></li>
+        <li class="li_nobg"><a href="/sca/ztzl/index.shtml" target="_blank">专题专栏</a></li>
+    </div>
+</div>
+
+<script type="text/javascript" src="/sca/xhtml/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/sca/xhtml/js/ie6PNG.js"></script>
+<script type="text/javascript">
+DD_belatedPNG.fix('img,.top_right2 .search input,background');
+</script>
+        <!--公共头 end-->
+    
+    	<div class="main">
+        	<div class="breadcrumb">
+<a href='/sca/index.shtml'  target="_blank">首页</a>&nbsp;>&nbsp;<a href='/sca/xxgk/index.shtml'  target="_blank">信息公开</a>&nbsp;>&nbsp;<a href='/sca/xxgk/bzgf.shtml'  target="_blank">标准规范</a>
+
+            </div>
+            
+            <div class="main_content">
+                <div class="article oneColumn pub_border">
+      				<h1>国家密码管理局公告（第45号）</h1>
+                  <div class="pages-date"><!-- <span class="font"><b>国家密码管理局：<font color="#333">www.sca.gov.cn</font></b></span> --><span class="font"><font color="#9c9c9c"><span>发布日期：</span></font>2023-12-23</span><span class="font">来源：</span></div>
+      				<div class="pages_print"><span class="font index_switchsize">【字体：<span class="bigger">大</span> <span class="medium">中</span> <span class="smaller">小</span>】</span><span class="font printIco" id="btnPrint">打印</span>
+						<div class="share">
+							<div class="mainShareDiv_24">
+                                <div id="gwdShare_con_1">
+                                    <div id="gwdshare" class="gwdshare_t gwds_tools_24 get-codes-gwdshare">
+                                    <a class="gwds_weixin" style="margin:-1px 3px 0px 3px; background:url(/sca/xhtml/images/public/share.png) no-repeat; background-position:2px -33px !important" title="微信" href="#">&nbsp;</a>
+                                    <a class="gwds_tsina" style="margin:-1px 3px 0px 3px; background:url(/sca/xhtml/images/public/share.png) no-repeat; background-position:2px 5px !important" title="新浪微博" href="#">&nbsp;</a>
+                                    <span class="gwds_more">&nbsp;</span>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					</div>
+                    <div class="pages_content">                      
+                    	<p>
+<p align="left">现发布GM/T 0126-2023《HTML密码应用置标语法》等25项密码行业标准，自2024年6月1日起实施，具体标准编号及名称如下：</p>
+<p align="left">GM/T 0006-2023&nbsp; 密码应用标识规范</p>
+<p align="left">GM/T 0009-2023&nbsp; SM2密码算法使用规范</p>
+<p align="left">GM/T 0010-2023&nbsp; SM2密码算法加密签名消息语法规范</p>
+<p align="left">GM/T 0011-2023&nbsp; 可信计算 可信密码支撑平台功能与接口规范</p>
+<p align="left">GM/T 0014-2023&nbsp; 数字证书认证系统密码协议规范</p>
+<p align="left">GM/T 0015-2023&nbsp; 数字证书格式</p>
+<p align="left">GM/T 0016-2023&nbsp; 智能密码钥匙密码应用接口规范</p>
+<p align="left">GM/T 0017-2023&nbsp; 智能密码钥匙密码应用接口数据格式规范</p>
+<p align="left">GM/T 0018-2023&nbsp; 密码设备应用接口规范</p>
+<p align="left">GM/T 0019-2023&nbsp; 通用密码服务接口规范</p>
+<p align="left">GM/T 0020-2023&nbsp; 证书应用综合服务接口规范</p>
+<p align="left">GM/T 0021-2023&nbsp; 动态口令密码应用技术规范</p>
+<p align="left">GM/T 0022-2023&nbsp; IPSec VPN技术规范</p>
+<p align="left">GM/T 0023-2023&nbsp; IPSec VPN网关产品规范</p>
+<p align="left">GM/T 0024-2023&nbsp; SSL VPN技术规范</p>
+<p align="left">GM/T 0025-2023&nbsp; SSL VPN网关产品规范</p>
+<p align="left">GM/T 0026-2023&nbsp; 安全认证网关产品规范</p>
+<p align="left">GM/T 0033-2023&nbsp; 时间戳接口规范</p>
+<p align="left">GM/T 0126-2023&nbsp; HTML密码应用置标语法</p>
+<p align="left">GM/T 0127-2023&nbsp; 移动终端密码模块应用接口规范</p>
+<p align="left">GM/T 0128-2023&nbsp; 数据报传输层密码协议规范</p>
+<p align="left">GM/T 0129-2023&nbsp; SSH密码协议规范</p>
+<p align="left">GM/T 0130-2023&nbsp; 基于SM2算法的无证书及隐式证书公钥机制</p>
+<p align="left">GM/T 0131-2023&nbsp; 电子签章应用接口规范</p>
+<p align="left">GM/T 0132-2023&nbsp; 信息系统密码应用实施指南</p>
+<p align="left">&nbsp;</p>
+<p align="left">以下18项密码行业标准自2024年6月1日起予以废止：</p>
+<p align="left">GM/T
+0006-2012&nbsp; 密码应用标识规范</p>
+<p align="left">GM/T
+0009-2012&nbsp; SM2密码算法使用规范</p>
+<p align="left">GM/T
+0010-2012&nbsp; SM2密码算法加密签名消息语法规范</p>
+<p align="left">GM/T
+0011-2012&nbsp; 可信计算 可信密码支撑平台功能与接口规范</p>
+<p align="left">GM/T
+0014-2012&nbsp; 数字证书认证系统密码协议规范</p>
+<p align="left">GM/T
+0015-2012&nbsp; 基于SM2密码算法的数字证书格式规范</p>
+<p align="left">GM/T
+0016-2012&nbsp; 智能密码钥匙密码应用接口规范</p>
+<p align="left">GM/T
+0017-2012&nbsp; 智能密码钥匙密码应用接口数据格式规范</p>
+<p align="left">GM/T
+0018-2012&nbsp; 密码设备应用接口规范</p>
+<p align="left">GM/T
+0019-2012&nbsp; 通用密码服务接口规范</p>
+<p align="left">GM/T
+0020-2012&nbsp; 证书应用综合服务接口规范</p>
+<p align="left">GM/T
+0021-2012&nbsp; 动态口令密码应用技术规范</p>
+<p align="left">GM/T
+0022-2014&nbsp; IPSec VPN技术规范</p>
+<p align="left">GM/T
+0023-2014&nbsp; IPSec VPN网关产品规范</p>
+<p align="left">GM/T
+0024-2014&nbsp; SSL VPN技术规范</p>
+<p align="left">GM/T
+0025-2014&nbsp; SSL VPN网关产品规范</p>
+<p align="left">GM/T
+0026-2014&nbsp; 安全认证网关产品规范</p>
+<p align="left">GM/T
+0033-2014&nbsp; 时间戳接口规范</p>
+<p align="left">&nbsp;</p>
+<p style="text-align: right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+国家密码管理局</p>
+<p style="text-align: right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;2023年12月4日</p>
+<p>&nbsp;</p>
+<br>
+</p>
+                        <div class="h20"></div>
+                       <div class="editor">责任编辑：<span></span></div>
+                      
+                    </div>
+					<!--相关稿件-->
+      				<div class="xg-list">
+                        <div class="pannel-title">相关稿件</div>
+                        <ul class="list01">
+
+                        </ul>
+      				</div>
+      				<!--相关稿件-->
+    			</div>
+            </div>
+        </div>
+    </div>
+    <!--公共尾 start-->
+    <div class="footer">
+    	<div class="footer_con">
+        	<div class="footer_lf fl">
+                <div class="fl footer_sb"><a href="http://bszs.conac.cn/sitename?method=show&id=48744EFE94E4777AE053022819ACFCEA" target="_blank"><img id="imgConac" vspace="0" hspace="0" border="0" src="/sca/xhtml/images/public/red_error.png" data-bd-imgshare-binded="1"></a>
+                <!--<script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='http://dcs.conac.cn/js/33/000/0000/41583534/CA330000000415835340001.js' type='text/javascript'%3E%3C/script%3E"));</script>--></div>
+                <div class="footer_lf2 fl"> 
+                  <span><a href="/sca/index.shtml" target="_blank">国家密码管理局</a></span><span>|</span><span><a href="/sca/c100041/column_common.shtml" target="_blank">关于本网</a></span><span>|</span><span><a href="/sca/c100044/column_common.shtml" target="_blank">网站声明</a></span><span>|</span><span><a href="/sca/c100043/column_wzdt.shtml" target="_blank">网站地图</a></span><span>|</span><span><a href="/sca/c100042/column_common.shtml" target="_blank">联系我们</a></span>
+                  <div class="footer_txt">
+                     <!-- <p>主办单位：中华人民共和国国家密码管理局</p>
+                      <p>版权所有：国家密码管理局　　<a href="https://beian.miit.gov.cn" target="_blank">京ICP备05046844号-2</a></p>-->
+                    <p>版权所有：国家密码管理局  地址：北京市丰台区靛厂路7号  邮编：100036</p>
+<p><a href="https://beian.miit.gov.cn" target="_blank">京ICP备05046844号-2</a>  <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11040102700137" target="_blank"><img src="/sca/xhtml/images/public/gah.png">京公网安备11040102700137号</a></p>
+                    
+                  </div>
+            
+                </div>
+              </div>
+              <div class="footer_rf fr">
+                <div class="fl foot_ewm"><a href="/sca/c100047/weixin_download.shtml" target="_blank"><img src="/sca/xhtml/images/public/footer_ewm_gzh.png" width="59" height="60"><p class="foot_wx_bt">微信公众号</p></a></div>
+                <div class="fl foot_ewm"><a href="/sca/home/download.shtml" target="_blank"><img src="/sca/xhtml/images/public/footer_ewm_khd.jpg" width="59" height="60"><p class="foot_wx_bt">下载客户端</p></a></div>
+              </div>
+         </div>
+         <div class="footer_phone" style="text-align:center"><!--<span><a href="">电脑版</a></span>|--><span><a href="">国家密码局客户端</a></span></div>
+    </div>
+<!--<script language="JavaScript">var _trackDataType = "web";var _trackData = _trackData || [];</script><script type="text/javascript" charset="utf-8" id="kpyfx_js_id_10000102" src="//fxsjcj.kaipuyun.cn/count/10000102/10000102.js"></script>-->
+<script language="JavaScript">var _trackDataType = "web";var _trackData = _trackData || [];</script><script type="text/javascript" charset="utf-8" id="kpyfx_js_id_10007895" src="//fxsjcj.kaipuyun.cn/count/10007895/10007895.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/sca/xhtml/js/wlink.js"></script>
+<script language="javascript">
+var _yfxkpy_trackdata = _yfxkpy_trackdata || [];	     //事件采集
+var _yfxkpy_website = "10007895";			        //站点编号（请勿随意更改）
+(function() {
+    var yfxjs = document.createElement("script");
+    yfxjs.charset = "utf-8";
+    yfxjs.src = "//fxsjcj.kaipuyun.cn/count/10007895/10007895.js";
+    var yfxjs_t = document.getElementsByTagName("script")[0];
+    yfxjs_t.parentNode.insertBefore(yfxjs, yfxjs_t);
+})();
+</script>
+    <!--公共尾 end-->    
+    <script type="text/javascript" src="/sca/xhtml/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/sca/xhtml/js/article_pub.js"></script>
+    <script type="text/javascript" src="/sca/xhtml/js/gwdshare.min.js"></script>
+     <script type="text/javascript">
+        $(function(){
+			var zrbj=$.trim($(".editor span").text());
+			if(zrbj == null || zrbj == ""){							
+			$(".editor").hide();
+	}							
+		});                       
+  </script>
+</body>
+</html>

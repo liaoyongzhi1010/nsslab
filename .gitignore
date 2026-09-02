@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.vite/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+*.db
+uploads/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+.DS_Store
+.env.container

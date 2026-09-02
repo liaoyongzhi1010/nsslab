@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google" content="notranslate">
+    <meta http-equiv="content-language" content="zh-Hans">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    
+        <title>
+    百度与飞腾 区块链一体机联合解决方案-数字飞腾门户
+</title>
+    
+    <!--[if lt IE 9]>
+    <script src="/static/js/html5shiv.min-3.7.3.js"></script>
+    <script src="/static/js/respond-1.4.2.min.js"></script>
+    <![endif]-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?939324ed362773bce3b97f3a3d4efe16";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3365fc76d6fefc5f7b5ade5623d22f44";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="/static/css/bootstrap-3.4.1.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select-1.12.4.min.css">
+    <link rel="stylesheet" href="/static/css/local_site.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/static/css/fileinput.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/sweet-alert.css">
+    <link rel="stylesheet" href="/static/css/ie9.css">
+    
+    <style>
+        @media screen and (max-width: 768px) {
+            .info-text {
+                font-size: x-small !important;
+            }
+        }
+
+        .ant-drawer {
+            z-index: 1002;
+        }
+
+        .navbar-header {
+            float: left;
+        }
+
+        .collapse.navbar-collapse {
+            float: left;
+            width: calc(100% - 190px);
+            min-width: 560px;
+        }
+
+        .no-records-found p {
+            color: #999 !important;
+        }
+        #_ft_global-alert-container>.alert.alert-dismissible {
+            max-width: unset;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button
+					type="button"
+					class="navbar-toggle collapsed"
+					data-toggle="collapse"
+					data-target="#navbar"
+					aria-expanded="false"
+					aria-controls="navbar"
+			>
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/homepage/index/">
+				<img class="logo" style="width: auto; height: 50px;" src="/static/img/homepage/logo.png">
+			</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navigation" style="float: none;">
+				
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产品 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu CPU">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>CPU系列</h4>
+                            <a href="/homepage/production/list/0"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高性能服务器CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/18">飞腾腾云S5000C-E</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/13">飞腾腾云S5000C</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/4">飞腾腾云S2500</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/3">FT-2000+/64</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/2">FT-1500A/16</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/production/list/1"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高效能桌面CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/16">飞腾腾锐D3000M</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/15">飞腾腾锐D3000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/1">飞腾腾锐D2000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/6">FT-2000/4</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/5">FT-1500A/4</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/production/list/2"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>高端嵌入式 CPU</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/12">飞腾腾珑E2000</a></li>
+                        
+                            <li><a class=" " href="/homepage/production/9">FT-2000A/2</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu suit">
+                        <h4>套片</h4>
+                            <a href="/homepage/production/list/3"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾套片</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/production/11">X100</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu ihv">
+                        <h4>伙伴产品</h4>
+                            <a href="/ihv_product/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>制造商产品</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu ihv">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/phytium_pie/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾派</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">生态 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu ecology">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu system">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>飞腾生态体系</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/interest/">飞腾生态伙伴计划</a></li>
+                        
+                            <li><a class=" " href="/eco/partner/">飞腾生态伙伴</a></li>
+                        
+                            <li><a class=" " href="/eco/pengteng/">鹏腾生态伙伴计划</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu authenticate">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>认证</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/hardware/hardware/list">硬件适配列表</a></li>
+                        
+                            <li><a class=" " href="/product/">软件适配认证</a></li>
+                        
+                            <li><a class=" " href="/partner/self/">联合认证</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>产业创新</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/empowerment_center/">生态服务中心</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu service">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>服务</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/eco/ecological_home/">生态家园</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">方案 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu program">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu joint_solutions">
+                        <h4>&nbsp;</h4>
+                            <a href="/solution/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>联合解决方案</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/solution/industry/36/">党政</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/3/">电信</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/4/">金融</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/9/">电力</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/17/">能源</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/5/">交通</a></li>
+                        
+                            <li><a class=" " href="/solution/industry/16/">教育</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu selected_solutions">
+                        <h4>&nbsp;</h4>
+                            <a href="/lab/selected_solutions/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>精选解决方案</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">支持 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu support">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>开案一站式平台</h4>
+                            <a href="https://serviceplus.phytium.com.cn"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>技术支持平台</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/technicalSupport">项目支持</a></li>
+                        
+                            <li><a class=" " href="/quality_appeal/appeal_list/">质量申诉</a></li>
+                        
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/knowledgeBase/kbList?action=more&type=0">知识库</a></li>
+                        
+                            <li><a class=" " href="https://serviceplus.phytium.com.cn/portal/contactUS">联系我们</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu software_developer">
+                        <h4>&nbsp;</h4>
+                            <a href="/developer/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>开发者平台</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/developer/suite_home/">应用使能套件</a></li>
+                        
+                            <li><a class=" " href="/developer/repository/">软件仓库</a></li>
+                        
+                            <li><a class=" " href="/developer/support/">软件支持</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/quality/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>质量可靠性</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu homepage_download">
+                        <h4>&nbsp;</h4>
+                            <a href="#"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>下载</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/homepage/download/">资料下载</a></li>
+                        
+                            <li><a class="software-download" href="/developer/suite/">软件下载</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu second">
+                        <h4>&nbsp;</h4>
+                            <a href="/lab/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>开放实验室</p></a>
+                                <ul>
+                                
+                            <li><a class=" " href="/lab/my_apply/">适配资源申请</a></li>
+                        
+                            <li><a class=" " href="#">5G通信</a></li>
+                        
+                            <li><a class=" " href="#">智能计算</a></li>
+                        
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu second">
+                        <h4>&nbsp;</h4>
+                            <a href="/workOrder/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>服务工单</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赋能 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu training">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>赋能首页</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/course/explore"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>在线学习</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/article"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>赋能动态</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="https://edu.phytium.com.cn/query/certificate"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>证书查询</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">新闻 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu news">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/news/list"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>企业新闻</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/media/report"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>媒体报道</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/marketingmanagement/index/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>市场活动</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于 <span class="caret"></span></a>
+                <ul class="dropdown-menu production-menu about-us">
+                    <li>
+                        <div class="row">
+                            
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/about_us"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>公司简介</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/honor"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>荣誉历程</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/recruitment/"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>人才招聘</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                    <div class="col-xs-6 col-md-4 col-lg-4 menu None">
+                        <h4>&nbsp;</h4>
+                            <a href="/homepage/connection"><p><span class="glyphicon glyphicon-chevron-right animate__slideInLeft animate__delay-2s"></span>联系我们</p></a>
+                                <ul>
+                                
+                                </ul>
+                    </div>
+                
+                        </div>
+                    </li>
+                </ul>
+            </li>              
+        
+				<li>
+					<span class="english"></span>
+					<span class="icon_search"></span>
+				</li>
+				<li class="dropdown user-center" style="float: right;">
+
+				
+					<a style="font-weight: bold;" href="/en/index/" class="login-btn">EN</a>
+					<a href="/login/?next=" class="login-btn">登录</a>
+					<a style="border-radius: 10px;" href="/register/?next=" class="reg-btn">注册</a>
+				
+
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<link href="/static/css/homepage/public.css" rel="stylesheet"/>
+<link href="/static/css/homepage/theme.css" rel="stylesheet"/>
+<link href="/static/css/homepage/style.css?v=1722394022917" rel="stylesheet"/>
+<link href="/static/css/homepage/slider-pro.css" rel="stylesheet"/>
+<script>
+
+</script>
+
+<div class="banner">
+	<img src="/static/img/banner-solution.jpg">
+	<h3>飞腾行业联合解决方案</h3>
+</div>
+<ol class="breadcrumb">
+	<li><a href="/">主页</a></li>
+	<li><a href="/solution/">解决方案</a></li>
+	
+	<li class="active">方案详情</li>
+</ol>
+
+<div class="container" style="margin-top: 20px;" id="cont">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+            
+            <div class="all-content">
+                <div class="col-xs-12 col-sm-12">
+                    
+
+<style>
+
+    #title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    #info {
+        width: 90%;
+        text-align: center;
+        background: #FDFFF7;
+        color: #555;
+        padding: 5px 5px;
+        border: 1px solid #EDEDED;
+        box-shadow: 2px 2px 0 #ededed;
+        margin-left: 5%;
+    }
+
+    .ckeditor_img {
+        font-size: 18px;
+        line-height: 150%;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+
+    #company_info > p {
+        font-size: 18px !important;
+        line-height: 150%;
+        margin: 0;
+    }
+
+    .ckeditor_img img {
+        /*width: auto !important;*/
+        height: auto !important;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .ckeditor_img div table {
+        max-width: 95% !important;
+        height: auto;
+    }
+
+    .cpu_div {
+        display: -webkit-flex; /* Safari */
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 10px 10px;
+    }
+
+    .cpu_div > div > p {
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+    }
+
+    @media screen and (max-width: 768px) {
+        .cpu_div > div > p {
+            font-size: 50% !important;
+        }
+    }
+</style>
+
+<div class="row" id="title">
+    <div class="col-xs-12">
+        <h1>百度与飞腾 区块链一体机联合解决方案</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" id="info">
+        <ul style="list-style: none;">
+            <li>
+                <p><img src="/static/img/flag.svg" alt="Bootstrap" width="16" height="16">
+                    <b>行业:</b> 金融</p>
+            </li>
+            <li>
+                <p><img src="/static/img/tags.svg" alt="Bootstrap" width="16" height="16">
+                    <b>技术:</b> 区块链</p>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 style="color: #761c19">行业痛点:</h2>
+        <div class="ckeditor_img">
+            <p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随着区块链技术的发展，人们越来越认识到区块链的优越性。由于区块链技术不可篡改、可追溯等特性，针对现实世界复杂的应用场景，不仅能够满足其商业逻辑的需求，而且安全性得到提高，所以社会各行业都大力推行区块链技术的发展。这为社区管理、医疗、金融、文化、农业、知识产权等各行业信任问题和数据安全提供了新的技术支撑。但是区块链也是不完美的，它存在着一些问题。区块链是极度依赖算法的技术，复杂的计算极度消耗机器的性能；区块链的账户一旦被窃取或者丢失，那么就等于对应账户所有的资产被窃取和丢失；区块链上的数据是公开透明的，但是很多场景下要求数据是隐私且不可篡改的；区块链智能合约如果设计不合理可能还会导致被攻击。</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;百度采用区块链节点和物理设备相结合的方式，与飞腾一起构建了区块链一体机解决方案。客户需要搭建区块链网络时可以直接采买一体机，这样省去了部署运维的成本。同时，利用国产的软硬件帮助用户大幅度提升区块链网络性能，同时极大的提供节点的安全性，还可以解决敏感数据上链的隐私保护问题。</span></span></span></span></p>
+        </div>
+    </div>
+</div>
+<HR width="100%" color=#987cb9 SIZE=10>
+
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 style="color: #761c19">方案详情:</h2>
+        <div class="ckeditor_img">
+            <p style="text-align:justify"><span style="font-size:10.5pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:10.5000pt"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑"><span style="font-size:18px">&nbsp;&nbsp;&nbsp;&nbsp;目前一体机的核心</span></span><span style="font-size:18px"><span style="font-family:Times New Roman,Times,serif">CPU</span><span style="font-family:微软雅黑">芯片为飞腾</span><span style="font-family:Times New Roman,Times,serif">FT</span></span></span><span style="font-size:18px"><span style="font-family:'Times New Roman'">-</span><span style="font-family:微软雅黑"><span style="font-family:Times New Roman,Times,serif">2</span></span></span></span><span style="font-size:18px"><span style="font-family:'Times New Roman'">000/4</span><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">、</span><span style="font-family:Times New Roman,Times,serif">D</span></span><span style="font-family:'Times New Roman'">2000</span><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">、</span><span style="font-family:Times New Roman,Times,serif">S</span></span><span style="font-family:'Times New Roman'">2500, </span><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">能够运行</span><span style="font-family:Times New Roman,Times,serif">TEE</span><span style="font-family:微软雅黑">的环境， 并且具备专用安全硬件加速电路；</span> <span style="font-family:微软雅黑">在硬件基础至上，运行经过硬件适配的区块链节点。</span></span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;飞腾</span><span style="font-family:Times New Roman,Times,serif">CPU</span><span style="font-family:微软雅黑">在硬件和基础软件上支持了</span><span style="font-family:Times New Roman,Times,serif">TEE</span><span style="font-family:微软雅黑">和</span><span style="font-family:Times New Roman,Times,serif">SE</span><span style="font-family:微软雅黑">，其应用架构如图所示：</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><img src="/media/ckeditor/2021/06/04/image-20210604115136-1.jpg" style="height:458px; width:554px" /></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;飞腾在处理器层次引入了两个不同权限的保护域&mdash;&mdash;安全世界和普通世界，任何时刻处理器仅在其中的一个环境内运行；当处理器处于普通世界时无法访问安全世界的内存、缓存以及其他外围安全硬件设备。</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;运行在一体机上的区块链节点是基于百度超级链</span><span style="font-family:Times New Roman,Times,serif">XuperChain</span><span style="font-family:微软雅黑">的进行升级改造的。</span><span style="font-family:Times New Roman,Times,serif">XuperChain</span><span style="font-family:微软雅黑">的主要架构如下</span></span><span style="font-family:'Times New Roman'">:</span></span></span></p>
+
+<p style="text-align:left"><span style="font-size:18px"><img src="/media/ckeditor/2021/06/04/image-20210604115136-2.jpg" style="height:311px; width:554px" /></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;其主要特点是高性能，通过原创的</span><span style="font-family:Times New Roman,Times,serif">XuperModel</span><span style="font-family:微软雅黑">模型，真正实现了智能合约的并行执行和验证，通过自研的</span><span style="font-family:Times New Roman,Times,serif">WASM</span><span style="font-family:微软雅黑">虚拟机，做到了指令集级别的极致优化。</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;在架构方面，其可插拔、插件化的设计使得用户可以方便选择适合自己业务场景的解决方案，通过独有的</span><span style="font-family:Times New Roman,Times,serif">XuperBridge</span><span style="font-family:微软雅黑">技术，可插拔多语言虚拟机，从而支持丰富的合约开发语言。</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;在网络能力方面，</span><span style="font-family:Times New Roman,Times,serif">XuperChain</span><span style="font-family:微软雅黑">具备全球化部署能力，节点通信基于安全的</span><span style="font-family:Times New Roman,Times,serif">P2P</span><span style="font-family:微软雅黑">网络，支持广域网超大规模节点，且底层账本支持分叉管理，自动收敛一致性，</span><span style="font-family:Times New Roman,Times,serif">TDPOS</span><span style="font-family:微软雅黑">算法确保了大规模节点下的快速共识。在账号安全方面，</span><span style="font-family:Times New Roman,Times,serif">XuperChain</span><span style="font-family:微软雅黑">内置了多私钥保护的账号体系，支持权重累计、集合运算等灵活的策略。</span></span></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;运行在一体机之上的</span><span style="font-family:Times New Roman,Times,serif">XuperChain</span><span style="font-family:微软雅黑">是对包括共识、智能合约、账本等模块进行了定制改造， 在交易校验、隐私合约执行、账本安全读写等环节通过在正常的环境下调用可信计算区的可信应用，保证只在可信计算区使用密钥和处理数据，增强区块链节点的安全性。并且使用硬件的安全加速电路以及改造对应的数据处理环节，提高整体的性能。</span></span></span></span></p>
+
+<p style="text-align:center"><span style="font-size:18px"><img src="/media/ckeditor/2021/06/04/image-20210604115136-3.jpg" style="height:298px; width:458px" /></span></p>
+
+<h2 style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="color:#c00000"><span style="font-family:微软雅黑"><span style="color:#c00000"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;方案实施效果:</span></span></span></span></span></span></h2>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;区块链一体机可以实现即买即用的区块链服务，使用一体机主要是达到如下几个目的</span></span><span style="font-family:'Times New Roman'">:</span></span></span></p>
+
+<ol>
+	<li><strong><span style="font-size:18px"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">高安全：</span></span></span></strong></li>
+</ol>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;主要是指算法安全和网络安全。隐私安全是指我们的隐私被保存在安全存储硬件上，并且使用硬件安全手段去防护，无法通过入侵来获取隐私。我们使用专用安全硬件加速电路来运行算法保障安全，同时使用硬件随机数抵御差分攻击。网络安全是指我们使用一体机的解决方案，实现设备之间传输的隐私协商，保障传输隐私的安全。</span></span></span></span></p>
+
+<ol start="2">
+	<li><strong><span style="font-size:18px"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">强隐私</span></span></span></strong></li>
+</ol>
+
+<p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;主要是指合约的隐私，我们使用</span></span><span style="font-family:'Times New Roman'">TEE</span><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">来进行合约存储的处理，保证敏感数据的保护和使用授权，保护用户数据的安全和隐私。</span></span></span></span></p>
+
+<ol start="3">
+	<li><strong><span style="font-size:18px"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">高性能</span></span></span></strong></li>
+</ol>
+
+<p style="text-align:justify"><span style="font-size:10.5pt"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-size:18px"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;使用硬件安全电路来提高计算</span><span style="font-family:Times New Roman,Times,serif">hash</span><span style="font-family:微软雅黑">和安全保证</span></span></span><span style="font-size:10.5000pt"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑"><span style="font-size:18px">的性能。可以通过可信的硬件改造对应的区块处理流程，减少交易校验的过程</span>。</span></span></span></span></span></p>
+        </div>
+    </div>
+</div>
+<HR width="100%" color=#987cb9 SIZE=10>
+
+
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 style="color: #761c19">成功案例:</h2>
+        <div class="ckeditor_img">
+            <p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;百度牵头组建了超级联盟网络，是基于区块链一体机搭建了区块链基础服务网络。它为用户提供区块链应用快速部署和运行的环境，无需建链即可运用区块链技术，并且通过提供丰富的合约模板和强大的功能组件，降低用户使用区块链的门槛；超级联盟节点分布在全国，面向社会开放的节点接入，具备极强的公信力；具备计算和存储等资源的弹性付费能力，可以实现按需按量灵活计费。</span></span></span></span></p>
+        </div>
+    </div>
+</div>
+<HR width="100%" color=#987cb9 SIZE=10>
+
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 style="color: #761c19">相关产品:</h2>
+        <div class="ckeditor_img">
+            <p style="text-align:justify"><span style="font-size:18px"><span style="font-family:&quot;Times New Roman&quot;"><span style="font-family:微软雅黑"><span style="font-family:微软雅黑">&nbsp;&nbsp;&nbsp;&nbsp;百度超级链。</span></span></span></span></p>
+        </div>
+    </div>
+</div>
+<HR width="100%" color=#987cb9 SIZE=10>
+
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 cpu">
+        <h2 style="color: #761c19">支持CPU平台:</h2>
+        
+        
+        <div class="col-xs-3 col-md-2 cpu_div">
+            <div style="text-align: center;">
+                <img src="/media/page/cpu/2022/06/28/1-飞腾腾锐D2000-正面.png">
+                <p>飞腾腾锐D2000</p>
+            </div>
+        </div>
+        
+        
+        
+        <div class="col-xs-3 col-md-2 cpu_div">
+            <div style="text-align: center;">
+                <img src="/media/page/cpu/2022/06/28/S2500-正面.png">
+                <p>飞腾腾云S2500</p>
+            </div>
+        </div>
+        
+        
+        
+        <div class="col-xs-3 col-md-2 cpu_div">
+            <div style="text-align: center;">
+                <img src="/media/page/cpu/2022/06/28/1-FT-2000-4-正面.png">
+                <p>FT-2000/4</p>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+<HR width="100%" color=#987cb9 SIZE=10>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 style="color: #761c19">伙伴信息:</h2>
+    </div>
+</div>
+
+<div class="row">
+    
+    
+    <div class="col-xs-4 col-xs-offset-1 col-md-3 col-md-offset-1" style="margin-bottom: 10px">
+        <img src="/media/RGB01_41648.jpg" height="auto" class="img-responsive">
+    </div>
+    
+    <div class="col-xs-10 col-xs-offset-1">
+        <div>
+            <b style="font-size: large">北京百度网讯科技有限公司</b><br>
+            
+            <a href="http://cloud.baidu.com" style="font-size: 18px;margin:0;line-height: 150%">http://cloud.baidu.com</a>
+            
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1" id="company_info">
+        <p><p>百度是拥有强大互联网基础的领先AI公司。是全球为数不多的提供AI芯片、软件架构和应用程序等全栈AI技术的公司之一，被国际机构评为全球四大AI公司之一。百度以&ldquo;用科技让复杂的世界更简单&rdquo;为使命，坚持技术创新，致力于&ldquo;成为最懂用户，并能帮助人们成长的全球顶级高科技公司&rdquo;。</p>
+
+<p>百度公司2000年1月1日创立于中关村，创始人李彦宏拥有&ldquo;超链分析&rdquo;技术专利，也使中国成为美国、俄罗斯、和韩国之外，全球仅有的4个拥有搜索引擎核心技术的国家之一。百度每天响应来自100余个国家和地区的数十亿次搜索请求，是网民获取中文信息和服务的最主要入口，服务10亿互联网用户。</p>
+
+<p>基于搜索引擎，百度演化出语音、图像、知识图谱、自然语言处理等人工智能技术；最近10年，百度在深度学习、对话式人工智能操作系统、自动驾驶、AI芯片等前沿领域投资，使得百度成为一个拥有强大互联网基础的领先AI公司。</p></p>
+    </div>
+    
+</div>
+
+<!--  -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+<footer>
+	<div class="foo_container">
+		<div class="foo_con1 clearfix">
+			<div class="row">
+				<p class="gft"><img src="/static/img/homepage/gft.png"/></p>
+			</div>
+			<div class="row">
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/connection/">销售联系</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/product/">生态适配</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/developer/">开发者平台</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/ihv_product/index/">合作产品</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/recruitment/">人才招聘</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/university_enterprise_cooperation/">校企合作</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/homepage/connection/">联系我们</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/static/用户服务协议.pdf" target="_blank">用户服务协议</a></div>
+				<div class="footer-tips col-xs-4 col-md-2 col-lg-2"><a href="/static/隐私政策.pdf" target="_blank">隐私政策</a></div>
+			</div>
+		</div>
+		<div class="foo_con2">
+			<ul class="add_list row">
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="天津市滨海新区海缘路信息安全产业园5号楼 电话：022-59080100">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon1.png"></span>
+					<span class="add_span1" data-toggle="tooltip" data-placement="right">天津总公司</span> <i class="add_line"></i>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="北京市海淀区知春路27号量子芯座8层 电话：010-62001812">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon2.png"></span>
+					<span class="add_span1 company" >北京子公司</span> <i class="add_line"></i>
+				</li>
+				
+				<li class="clearfix col-xs-6 address"  data-toggle="tooltip" data-placement="right" title="长沙市开福区东风路街道芙蓉中路一段303号富兴·世界金融中心T2栋22层 电话：0731-84930100">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon3.png"></span>
+					<span class="add_span1 company">长沙子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="right" title="广东省广州市黄埔区联和街道 开泰大道266号归谷科技园C3栋2001号 电话：020-31801507">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon4.png"></span>
+					<span class="add_span1 company">广州子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="成都市高新区天府大道北段1777号7栋1单元25层2501号">
+					<span class="add_icon" ><img src="/static/img/homepage/a1_1.png"></span>
+					<span class="add_span1 company">成都子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="深圳市宝安区新安街道海旺社区宝兴路88号星通大厦1801">
+					<span class="add_icon"><img src="/static/img/homepage/f_icon6.png" style="max-height:90px" /></span>
+					<span class="add_span1 company">深圳子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="上海市浦东新区郭守敬路 498 号西侧 1 号楼 2 层">
+					<span class="add_icon"><img src="/static/img/homepage/shanghai.png"></span>
+					<span class="add_span1 company">上海子公司</span> <i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+				
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="陕西省西安市高新区团结南路 11 号中晶科技广场 A 座 19 层 AB 单元">
+					<span class="add_icon" style="padding-top: 11px;"><img src="/static/img/homepage/xian.png"></span>
+					<span class="add_span1 company">西安子公司</span><i class="add_line"></i>
+					<div class="remark"></div>
+				</li>
+
+				<li class="clearfix col-xs-6 address" data-toggle="tooltip" data-placement="left" title="江苏省南京市建邺区永初路 8 号 T4 栋 1311 室">
+					<span class="add_icon" style="padding-top: 11px;"><img src="/static/img/homepage/nanjing.png"></span>
+					<span class="add_span1 company">南京子公司</span>
+					<div class="remark"></div>
+				</li>
+			
+			</ul>
+		</div>
+		
+		<p class="footer-share">
+			<span class="footer-logo"><a><img src="/static/img/homepage/logo.png" style="height: 30px; margin-top:10px" /> </a></span>
+			<span class="share-icon" style="float: right">
+				<a class="weixin">
+					<img class="qrcode" src="/static/img/homepage/qrcode.png">
+				</a>
+				<a href="https://weibo.com/u/7589331641" class="weibo"></a>
+				<a href="https://www.toutiao.com/c/user/token/MS4wLjABAAAAjCRlkglCvxbgW8gkQHxSnaoe3Egph4EuQ9kOkp62L6I/?" class="toutiao"></a>
+				<a href="https://www.zhihu.com/org/phytiumfei-teng" class="zhihu"></a>
+				<a href="https://space.bilibili.com/1920123999" class="bilibi"></a>
+			</span>
+		</p>
+		<p class="banquan">本网站由基于飞腾腾云S2500的服务器提供算力支撑</p>
+		<p class="gft"><img src="/static/img/homepage/s2500.png" style="height: 100px;"/></p>
+		<p class="banquan">2024©飞腾信息技术有限公司
+			<a class="link" href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2022010272号-2</a>&nbsp;&nbsp;&nbsp;
+			<a class="link" target="_blank">内容使用授权声明</a>
+		</p>
+	</div>
+	
+</footer>
+
+<script src="/static/js/jquery-1.12.4.min.js"></script>
+<!--<script src="/static/js/popper.min.js"></script>-->
+<script src="/static/js/bootstrap-3.4.1.min.js"></script>
+<script src="/static/js/bootstrap-select-1.12.4.min.js"></script>
+<script src="/static/js/bootstrap-table.min.js"></script>
+<script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="/static/js/piexif.min.js"></script>
+<!--[if gte IE 9]>
+<script src="/static/js/sortable.min.js"></script>
+<![endif]-->
+<script src="/static/js/fileinput.min.js"></script>
+<script src="/static/js/zh.js"></script>
+
+<script src="/static/js/common.js"></script>
+
+<!--低版本的sweet适配ie8-->
+<script src="/static/js/sweet-alert.min.js"></script>
+
+<script src="/static/js/template-web.js"></script>
+
+<!--[if lte IE 9]>
+<script src="/static/js/polyfill.min.js"></script>
+<script src="/static/js/homepage/index.js"></script>
+<![endif]-->
+
+<script>
+    $('body').on('click', '.to-be-developed', function (e) {
+        e.preventDefault();
+        swal({
+            title: ' ',
+            text: "此版块正在开发中，敬请期待",
+            buttons: '',
+            timer: 1000
+        })
+    })
+    if ($('[data-toggle="tooltip"]').tooltip().length > 0) {
+        $('[data-toggle="tooltip"]').tooltip()
+    }
+
+    $(document).ready(function () {
+        $('body').on('click', '.software-download', function () {
+            window.localStorage.removeItem('repository_key')
+        })
+    })
+
+    $.ajaxSetup({
+        statusCode: {
+            429: function(error) {
+                // 处理返回码为 429 的情况，直接略过不做任何处理
+                sweetAlert({
+                    title: "",
+                    text: error.responseJSON.statusText,
+                    type: "success",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    html: false
+                },function(){
+                    window.location.reload();
+                });
+            }
+        }
+    });
+
+    // 全局消息提示，用法showFtAlert('消息内容', 'danger', 4000)
+    (function() {
+        function ensureContainer() {
+            if ($('#_ft_global-alert-container').length === 0) {
+                $('body').append(
+                '<div id="_ft_global-alert-container" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:1050;"></div>'
+                );
+            }
+        }
+      
+        window.showFtAlert = function(message, type='success', duration=3000) {
+          ensureContainer();
+          var id = 'alert-' + Date.now() + Math.random().toString(36).substr(2,5);
+          var html = 
+            '<div id="'+id+'" class="alert alert-'+type+' alert-dismissible fade in" role="alert" style="min-width:250px;margin-bottom:10px;">'
+            + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+            +   '<span aria-hidden="true">&times;</span>'
+            + '</button>'
+            + message
+            + '</div>';
+          $('#_ft_global-alert-container').append(html);
+      
+          setTimeout(function() {
+            $('#' + id).alert('close');
+          }, duration);
+        }
+    })();
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#nav_btn_solution").addClass("active");
+
+        // 以高度为标准
+        // var partner_title_height = $('#partner_title').height();
+        // $('#partner_pic').css("height", partner_title_height);
+
+        // $('.cpu_div img').addClass('img-responsive');
+        var cpu = $('.cpu_div').width();
+        $('.cpu_div img').css('width', cpu);
+
+        var win_width = $(window).width()
+        if (win_width < 768) {
+            $('#info ul').css('margin', '0 auto');
+            $('#info ul').css('text-align', 'left');
+            $('#info ul').css('padding', '0');
+            $('#info ul p').css('margin', '5px');
+        } else {
+            $('#info ul').css('display', 'inline-flex');
+            $('#info ul').css('margin', '0');
+            $('#info ul').css('padding', '0');
+            $('#info ul p').css('margin', '5px');
+        }
+    });
+</script>
+
+
+</body>
+</html>

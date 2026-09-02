@@ -1,0 +1,85 @@
+name: cryptolab
+
+services:
+  database:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cryptolab}
+      POSTGRES_USER: ${POSTGRES_USER:-cryptolab}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cryptolab-local-change-me}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-cryptolab}:${POSTGRES_PASSWORD:-cryptolab-local-change-me}@database:5432/${POSTGRES_DB:-cryptolab}
+      DATABASE_AUTO_CREATE: "false"
+      UPLOAD_DIR: /data/uploads
+      REGISTRATION_ENABLED: ${REGISTRATION_ENABLED:-true}
+      SESSION_TTL_HOURS: ${SESSION_TTL_HOURS:-12}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+      AUTH_ADMIN_USERNAME: ${AUTH_ADMIN_USERNAME:-}
+      AUTH_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-}
+      AUTH_ADMIN_DISPLAY_NAME: ${AUTH_ADMIN_DISPLAY_NAME:-平台管理员}
+      AUTH_STUDENT_USERNAME: ${AUTH_STUDENT_USERNAME:-}
+      AUTH_STUDENT_PASSWORD: ${AUTH_STUDENT_PASSWORD:-}
+      AUTH_STUDENT_DISPLAY_NAME: ${AUTH_STUDENT_DISPLAY_NAME:-实验学生}
+      # 当前服务保留少量进程内实验编排缓存，正式改造成无状态服务前固定单 worker。
+      WEB_CONCURRENCY: "1"
+    volumes:
+      - uploads_data:/data/uploads
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "${PLATFORM_PORT:-8080}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  postgres_data:
+  uploads_data:
