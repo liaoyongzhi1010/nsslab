@@ -666,6 +666,128 @@ class PlatformService:
                 start = max(end - overlap, start + 1)
         return chunks
 
+    def _resolve_documents(
+        self, project_id: str, document_ids: list[str]
+    ) -> list[dict[str, Any]]:
+        project = self.get_project(project_id)
+        available = {doc["id"]: doc for doc in PRESET_DOCUMENTS}
+        available.update(project.get("documents", {}))
+        documents = [
+            available[document_id]
+            for document_id in document_ids
+            if document_id in available
+        ]
+        if not documents:
+            raise ValueError("至少选择一份有效文档")
+        return documents
+
+    def kb_parse(self, project_id: str, document_ids: list[str]) -> dict[str, Any]:
+        """实验步骤：解析。把每份原始资料读成结构化文本，暴露格式、字数与标题树。"""
+        self._require_current_project(self.get_project(project_id))
+        started = time.perf_counter()
+        documents = self._resolve_documents(project_id, document_ids)
+        parsed: list[dict[str, Any]] = []
+        for document in documents:
+            content = document["content"].strip()
+            headings = [
+                line.removeprefix("#").strip()
+                for line in content.splitlines()
+                if line.startswith("#")
+            ]
+            preview = content[:280] + ("…" if len(content) > 280 else "")
+            parsed.append(
+                {
+                    "id": document["id"],
+                    "title": document["title"],
+                    "filename": document["filename"],
+                    "file_kind": document.get("file_kind", "markdown"),
+                    "format": document.get("parsed_format", "Markdown"),
+                    "accent": document["accent"],
+                    "chars": len(content),
+                    "tokens": estimate_tokens(content),
+                    "headings": headings,
+                    "section_count": max(len(headings), 1),
+                    "language": document.get("language"),
+                    "pages": document.get("pages"),
+                    "source_type": document.get(
+                        "source_type",
+                        "用户上传"
+                        if document.get("source") == "upload"
+                        else "课程知识包",
+                    ),
+                    "preview": preview,
+                }
+            )
+        elapsed = round((time.perf_counter() - started) * 1000, 2)
+        return {
+            "document_count": len(parsed),
+            "total_chars": sum(row["chars"] for row in parsed),
+            "total_sections": sum(row["section_count"] for row in parsed),
+            "latency_ms": elapsed,
+            "documents": parsed,
+        }
+
+    def kb_chunk(
+        self, project_id: str, document_ids: list[str], chunk_size: int, overlap: int
+    ) -> dict[str, Any]:
+        """实验步骤：切分。把解析后的文本按参数切成 Chunk，观察长度分布与切分边界。"""
+        self._require_current_project(self.get_project(project_id))
+        started = time.perf_counter()
+        documents = self._resolve_documents(project_id, document_ids)
+        chunks = [
+            chunk
+            for doc in documents
+            for chunk in self._split_document(doc, chunk_size, overlap)
+        ]
+        elapsed = round((time.perf_counter() - started) * 1000, 2)
+        public_chunks = [self._public_chunk(chunk) for chunk in chunks]
+        char_values = [row["chars"] for row in public_chunks] or [0]
+        return {
+            "chunk_size": chunk_size,
+            "overlap": overlap,
+            "chunk_count": len(public_chunks),
+            "avg_chars": round(sum(char_values) / len(char_values), 1),
+            "min_chars": min(char_values),
+            "max_chars": max(char_values),
+            "avg_tokens": round(
+                sum(row["tokens"] for row in public_chunks)
+                / max(len(public_chunks), 1),
+                1,
+            ),
+            "latency_ms": elapsed,
+            "chunks": public_chunks,
+        }
+
+    def kb_embed(
+        self, project_id: str, document_ids: list[str], chunk_size: int, overlap: int
+    ) -> dict[str, Any]:
+        """实验步骤：向量化。对切好的 Chunk 逐条生成向量，展示真实维度与向量预览。"""
+        self._require_current_project(self.get_project(project_id))
+        started = time.perf_counter()
+        documents = self._resolve_documents(project_id, document_ids)
+        chunks = [
+            chunk
+            for doc in documents
+            for chunk in self._split_document(doc, chunk_size, overlap)
+        ]
+        vectors = self.embedding.embed([chunk["text"] for chunk in chunks])
+        elapsed = round((time.perf_counter() - started) * 1000, 2)
+        embedded = []
+        for chunk, vector in zip(chunks, vectors):
+            item = self._public_chunk(chunk)
+            item["embedding_preview"] = [round(value, 4) for value in vector[:8]]
+            item["vector_norm"] = round(
+                math.sqrt(sum(value * value for value in vector)), 4
+            )
+            embedded.append(item)
+        return {
+            "model": self.embedding.name,
+            "dimension": self.embedding.dimension,
+            "chunk_count": len(embedded),
+            "latency_ms": elapsed,
+            "chunks": embedded,
+        }
+
     @synchronized
     def build_kb(
         self,
@@ -821,6 +943,81 @@ class PlatformService:
         if top_k >= 12 or threshold < 0:
             return "当前配置会引入较多弱相关片段，Context 噪声和冲突风险上升。"
         return "检索规模与阈值处于教学建议区间；仍应逐条核查片段是否真正回答问题。"
+
+    def rag_embed_query(self, project_id: str, query: str) -> dict[str, Any]:
+        """RAG 步骤：把问题编码成向量，让它与知识库片段处于同一语义空间。"""
+        project = self.get_project(project_id)
+        if not project["kb"]:
+            raise ValueError("请先构建知识库")
+        started = time.perf_counter()
+        vector = self.embedding.embed([query])[0]
+        return {
+            "query": query,
+            "model": self.embedding.name,
+            "dimension": self.embedding.dimension,
+            "preview": [round(value, 4) for value in vector[:8]],
+            "vector_norm": round(math.sqrt(sum(value * value for value in vector)), 4),
+            "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+        }
+
+    def rag_rerank(
+        self,
+        project_id: str,
+        query: str,
+        items: list[dict[str, Any]],
+        rerank_enabled: bool,
+        rerank_top_n: int,
+    ) -> dict[str, Any]:
+        """RAG 步骤：对检索候选做交叉重排，把最贴题的证据顶到前面。"""
+        self.get_project(project_id)
+        started = time.perf_counter()
+        before = [dict(item) for item in items]
+        if rerank_enabled:
+            after = self.reranker.rerank(query, before)
+        else:
+            after = [dict(item, rerank_score=item.get("score", 0.0)) for item in before]
+        after = after[:rerank_top_n]
+        moved = [item["id"] for item in before[:rerank_top_n]] != [
+            item["id"] for item in after
+        ]
+        return {
+            "enabled": rerank_enabled,
+            "provider": self.reranker.name,
+            "before": [item["id"] for item in before],
+            "after": [item["id"] for item in after],
+            "items": after,
+            "reordered": bool(rerank_enabled and moved),
+            "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+        }
+
+    def rag_build_context(
+        self,
+        project_id: str,
+        query: str,
+        items: list[dict[str, Any]],
+        max_context_tokens: int,
+    ) -> dict[str, Any]:
+        """RAG 步骤：在 token 预算内装配上下文，决定哪些证据真正进入提示词。"""
+        self.get_project(project_id)
+        started = time.perf_counter()
+        context: list[dict[str, Any]] = []
+        dropped: list[dict[str, Any]] = []
+        used_tokens = 0
+        for item in items:
+            tokens = int(item.get("tokens", 0))
+            if used_tokens + tokens > max_context_tokens and context:
+                dropped.append(item)
+                continue
+            context.append(item)
+            used_tokens += tokens
+        return {
+            "items": context,
+            "dropped": dropped,
+            "tokens": used_tokens,
+            "max_tokens": max_context_tokens,
+            "utilization": round(used_tokens / max(max_context_tokens, 1), 3),
+            "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+        }
 
     @synchronized
     def rag_compare(self, request: Any) -> dict[str, Any]:

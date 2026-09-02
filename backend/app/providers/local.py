@@ -31,9 +31,9 @@ def tokenize(text: str) -> list[str]:
 
 
 class LocalEmbeddingProvider(EmbeddingProvider):
-    """适合离线教学演示的确定性特征哈希向量。"""
+    """零配置、可复现的确定性特征哈希向量。"""
 
-    name = "CryptoHash-128（离线教学）"
+    name = "CryptoHash-128 · 确定性向量"
     dimension = 128
 
     def embed(self, texts: list[str]) -> list[list[float]]:
@@ -58,11 +58,19 @@ class LocalRerankProvider(RerankProvider):
         query_terms = set(tokenize(query))
         reranked: list[dict[str, Any]] = []
         for item in items:
-            candidate_terms = set(tokenize(f"{item['document_title']} {item['section']} {item['text']}"))
+            candidate_terms = set(
+                tokenize(f"{item['document_title']} {item['section']} {item['text']}")
+            )
             overlap = len(query_terms & candidate_terms) / max(len(query_terms), 1)
-            title_bonus = 0.08 if any(term in item["document_title"].lower() for term in query_terms) else 0
+            title_bonus = (
+                0.08
+                if any(term in item["document_title"].lower() for term in query_terms)
+                else 0
+            )
             enriched = dict(item)
-            enriched["rerank_score"] = round(item["score"] * 0.66 + overlap * 0.34 + title_bonus, 4)
+            enriched["rerank_score"] = round(
+                item["score"] * 0.66 + overlap * 0.34 + title_bonus, 4
+            )
             reranked.append(enriched)
         return sorted(reranked, key=lambda row: row["rerank_score"], reverse=True)
 
@@ -74,7 +82,9 @@ class LocalLLMProvider(LLMProvider):
     is_remote = False
     last_provider_name = name
 
-    def generate(self, prompt: str, *, context: list[dict[str, Any]] | None = None) -> str:
+    def generate(
+        self, prompt: str, *, context: list[dict[str, Any]] | None = None
+    ) -> str:
         question = prompt.lower()
         grounded = bool(context)
         if "crypto-2026-04" in question or "海岚医疗" in prompt:
@@ -85,14 +95,20 @@ class LocalLLMProvider(LLMProvider):
                 "身份签名采用 **ML-DSA-65**。事件处置要求在 **72 小时**内轮换 **KMS-7B** 批次的 KEK，验证证据标记为 **ORCHID-9**；"
                 "兼容性回滚最多允许 **30 分钟受控回滚**，之后必须恢复混合握手或停服，不能静默降级。该机构及规则均为教学虚构。"
             )
-        if "fips 203" in question and "ml-kem-768" in question and any(term in question for term in ["字节", "尺寸", "封装密钥"]):
+        if (
+            "fips 203" in question
+            and "ml-kem-768" in question
+            and any(term in question for term in ["字节", "尺寸", "封装密钥"])
+        ):
             if not grounded:
                 return "ML-KEM-768 是后量子密钥封装参数集，但精确密钥与密文尺寸应查询当前 FIPS 203 原文，不能仅凭模型记忆作合规判断。"
             return (
                 "FIPS 203 Table 3 给出的 ML-KEM-768 尺寸为：**封装密钥 1184 字节、解封装密钥 2400 字节、密文 1088 字节、共享秘密 32 字节**。"
                 "它是 KEM，用来建立共享秘密，再由对称密码保护业务数据；不用于直接加密大文件。"
             )
-        if "cnsa 2.0" in question and all(year in question for year in ["2027", "2030", "2031"]):
+        if "cnsa 2.0" in question and all(
+            year in question for year in ["2027", "2030", "2031"]
+        ):
             if not grounded:
                 return "CNSA 2.0 涉及后量子算法与分阶段迁移，但精确参数、日期和适用系统应以指定版本的 NSA 文件为准。"
             return (
@@ -118,7 +134,9 @@ class LocalLLMProvider(LLMProvider):
                 "这是 NIST IR 8547 **初始公开草案**的拟议时间线：约 **112-bit** 的量子脆弱算法在 **2030** 年后拟弃用、**2035** 年后拟禁用；"
                 "**128-bit** 或以上的量子脆弱公钥算法在 **2035** 年后拟禁用。至少 128-bit 经典安全强度的批准**对称**原语仍可**继续**获批，因此不能说 AES 都要淘汰。"
             )
-        if "第45号公告" in prompt and all(term in question for term in ["0009", "0010", "0011", "0132"]):
+        if "第45号公告" in prompt and all(
+            term in question for term in ["0009", "0010", "0011", "0132"]
+        ):
             if not grounded:
                 return "这些密码行业标准存在新版实施和旧版废止关系。仅凭模型记忆无法可靠确认具体批次、日期和完整名称，应查询国家密码管理局公告。"
             return (
@@ -136,7 +154,9 @@ class LocalLLMProvider(LLMProvider):
                 "自 **2021 年 10 月 1 日**实施；**GM/T 0115—2021《信息系统密码应用测评要求》**对应测评要求；"
                 "**GM/T 0116—2021《信息系统密码应用测评过程指南》**对应测评过程。0115 与 0116 均自 **2022 年 5 月 1 日**实施。"
             )
-        if "secgear" in question and all(term in question for term in ["host", "edl", "enclave"]):
+        if "secgear" in question and all(
+            term in question for term in ["host", "edl", "enclave"]
+        ):
             if not grounded:
                 return "secGear 通过非安全侧与可信侧拆分应用，并提供跨 TEE 的开发接口；具体证书文件、构建参数和产物路径会随平台与版本变化，需要查阅指定版本开发指南。"
             return (
@@ -154,7 +174,9 @@ class LocalLLMProvider(LLMProvider):
                 "在该架构描述中，普通世界不能访问安全世界的**内存、缓存和外围安全硬件**。这是特定方案和型号的证据，"
                 "**不能外推到所有飞腾平台**，仍需核查具体芯片、固件和软件栈。"
             )
-        if "rsa" in question and any(key in question for key in ["1gb", "大文件", "直接加密"]):
+        if "rsa" in question and any(
+            key in question for key in ["1gb", "大文件", "直接加密"]
+        ):
             if not grounded:
                 return (
                     "RSA 属于非对称加密，计算开销通常高于对称加密，因此一般不直接用来处理大文件。"
@@ -189,7 +211,9 @@ class LocalLLMProvider(LLMProvider):
                 "SM4 使用固定 128 位密钥和 32 轮非平衡 Feistel 型迭代结构。二者应结合合规要求、硬件支持和协议生态选用。"
             )
         if grounded and context:
-            topics = "、".join(dict.fromkeys(item["document_title"] for item in context[:3]))
+            topics = "、".join(
+                dict.fromkeys(item["document_title"] for item in context[:3])
+            )
             return (
                 f"根据知识库中 {topics} 的资料，可先把问题拆为安全假设、性能开销与部署边界三个方面。"
                 "当前检索片段给出了可核查的领域依据；建议优先采用标准化构造，并结合具体威胁模型验证参数与实现。"

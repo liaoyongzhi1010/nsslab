@@ -22,12 +22,17 @@ from fastapi.responses import FileResponse
 from app.schemas import (
     AgentRunRequest,
     KBBuildRequest,
+    KBChunkRequest,
+    KBParseRequest,
     LoginRequest,
     ProjectCreate,
     ProjectScopedRequest,
     ProjectUpdate,
     ProviderUpdateRequest,
+    QueryEmbedRequest,
     RAGRequest,
+    RagContextRequest,
+    RagRerankRequest,
     RegisterRequest,
     ReportExportRequest,
     ReportObservationUpdate,
@@ -347,6 +352,49 @@ async def upload_document(
         await file.close()
 
 
+@app.post("/api/kb/parse")
+def kb_parse(
+    payload: KBParseRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.kb_parse(payload.project_id, payload.document_ids)
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/kb/chunk")
+def kb_chunk(
+    payload: KBChunkRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.kb_chunk(
+            payload.project_id,
+            payload.document_ids,
+            payload.chunk_size,
+            payload.overlap,
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/kb/embed")
+def kb_embed(
+    payload: KBChunkRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.kb_embed(
+            payload.project_id,
+            payload.document_ids,
+            payload.chunk_size,
+            payload.overlap,
+        )
+    except Exception as error:
+        handle_error(error)
+
+
 @app.post("/api/kb/build")
 def build_kb(
     payload: KBBuildRequest, user: Annotated[dict[str, Any], Depends(current_user)]
@@ -385,6 +433,50 @@ def rag_compare(
     try:
         authorize_project(payload.project_id, user)
         return platform_service.rag_compare(payload)
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/rag/embed-query")
+def rag_embed_query(
+    payload: QueryEmbedRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.rag_embed_query(payload.project_id, payload.query)
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/rag/rerank")
+def rag_rerank(
+    payload: RagRerankRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.rag_rerank(
+            payload.project_id,
+            payload.query,
+            [item.model_dump() for item in payload.items],
+            payload.rerank_enabled,
+            payload.rerank_top_n,
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/rag/context")
+def rag_context(
+    payload: RagContextRequest, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.rag_build_context(
+            payload.project_id,
+            payload.query,
+            [item.model_dump() for item in payload.items],
+            payload.max_context_tokens,
+        )
     except Exception as error:
         handle_error(error)
 

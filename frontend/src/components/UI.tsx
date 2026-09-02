@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Check, CircleAlert, LoaderCircle } from "lucide-react";
+import { Check, CircleAlert, Lock, LoaderCircle } from "lucide-react";
 
 export function Pill({ children, tone = "neutral" }: { children: ReactNode; tone?: "neutral" | "mint" | "blue" | "amber" | "red" }) {
   return <span className={`pill pill-${tone}`}>{children}</span>;
@@ -25,6 +25,81 @@ export function Flow({ steps, active = steps.length - 1 }: { steps: string[]; ac
           {index < steps.length - 1 && <i />}
         </div>
       ))}
+    </div>
+  );
+}
+
+export interface StepMeta {
+  title: string;
+  caption?: string;
+}
+
+export function Stepper({
+  steps,
+  current,
+  furthest,
+  onSelect,
+}: {
+  steps: StepMeta[];
+  current: number;
+  furthest: number;
+  onSelect: (index: number) => void;
+}) {
+  return (
+    <div className="stepper" role="tablist" aria-label="实验步骤导航">
+      {steps.map((step, index) => {
+        const done = index < furthest;
+        const isCurrent = index === current;
+        const unlocked = index <= furthest;
+        const state = isCurrent ? "current" : done ? "done" : unlocked ? "ready" : "locked";
+        return (
+          <button
+            key={step.title}
+            type="button"
+            role="tab"
+            aria-selected={isCurrent}
+            aria-current={isCurrent ? "step" : undefined}
+            disabled={!unlocked}
+            className={`step-node is-${state}`}
+            onClick={() => unlocked && onSelect(index)}
+          >
+            <span className="step-node-index">
+              {done ? <Check size={15} /> : state === "locked" ? <Lock size={13} /> : index + 1}
+            </span>
+            <span className="step-node-copy">
+              <strong>{step.title}</strong>
+              {step.caption && <small>{step.caption}</small>}
+            </span>
+            {index < steps.length - 1 && <i className="step-node-link" aria-hidden="true" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export function StepNav({
+  onBack,
+  onNext,
+  backLabel = "上一步",
+  nextLabel = "下一步",
+  backDisabled,
+  nextDisabled,
+  nextHint,
+}: {
+  onBack?: () => void;
+  onNext?: () => void;
+  backLabel?: string;
+  nextLabel?: string;
+  backDisabled?: boolean;
+  nextDisabled?: boolean;
+  nextHint?: string;
+}) {
+  return (
+    <div className="step-nav">
+      <button type="button" className="btn ghost" onClick={onBack} disabled={backDisabled || !onBack}>{backLabel}</button>
+      {nextHint && <span className="step-nav-hint">{nextHint}</span>}
+      <button type="button" className="btn primary" onClick={onNext} disabled={nextDisabled || !onNext}>{nextLabel}</button>
     </div>
   );
 }

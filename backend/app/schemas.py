@@ -60,18 +60,29 @@ class UserCreate(BaseModel):
     role: Literal["student", "admin"] = "student"
 
 
-class KBBuildRequest(BaseModel):
+class KBParseRequest(BaseModel):
     project_id: str
     document_ids: list[str] = Field(min_length=1)
+
+
+class KBChunkRequest(KBParseRequest):
     chunk_size: int = Field(default=512, ge=128, le=1024)
     overlap: int = Field(default=64, ge=0, le=256)
-    embedding_model: str = "CryptoHash-128（离线教学）"
 
     @model_validator(mode="after")
     def overlap_less_than_size(self):
         if self.overlap >= self.chunk_size:
             raise ValueError("overlap 必须小于 chunk_size")
         return self
+
+
+class KBBuildRequest(KBChunkRequest):
+    embedding_model: str = "CryptoHash-128 · 确定性向量"
+
+
+class QueryEmbedRequest(BaseModel):
+    project_id: str
+    query: str = Field(min_length=2, max_length=1000)
 
 
 class SearchRequest(BaseModel):
@@ -87,6 +98,33 @@ class RAGRequest(SearchRequest):
     rerank_top_n: int = Field(default=3, ge=1, le=10)
     max_context_tokens: int = Field(default=1600, ge=200, le=8000)
     prompt_template: str = "严谨教学"
+
+
+class RagRetrievedItem(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
+    id: str
+    document_id: str
+    document_title: str
+    section: str
+    text: str
+    tokens: int = 0
+    score: float = 0.0
+
+
+class RagRerankRequest(BaseModel):
+    project_id: str
+    query: str = Field(min_length=2, max_length=1000)
+    items: list[RagRetrievedItem] = Field(min_length=1)
+    rerank_enabled: bool = True
+    rerank_top_n: int = Field(default=3, ge=1, le=10)
+
+
+class RagContextRequest(BaseModel):
+    project_id: str
+    query: str = Field(min_length=2, max_length=1000)
+    items: list[RagRetrievedItem] = Field(min_length=1)
+    max_context_tokens: int = Field(default=1600, ge=200, le=8000)
 
 
 class SkillUpdate(BaseModel):
