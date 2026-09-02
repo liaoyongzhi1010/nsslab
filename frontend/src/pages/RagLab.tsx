@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { MarkdownAnswer } from "../components/MarkdownAnswer";
 import { EmptyState, Metric, Pill, StepNav, Stepper, type StepMeta } from "../components/UI";
+import { AdminExamView } from "../components/AdminExamView";
 import { useApp } from "../context/AppContext";
 import type { Dict } from "../types";
 
@@ -20,7 +21,7 @@ const steps: StepMeta[] = [
 ];
 
 export function RagLab() {
-  const { bootstrap, project, ragRun, setRagRun, refreshProject } = useApp();
+  const { bootstrap, project, ragRun, setRagRun, refreshProject, user } = useApp();
   const navigate = useNavigate();
   const benchmarks = bootstrap?.rag_benchmarks?.length ? bootstrap.rag_benchmarks : fallbackBenchmarks;
   const [step, setStep] = useState(0);
@@ -62,6 +63,8 @@ export function RagLab() {
   }, [query, embedResult, retrieveResult, rerankResult, contextResult, ragRun]);
 
   useEffect(() => { if (step > completed) setStep(completed); }, [completed, step]);
+
+  if (user?.role === "admin") return <AdminExamView expId="06" tag="实验 06 · 知识工程" title={<>用证据看见<span>RAG 增益</span></>} intro="逐阶段亲手运行 RAG 流水线：问题向量化 → 检索 → 重排 → 组装上下文 → 让 Base LLM 与 Crypto-RAG 同题对比。每一步都是独立小实验。" />;
 
   if (!project?.stats.knowledge_base) return <RagGate />;
 

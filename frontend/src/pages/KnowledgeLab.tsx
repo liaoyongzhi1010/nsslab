@@ -3,6 +3,7 @@ import { ArrowRight, Box, Check, Code2, Database, Download, ExternalLink, FileCo
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, Metric, Pill, StepNav, Stepper, type StepMeta } from "../components/UI";
+import { AdminExamView } from "../components/AdminExamView";
 import { useApp } from "../context/AppContext";
 import type { Dict } from "../types";
 
@@ -20,7 +21,7 @@ const steps: StepMeta[] = [
 ];
 
 export function KnowledgeLab() {
-  const { bootstrap, project, kb, setKb, refreshProject } = useApp();
+  const { bootstrap, project, kb, setKb, refreshProject, user } = useApp();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<string[]>(defaultDocumentIds);
@@ -73,6 +74,8 @@ export function KnowledgeLab() {
   }, [selected.length, parseResult, chunkResult, embedResult, kb]);
 
   useEffect(() => { if (step > completed) setStep(completed); }, [completed, step]);
+
+  if (user?.role === "admin") return <AdminExamView expId="05" tag="实验 05 · 知识工程" title={<>从密码学资料到<span>向量知识库</span></>} intro="把文档加工为可检索知识。每一步都是一个独立小实验：先看清这一步做什么，再亲手运行、观察它真实的中间产物。" />;
 
   if (!project) return <ProjectGate />;
 

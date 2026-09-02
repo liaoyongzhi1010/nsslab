@@ -75,7 +75,7 @@ export function Layout() {
   const navigate = useNavigate();
   const groups = user?.role === "admin"
     ? baseGroups.map((group) => group.label === "RESOURCES"
-        ? { ...group, items: [...group.items, { to: "/admin/grading", label: "成绩管理", icon: ClipboardCheck } as NavItem] }
+        ? { ...group, items: [...group.items.filter((item) => item.to !== "/report"), { to: "/admin/grading", label: "成绩管理", icon: ClipboardCheck } as NavItem] }
         : group)
     : baseGroups;
   const [theme, setTheme] = useState<"dark" | "light">(() => document.documentElement.dataset.theme === "light" ? "light" : "dark");

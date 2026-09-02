@@ -1,13 +1,17 @@
 import { ShieldCheck } from "lucide-react";
 import { Flow, Pill } from "../components/UI";
+import { AdminExamView } from "../components/AdminExamView";
 import { useApp } from "../context/AppContext";
 
 export function ToolLab() {
-  const { bootstrap } = useApp();
+  const { bootstrap, user } = useApp();
+  const title = <>工具调用：<span>会推理 vs 会执行</span></>;
+  const intro = "同一道密码学计算题，对比大模型“无工具调用”与“调用安全工具精确计算”的差异，直观看到工具为智能体带来的可靠执行能力。";
+  if (user?.role === "admin") return <AdminExamView expId="08" tag="实验 08 · Harness" title={title} intro={intro} />;
 
   return <div className="lab-page tool-page">
     <div className="page-title">
-      <div><Pill tone="blue">实验 08 · Harness</Pill><h1>工具调用：<span>会推理 vs 会执行</span></h1><p>同一道密码学计算题，对比大模型“无工具调用”与“调用安全工具精确计算”的差异，直观看到工具为智能体带来的可靠执行能力。</p></div>
+      <div><Pill tone="blue">实验 08 · Harness</Pill><h1>{title}</h1><p>{intro}</p></div>
       <div className="page-title-badges"><Pill tone="blue">{bootstrap?.providers?.llm_status?.model || "DeepSeek"}</Pill><Pill tone="mint"><ShieldCheck size={13} /> 白名单安全工具</Pill></div>
     </div>
 

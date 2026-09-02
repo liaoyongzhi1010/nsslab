@@ -1038,5 +1038,27 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .grading-result-overall p { margin: 0; color: var(--muted); font-size: calc(12px * var(--font-scale)); line-height: 1.6; }
 .grading-result-pending { color: var(--faint); font-size: calc(13px * var(--font-scale)); }
 
+/* Admin exam view: objectives + rubric */
+.objectives-panel { margin-bottom: 16px; padding: 22px 24px; }
+.objectives-head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 16px; }
+.objectives-head > svg { flex: none; margin-top: 2px; color: var(--mint); }
+.objectives-head h2 { margin: 0 0 4px; font-size: calc(16px * var(--font-scale)); }
+.objectives-head p { margin: 0; color: #728490; font-size: calc(12px * var(--font-scale)); line-height: 1.6; }
+.objectives-list { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: obj; }
+.objectives-list li { display: flex; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); border-left: 3px solid color-mix(in srgb, var(--mint) 55%, var(--line)); border-radius: 8px; background: rgba(255,255,255,.012); }
+.objectives-list li > span { display: grid; width: 24px; height: 24px; flex: none; place-items: center; border: 1px solid color-mix(in srgb, var(--mint) 40%, var(--line)); border-radius: 50%; color: var(--mint); font: 600 12px "IBM Plex Mono"; }
+.objectives-list li > p { margin: 2px 0 0; color: #b3c1c7; font-size: calc(13px * var(--font-scale)); line-height: 1.6; }
+.rubric-panel { margin-bottom: 16px; overflow: hidden; }
+.rubric-panel-head { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 22px; border: 0; background: transparent; color: var(--text); cursor: pointer; text-align: left; }
+.rubric-panel-title { display: flex; align-items: center; gap: 9px; color: var(--text); }
+.rubric-panel-title svg { color: var(--amber); }
+.rubric-panel-title strong { font-size: calc(14px * var(--font-scale)); }
+.rubric-panel-title small { color: #5d7078; font: 500 10px "IBM Plex Mono"; }
+.rubric-panel-total { padding: 4px 12px; border: 1px solid var(--line-light); border-radius: 20px; font: 600 12px "IBM Plex Mono"; }
+.rubric-panel-total.ok { border-color: #2c5a4d; color: var(--mint); background: color-mix(in srgb, var(--mint) 10%, transparent); }
+.rubric-panel-total.warn { border-color: color-mix(in srgb, var(--amber) 40%, var(--line)); color: var(--amber); }
+.rubric-panel-body { padding: 4px 22px 22px; border-top: 1px solid var(--line); }
+.rubric-panel-hint { margin: 14px 0 16px; color: #728490; font-size: calc(12px * var(--font-scale)); line-height: 1.6; }
+
 
 
