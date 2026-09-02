@@ -49,6 +49,37 @@ class LLMSettings:
 
 
 @dataclass(frozen=True)
+class VLMSettings:
+    provider: str
+    provider_name: str
+    base_url: str
+    model: str
+    api_key: str
+    timeout_seconds: float
+    temperature: float
+    max_tokens: int
+
+    @property
+    def remote_configured(self) -> bool:
+        return self.provider == "openai_compatible" and bool(
+            self.api_key and self.base_url and self.model
+        )
+
+    @classmethod
+    def from_env(cls) -> "VLMSettings":
+        return cls(
+            provider=os.getenv("VLM_PROVIDER", "local").strip().lower(),
+            provider_name=os.getenv("VLM_PROVIDER_NAME", "OpenAI Compatible").strip(),
+            base_url=os.getenv("VLM_BASE_URL", "").strip().rstrip("/"),
+            model=os.getenv("VLM_MODEL", "").strip(),
+            api_key=os.getenv("VLM_API_KEY", "").strip(),
+            timeout_seconds=float(os.getenv("VLM_TIMEOUT_SECONDS", "120")),
+            temperature=float(os.getenv("VLM_TEMPERATURE", "0.1")),
+            max_tokens=int(os.getenv("VLM_MAX_TOKENS", "2000")),
+        )
+
+
+@dataclass(frozen=True)
 class AppSettings:
     environment: str
     database_url: str

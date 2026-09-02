@@ -203,3 +203,15 @@ class AuthService:
                 )
             )
             return self.public_user(user) if user else None
+
+    def display_names_by_ids(self, user_ids: list[str]) -> dict[str, str]:
+        unique = [uid for uid in dict.fromkeys(user_ids) if uid]
+        if not unique:
+            return {}
+        with self.repository.Session() as session:
+            rows = session.execute(
+                select(UserRecord.id, UserRecord.display_name).where(
+                    UserRecord.id.in_(unique)
+                )
+            ).all()
+            return {row[0]: row[1] for row in rows}

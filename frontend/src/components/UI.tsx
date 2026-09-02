@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Check, CircleAlert, Lock, LoaderCircle } from "lucide-react";
+import { Check, ChevronRight, CircleAlert, Lock, LoaderCircle } from "lucide-react";
 
 export function Pill({ children, tone = "neutral" }: { children: ReactNode; tone?: "neutral" | "mint" | "blue" | "amber" | "red" }) {
   return <span className={`pill pill-${tone}`}>{children}</span>;
@@ -53,25 +53,26 @@ export function Stepper({
         const unlocked = index <= furthest;
         const state = isCurrent ? "current" : done ? "done" : unlocked ? "ready" : "locked";
         return (
-          <button
-            key={step.title}
-            type="button"
-            role="tab"
-            aria-selected={isCurrent}
-            aria-current={isCurrent ? "step" : undefined}
-            disabled={!unlocked}
-            className={`step-node is-${state}`}
-            onClick={() => unlocked && onSelect(index)}
-          >
-            <span className="step-node-index">
-              {done ? <Check size={15} /> : state === "locked" ? <Lock size={13} /> : index + 1}
-            </span>
-            <span className="step-node-copy">
-              <strong>{step.title}</strong>
-              {step.caption && <small>{step.caption}</small>}
-            </span>
-            {index < steps.length - 1 && <i className="step-node-link" aria-hidden="true" />}
-          </button>
+          <div className="step-node-wrap" key={step.title}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={isCurrent}
+              aria-current={isCurrent ? "step" : undefined}
+              disabled={!unlocked}
+              className={`step-node is-${state}`}
+              onClick={() => unlocked && onSelect(index)}
+            >
+              <span className="step-node-index">
+                {done ? <Check size={15} /> : state === "locked" ? <Lock size={13} /> : index + 1}
+              </span>
+              <span className="step-node-copy">
+                <strong>{step.title}</strong>
+                {step.caption && <small>{step.caption}</small>}
+              </span>
+            </button>
+            {index < steps.length - 1 && <ChevronRight className="step-node-sep" size={16} aria-hidden="true" />}
+          </div>
         );
       })}
     </div>

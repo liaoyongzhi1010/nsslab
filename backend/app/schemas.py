@@ -182,3 +182,43 @@ class ReportObservationUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     html: str = Field(default="", max_length=50_000)
+
+
+class RubricItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str | None = Field(default=None, max_length=40)
+    description: str = Field(min_length=1, max_length=400)
+    points: float = Field(ge=0, le=100)
+
+
+class RubricUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    items: list[RubricItem] = Field(default_factory=list, max_length=50)
+    scoring_prompt: str = Field(default="", max_length=4000)
+
+
+class VLMProviderUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    api_key: str = Field(min_length=1, max_length=512)
+    base_url: str = Field(min_length=4, max_length=512)
+    model: str = Field(min_length=1, max_length=128)
+    provider_name: str | None = Field(default=None, max_length=64)
+
+
+class GradingOverrideItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    rubric_item_id: str = Field(min_length=1, max_length=40)
+    score: float = Field(ge=0, le=100)
+    comment: str = Field(default="", max_length=2000)
+
+
+class GradingOverrideRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    items: list[GradingOverrideItem] = Field(default_factory=list, max_length=50)
+    overall_comment: str | None = Field(default=None, max_length=4000)
+    total: float | None = Field(default=None, ge=0, le=100)

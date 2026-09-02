@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, Download, ExternalLink, FileText, FlaskConical, ListChecks, LoaderCircle, Trash2, UploadCloud } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, Download, ExternalLink, FileText, FlaskConical, ListChecks, LoaderCircle, Trash2, UploadCloud } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
 import { LoadingBlock, Pill } from "../components/UI";
@@ -38,6 +38,7 @@ export function ExperimentReportPage() {
   const objectives = (report.objectives || []) as string[];
   const ab = (report.ab || {}) as Dict;
   const pdf = report.report_pdf as Dict | null;
+  const grading = report.grading as Dict | null;
 
   const downloadTemplate = () => {
     const tpl = `\\documentclass[11pt]{article}\n\\usepackage{ctex}\n\\usepackage{geometry}\n\\geometry{margin=2.5cm}\n\\usepackage{graphicx}\n\\usepackage{amsmath,amssymb}\n\\usepackage{booktabs}\n\\usepackage{hyperref}\n\n\\title{实验${expId}·${report.title || report.label}\\\\实验报告}\n\\author{姓名 \\quad 学号}\n\\date{\\today}\n\n\\begin{document}\n\\maketitle\n\n\\section{实验目的}\n简述本实验的对照假设（有该能力 vs 没该能力），以及你希望验证的问题。\n\n\\section{实验方法与设置}\n描述对照组(OFF：${ab.off || ""})与实验组(ON：${ab.on || ""})的配置、数据与参数。\n\n\\section{实验过程与结果}\n记录你在平台上的操作、运行得到的对照结果与关键指标，可配图表。\n\n\\section{结果分析}\n分析指标变化的原因，该能力带来的真实增益与边界。\n\n\\section{结论与思考}\n总结你的发现、疑问与改进方向。\n\n\\end{document}\n`;
@@ -112,5 +113,25 @@ export function ExperimentReportPage() {
         <input ref={fileRef} type="file" accept="application/pdf,.pdf" hidden onChange={(e) => onPickFile(e.target.files?.[0])} />
       </div>
     </section>
+
+    {grading && <section className="panel exp-grading">
+      <div className="panel-head"><div><h2><ClipboardCheck size={18} /> 成绩</h2><p>老师依据评分细则对本次报告的评分。</p></div>
+        {grading.status === "graded"
+          ? <Pill tone="mint">总分 {grading.total} / {grading.max_total ?? "—"}{grading.overridden ? " · 已复核" : ""}</Pill>
+          : grading.status === "failed"
+            ? <Pill tone="red">评分失败</Pill>
+            : <Pill tone="amber">待评分</Pill>}
+      </div>
+      {grading.status === "graded" ? <>
+        <ul className="grading-result-items">
+          {(grading.items || []).map((it: Dict, i: number) => <li key={i} className="grading-result-row">
+            <div className="grading-result-desc"><span>{i + 1}. {it.description || "评分项"}</span></div>
+            <div className="grading-result-score">{it.score} / {it.max}</div>
+            {it.comment && <p className="grading-result-comment">{it.comment}</p>}
+          </li>)}
+        </ul>
+        {grading.overall_comment && <div className="grading-result-overall"><strong>总体点评</strong><p>{grading.overall_comment}</p></div>}
+      </> : <p className="grading-result-pending">{grading.status === "failed" ? "自动评分未成功，老师稍后会重新评分或人工复核。" : "报告已提交，等待评分。"}</p>}
+    </section>}
   </div>;
 }

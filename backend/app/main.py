@@ -21,6 +21,7 @@ from fastapi.responses import FileResponse
 
 from app.schemas import (
     AgentRunRequest,
+    GradingOverrideRequest,
     KBBuildRequest,
     KBChunkRequest,
     KBParseRequest,
@@ -36,12 +37,14 @@ from app.schemas import (
     RegisterRequest,
     ReportExportRequest,
     ReportObservationUpdate,
+    RubricUpdate,
     SearchRequest,
     SkillUpdate,
     TaskScopedRequest,
     ToolExperimentRequest,
     ToolRunRequest,
     UserCreate,
+    VLMProviderUpdateRequest,
 )
 from app.services.auth import AuthService
 from app.services.platform import platform_service
@@ -243,6 +246,103 @@ def update_provider(
         handle_error(error)
 
 
+@app.get("/api/admin/vlm")
+def vlm_status_endpoint(_: Annotated[dict[str, Any], Depends(require_admin)]):
+    return platform_service.bootstrap()["providers"]["vlm_status"]
+
+
+@app.post("/api/admin/vlm")
+def update_vlm_provider(
+    payload: VLMProviderUpdateRequest,
+    _: Annotated[dict[str, Any], Depends(require_admin)],
+):
+    try:
+        return platform_service.update_vlm_provider(
+            api_key=payload.api_key,
+            base_url=payload.base_url,
+            model=payload.model,
+            provider_name=payload.provider_name,
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.get("/api/admin/rubrics")
+def list_rubrics(_: Annotated[dict[str, Any], Depends(require_admin)]):
+    return platform_service.list_rubrics()
+
+
+@app.get("/api/admin/rubrics/{exp_id}")
+def get_rubric(exp_id: str, _: Annotated[dict[str, Any], Depends(require_admin)]):
+    try:
+        return platform_service.get_rubric(exp_id)
+    except Exception as error:
+        handle_error(error)
+
+
+@app.put("/api/admin/rubrics/{exp_id}")
+def update_rubric(
+    exp_id: str,
+    payload: RubricUpdate,
+    _: Annotated[dict[str, Any], Depends(require_admin)],
+):
+    try:
+        return platform_service.update_rubric(
+            exp_id,
+            [item.model_dump() for item in payload.items],
+            payload.scoring_prompt,
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.get("/api/admin/submissions")
+def list_submissions(_: Annotated[dict[str, Any], Depends(require_admin)]):
+    owner_ids = [
+        project.get("owner_id")
+        for project in platform_service.projects.values()
+        if project.get("owner_id")
+    ]
+    names = auth_service.display_names_by_ids(owner_ids)
+    return platform_service.list_submissions(
+        resolve_display_name=lambda owner_id: names.get(owner_id)
+    )
+
+
+@app.post("/api/admin/submissions/{project_id}/{exp_id}/grade")
+def grade_submission(
+    project_id: str,
+    exp_id: str,
+    user: Annotated[dict[str, Any], Depends(require_admin)],
+):
+    try:
+        return platform_service.grade_submission(
+            project_id, exp_id, graded_by=user["id"]
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.put("/api/admin/submissions/{project_id}/{exp_id}/override")
+def override_grading(
+    project_id: str,
+    exp_id: str,
+    payload: GradingOverrideRequest,
+    user: Annotated[dict[str, Any], Depends(require_admin)],
+):
+    try:
+        return platform_service.override_grading(
+            project_id,
+            exp_id,
+            items=[item.model_dump() for item in payload.items],
+            overall_comment=payload.overall_comment,
+            total=payload.total,
+            graded_by=user["id"],
+        )
+    except Exception as error:
+        handle_error(error)
+
+
 @app.get("/api/projects")
 def list_projects(
     user: Annotated[dict[str, Any], Depends(current_user)], include_ended: bool = False
@@ -350,6 +450,19 @@ async def upload_document(
         handle_error(error)
     finally:
         await file.close()
+
+
+@app.delete("/api/documents/{document_id}")
+def delete_document(
+    document_id: str,
+    payload: ProjectScopedRequest,
+    user: Annotated[dict[str, Any], Depends(current_user)],
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.delete_document(payload.project_id, document_id)
+    except Exception as error:
+        handle_error(error)
 
 
 @app.post("/api/kb/parse")

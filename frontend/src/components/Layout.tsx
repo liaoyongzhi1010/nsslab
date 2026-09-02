@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bot, BrainCircuit, Boxes, Database, FileText, FlaskConical, Gauge, GitCompareArrows, Hexagon, Layers, LibraryBig, ListChecks, LogOut, Moon, Network, Route, Scale, Settings2, Sun, UserRound, Wand2, Wrench } from "lucide-react";
+import { Bot, BrainCircuit, Boxes, ClipboardCheck, Database, FileText, FlaskConical, Gauge, GitCompareArrows, Hexagon, Layers, LibraryBig, ListChecks, LogOut, Moon, Network, Route, Scale, Settings2, Sun, UserRound, Wand2, Wrench } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import { useApp } from "../context/AppContext";
@@ -12,7 +12,7 @@ interface NavItem {
   exact?: boolean;
 }
 
-const groups: Array<{ label: string; tone?: string; items: NavItem[] }> = [
+const baseGroups: Array<{ label: string; tone?: string; items: NavItem[] }> = [
   {
     label: "WORKSPACE",
     items: [
@@ -73,6 +73,11 @@ const fontSizes: Array<{ id: FontSize; label: string; sample: string }> = [
 export function Layout() {
   const { user, project, bootstrap, logout } = useApp();
   const navigate = useNavigate();
+  const groups = user?.role === "admin"
+    ? baseGroups.map((group) => group.label === "RESOURCES"
+        ? { ...group, items: [...group.items, { to: "/admin/grading", label: "成绩管理", icon: ClipboardCheck } as NavItem] }
+        : group)
+    : baseGroups;
   const [theme, setTheme] = useState<"dark" | "light">(() => document.documentElement.dataset.theme === "light" ? "light" : "dark");
   const [fontSize, setFontSize] = useState<FontSize>(() => {
     const saved = document.documentElement.dataset.fontSize;

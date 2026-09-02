@@ -852,6 +852,36 @@ def test_upload_text_and_code_then_build_knowledge_base():
     )
 
 
+def test_delete_uploaded_document_removes_it_and_rejects_presets():
+    project = client.post("/api/projects", json={"name": "删除资料实验"}).json()
+    upload = client.post(
+        "/api/documents/upload",
+        data={"project_id": project["id"]},
+        files={"file": ("temp-notes.txt", "临时上传的密码学笔记。", "text/plain")},
+    )
+    assert upload.status_code == 201
+    document_id = upload.json()["id"]
+    assert any(
+        d["id"] == document_id
+        for d in client.get(f"/api/projects/{project['id']}/documents").json()
+    )
+
+    deleted = client.request(
+        "DELETE", f"/api/documents/{document_id}", json={"project_id": project["id"]}
+    )
+    assert deleted.status_code == 200
+    assert deleted.json()["deleted"] == document_id
+    assert not any(
+        d["id"] == document_id
+        for d in client.get(f"/api/projects/{project['id']}/documents").json()
+    )
+
+    preset = client.request(
+        "DELETE", "/api/documents/aes", json={"project_id": project["id"]}
+    )
+    assert preset.status_code in (400, 404)
+
+
 def test_upload_rejects_unsupported_binary_and_oversize():
     project = client.post("/api/projects", json={"name": "上传安全测试"}).json()
     unsupported = client.post(

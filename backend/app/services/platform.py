@@ -20,11 +20,14 @@ from app.providers import (
     LocalEmbeddingProvider,
     LocalRerankProvider,
     OpenAICompatibleLLMProvider,
+    VLMProvider,
     build_llm_provider,
+    build_vlm_provider,
     provider_status,
+    vlm_status,
 )
 from app.providers.local import tokenize
-from app.config import AppSettings, LLMSettings
+from app.config import AppSettings, LLMSettings, VLMSettings
 from app.evidence_seed import EVIDENCE_PACK_ROOT, RAG_BENCHMARKS
 from app.experiments_seed import (
     AGENT_LOOP_EXPERIMENT,
@@ -101,10 +104,13 @@ class PlatformService:
         self.embedding = LocalEmbeddingProvider()
         self.reranker = LocalRerankProvider()
         self.llm = build_llm_provider()
+        self.vlm = build_vlm_provider()
         self.projects: dict[str, dict[str, Any]] = {}
         self.skills = {skill["id"]: deepcopy(skill) for skill in SKILLS}
         self.tools = {tool["id"]: deepcopy(tool) for tool in TOOLS}
         self.runs: dict[str, list[dict[str, Any]]] = {}
+        self.grading_rubrics: dict[str, dict[str, Any]] = {}
+        self.grading_records: dict[str, dict[str, Any]] = {}
         self.settings = AppSettings.from_env()
         self.repository = StateRepository(self.settings.database_url)
         self.upload_root = self.settings.upload_dir
@@ -115,6 +121,8 @@ class PlatformService:
             self.skills = state.get("skills", self.skills)
             self.tools = state.get("tools", self.tools)
             self.runs = state.get("runs", {})
+            self.grading_rubrics = state.get("grading_rubrics", {})
+            self.grading_records = state.get("grading_records", {})
 
     @synchronized
     def reset(self) -> None:
@@ -124,6 +132,8 @@ class PlatformService:
         self.skills = {skill["id"]: deepcopy(skill) for skill in SKILLS}
         self.tools = {tool["id"]: deepcopy(tool) for tool in TOOLS}
         self.runs = {}
+        self.grading_rubrics = {}
+        self.grading_records = {}
         self.repository.clear_for_tests()
         self._persist()
 
@@ -134,6 +144,8 @@ class PlatformService:
                 "skills": self.skills,
                 "tools": self.tools,
                 "runs": self.runs,
+                "grading_rubrics": self.grading_rubrics,
+                "grading_records": self.grading_records,
             }
         )
 
@@ -173,6 +185,7 @@ class PlatformService:
             "providers": {
                 "llm": self.llm.name,
                 "llm_status": provider_status(self.llm),
+                "vlm_status": vlm_status(self.vlm),
                 "embedding": self.embedding.name,
                 "embedding_dimension": self.embedding.dimension,
                 "rerank": self.reranker.name,
@@ -214,6 +227,38 @@ class PlatformService:
             raise ValueError("请完整填写 API Key、Base URL 和模型名称")
         self.llm = OpenAICompatibleLLMProvider(new_settings)
         return provider_status(self.llm)
+
+    @synchronized
+    def update_vlm_provider(
+        self,
+        *,
+        api_key: str,
+        base_url: str,
+        model: str,
+        provider_name: str | None = None,
+    ) -> dict[str, Any]:
+        """在线切换阅卷视觉大模型 Provider（管理员专用），与学生侧 LLM 相互独立。"""
+        from dataclasses import replace
+
+        base = (
+            self.vlm.settings
+            if isinstance(self.vlm, VLMProvider)
+            else VLMSettings.from_env()
+        )
+        new_settings = replace(
+            base,
+            provider="openai_compatible",
+            provider_name=(
+                provider_name or base.provider_name or "OpenAI Compatible"
+            ).strip(),
+            base_url=base_url.strip().rstrip("/"),
+            model=model.strip(),
+            api_key=api_key.strip(),
+        )
+        if not new_settings.remote_configured:
+            raise ValueError("请完整填写 API Key、Base URL 和模型名称")
+        self.vlm = VLMProvider(new_settings)
+        return vlm_status(self.vlm)
 
     @synchronized
     def ensure_workspace(self, owner_id: str) -> None:
@@ -497,6 +542,27 @@ class PlatformService:
         project.setdefault("documents", {})[document_id] = document
         self._persist()
         return self._public_document(document)
+
+    @synchronized
+    def delete_document(self, project_id: str, document_id: str) -> dict[str, Any]:
+        """删除学生上传的资料；预置课程文档不可删除。"""
+        project = self.get_project(project_id)
+        self._require_current_project(project)
+        documents = project.get("documents", {})
+        document = documents.get(document_id)
+        if document is None:
+            raise KeyError("文档不存在或不可删除")
+        if document.get("source") != "upload":
+            raise ValueError("预置课程文档不可删除")
+        storage_path = document.get("storage_path")
+        documents.pop(document_id, None)
+        self._persist()
+        if storage_path:
+            try:
+                Path(storage_path).unlink(missing_ok=True)
+            except OSError:
+                pass
+        return {"deleted": document_id}
 
     @staticmethod
     def _safe_filename(filename: str) -> str:
@@ -2183,6 +2249,7 @@ class PlatformService:
             }
             if pdf.get("filename")
             else None,
+            "grading": self._grading_view(project_id, exp_id),
         }
 
     def experiment_reports_summary(self, project_id: str) -> list[dict[str, Any]]:
@@ -2196,6 +2263,7 @@ class PlatformService:
             runs = [r for r in all_runs if r["type"] == run_type]
             obs = observations.get(exp_id, {})
             latest = runs[-1] if runs else None
+            grade = self.grading_records.get(self._grading_key(project_id, exp_id), {})
             result.append(
                 {
                     "exp_id": exp_id,
@@ -2205,6 +2273,10 @@ class PlatformService:
                     "has_report_pdf": bool(reports.get(exp_id, {}).get("filename")),
                     "latest_run_at": latest["created_at"] if latest else None,
                     "observation_updated_at": obs.get("updated_at"),
+                    "has_grade": grade.get("status") == "graded",
+                    "grade_total": grade.get("total")
+                    if grade.get("status") == "graded"
+                    else None,
                 }
             )
         return result
@@ -2252,6 +2324,7 @@ class PlatformService:
             "storage_path": str(storage_path),
         }
         self._persist()
+        self._auto_grade_submission(project_id, exp_id, data)
         return self.experiment_report(project_id, exp_id)
 
     def experiment_report_pdf_path(
@@ -2278,6 +2351,339 @@ class PlatformService:
                 pass
         self._persist()
         return self.experiment_report(project_id, exp_id)
+
+    DEFAULT_SCORING_PROMPT = (
+        "请依据评分细则，对照报告中的实际内容逐项打分，给出简短、具体、可追溯的中文点评。"
+        "对未完成或缺失的要点应扣分并说明原因。"
+    )
+
+    @staticmethod
+    def _grading_key(project_id: str, exp_id: str) -> str:
+        return f"{project_id}:{exp_id}"
+
+    def _default_rubric(self, exp_id: str) -> dict[str, Any]:
+        return {"items": [], "scoring_prompt": "", "updated_at": None}
+
+    def get_rubric(self, exp_id: str) -> dict[str, Any]:
+        if exp_id not in self.EXPERIMENT_RUN_TYPE_MAP:
+            raise KeyError(f"未知实验编号: {exp_id}")
+        rubric = self.grading_rubrics.get(exp_id) or self._default_rubric(exp_id)
+        items = [deepcopy(item) for item in rubric.get("items", [])]
+        total_points = sum(self._as_points(item.get("points")) for item in items)
+        return {
+            "exp_id": exp_id,
+            "label": self.EXPERIMENT_LABELS[exp_id],
+            "title": self.EXPERIMENT_TITLES.get(exp_id, self.EXPERIMENT_LABELS[exp_id]),
+            "items": items,
+            "scoring_prompt": rubric.get("scoring_prompt", ""),
+            "total_points": total_points,
+            "sums_to_100": total_points == 100,
+            "updated_at": rubric.get("updated_at"),
+        }
+
+    def list_rubrics(self) -> list[dict[str, Any]]:
+        return [
+            self.get_rubric(exp_id) for exp_id in sorted(self.EXPERIMENT_RUN_TYPE_MAP)
+        ]
+
+    @staticmethod
+    def _as_points(value: Any) -> float:
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            return 0.0
+        return max(0.0, number)
+
+    @synchronized
+    def update_rubric(
+        self,
+        exp_id: str,
+        items: list[dict[str, Any]],
+        scoring_prompt: str,
+    ) -> dict[str, Any]:
+        if exp_id not in self.EXPERIMENT_RUN_TYPE_MAP:
+            raise KeyError(f"未知实验编号: {exp_id}")
+        normalized: list[dict[str, Any]] = []
+        for raw in items:
+            description = str(raw.get("description", "")).strip()
+            if not description:
+                raise ValueError("评分项描述不能为空")
+            points = self._as_points(raw.get("points"))
+            item_id = str(raw.get("id") or "").strip() or f"item_{uuid.uuid4().hex[:8]}"
+            normalized.append(
+                {
+                    "id": item_id,
+                    "description": description[:400],
+                    "points": self._clean_points(points),
+                }
+            )
+        self.grading_rubrics[exp_id] = {
+            "items": normalized,
+            "scoring_prompt": (scoring_prompt or "").strip()[:4000],
+            "updated_at": now_iso(),
+        }
+        self._persist()
+        return self.get_rubric(exp_id)
+
+    @staticmethod
+    def _clean_points(value: float) -> float | int:
+        rounded = round(float(value), 2)
+        return int(rounded) if rounded == int(rounded) else rounded
+
+    def _grading_view(self, project_id: str, exp_id: str) -> dict[str, Any] | None:
+        record = self.grading_records.get(self._grading_key(project_id, exp_id))
+        if not record:
+            return None
+        rubric = self.grading_rubrics.get(exp_id) or {}
+        rubric_by_id = {str(item.get("id")): item for item in rubric.get("items", [])}
+        items = []
+        for entry in record.get("items", []):
+            rubric_item = rubric_by_id.get(str(entry.get("rubric_item_id")), {})
+            items.append(
+                {
+                    "rubric_item_id": entry.get("rubric_item_id"),
+                    "description": rubric_item.get("description", ""),
+                    "score": entry.get("score"),
+                    "max": entry.get("max"),
+                    "comment": entry.get("comment", ""),
+                }
+            )
+        return {
+            "status": record.get("status"),
+            "total": record.get("total"),
+            "max_total": record.get("max_total"),
+            "items": items,
+            "overall_comment": record.get("overall_comment", ""),
+            "graded_at": record.get("graded_at"),
+            "graded_by": record.get("graded_by"),
+            "overridden": record.get("overridden", False),
+            "model": record.get("model"),
+            "error": record.get("error"),
+        }
+
+    @staticmethod
+    def rasterize_pdf(
+        data: bytes, *, max_pages: int = 10, dpi: int = 110
+    ) -> list[bytes]:
+        """将 PDF 逐页栅格化为 PNG 字节（不做 OCR）。"""
+        import pymupdf
+
+        images: list[bytes] = []
+        with pymupdf.open(stream=data, filetype="pdf") as document:
+            for index, page in enumerate(document):
+                if index >= max_pages:
+                    break
+                pixmap = page.get_pixmap(dpi=dpi)
+                images.append(pixmap.tobytes("png"))
+        return images
+
+    def _auto_grade_submission(self, project_id: str, exp_id: str, data: bytes) -> None:
+        """上传成功后自动阅卷；任何异常都不得影响上传本身。"""
+        try:
+            self.grade_submission(project_id, exp_id, data=data, graded_by="auto")
+        except Exception:
+            pass
+
+    @synchronized
+    def grade_submission(
+        self,
+        project_id: str,
+        exp_id: str,
+        *,
+        data: bytes | None = None,
+        graded_by: str = "auto",
+    ) -> dict[str, Any]:
+        project = self.get_project(project_id)
+        if exp_id not in self.EXPERIMENT_RUN_TYPE_MAP:
+            raise KeyError(f"未知实验编号: {exp_id}")
+        key = self._grading_key(project_id, exp_id)
+        rubric = self.grading_rubrics.get(exp_id) or {}
+        items = rubric.get("items", [])
+        if data is None:
+            pdf = project.get("experiment_reports", {}).get(exp_id, {})
+            storage_path = pdf.get("storage_path")
+            if not storage_path or not Path(storage_path).exists():
+                raise KeyError("该实验尚未上传报告 PDF")
+            data = Path(storage_path).read_bytes()
+        if not items:
+            self.grading_records[key] = {
+                "status": "pending",
+                "total": None,
+                "max_total": None,
+                "items": [],
+                "overall_comment": "",
+                "graded_at": now_iso(),
+                "graded_by": graded_by,
+                "overridden": False,
+                "model": None,
+                "error": "尚未配置该实验的评分细则",
+            }
+            self._persist()
+            return self._grading_view(project_id, exp_id) or {}
+        if (
+            not isinstance(self.vlm, VLMProvider)
+            or not self.vlm.settings.remote_configured
+        ):
+            self.grading_records[key] = {
+                "status": "pending",
+                "total": None,
+                "max_total": self._clean_points(
+                    sum(self._as_points(item.get("points")) for item in items)
+                ),
+                "items": [],
+                "overall_comment": "",
+                "graded_at": now_iso(),
+                "graded_by": graded_by,
+                "overridden": False,
+                "model": None,
+                "error": "尚未配置阅卷视觉大模型（VLM）",
+            }
+            self._persist()
+            return self._grading_view(project_id, exp_id) or {}
+        try:
+            images = self.rasterize_pdf(data)
+            if not images:
+                raise ValueError("无法从 PDF 中提取页面图片")
+            result = self.vlm.grade(
+                images,
+                {"items": items},
+                rubric.get("scoring_prompt", "") or self.DEFAULT_SCORING_PROMPT,
+            )
+            self.grading_records[key] = {
+                "status": "graded",
+                "total": result.get("total"),
+                "max_total": result.get("max_total"),
+                "items": result.get("items", []),
+                "overall_comment": result.get("overall_comment", ""),
+                "graded_at": now_iso(),
+                "graded_by": graded_by,
+                "overridden": False,
+                "model": result.get("model"),
+                "error": None,
+            }
+        except Exception as error:
+            self.grading_records[key] = {
+                "status": "failed",
+                "total": None,
+                "max_total": self._clean_points(
+                    sum(self._as_points(item.get("points")) for item in items)
+                ),
+                "items": [],
+                "overall_comment": "",
+                "graded_at": now_iso(),
+                "graded_by": graded_by,
+                "overridden": False,
+                "model": getattr(self.vlm, "settings", None)
+                and self.vlm.settings.model,
+                "error": str(error)[:400],
+            }
+        self._persist()
+        return self._grading_view(project_id, exp_id) or {}
+
+    @synchronized
+    def override_grading(
+        self,
+        project_id: str,
+        exp_id: str,
+        *,
+        items: list[dict[str, Any]],
+        overall_comment: str | None,
+        total: float | None,
+        graded_by: str,
+    ) -> dict[str, Any]:
+        self.get_project(project_id)
+        if exp_id not in self.EXPERIMENT_RUN_TYPE_MAP:
+            raise KeyError(f"未知实验编号: {exp_id}")
+        key = self._grading_key(project_id, exp_id)
+        rubric = self.grading_rubrics.get(exp_id) or {}
+        rubric_by_id = {str(item.get("id")): item for item in rubric.get("items", [])}
+        existing = self.grading_records.get(key, {})
+        existing_items = {
+            str(entry.get("rubric_item_id")): entry
+            for entry in existing.get("items", [])
+        }
+        graded_items: list[dict[str, Any]] = []
+        computed_total = 0.0
+        computed_max = 0.0
+        for raw in items:
+            item_id = str(raw.get("rubric_item_id"))
+            rubric_item = rubric_by_id.get(item_id, {})
+            max_points = self._as_points(rubric_item.get("points"))
+            if not rubric_item:
+                previous = existing_items.get(item_id, {})
+                max_points = self._as_points(previous.get("max"))
+            score = self._as_points(raw.get("score"))
+            score = max(0.0, min(score, max_points))
+            comment = raw.get("comment")
+            comment = comment.strip() if isinstance(comment, str) else ""
+            computed_total += score
+            computed_max += max_points
+            graded_items.append(
+                {
+                    "rubric_item_id": item_id,
+                    "score": self._clean_points(score),
+                    "max": self._clean_points(max_points),
+                    "comment": comment,
+                }
+            )
+        final_total = (
+            self._clean_points(float(total))
+            if total is not None
+            else self._clean_points(computed_total)
+        )
+        self.grading_records[key] = {
+            "status": "graded",
+            "total": final_total,
+            "max_total": self._clean_points(computed_max)
+            if computed_max
+            else existing.get("max_total"),
+            "items": graded_items,
+            "overall_comment": (overall_comment or "").strip()
+            if overall_comment is not None
+            else existing.get("overall_comment", ""),
+            "graded_at": now_iso(),
+            "graded_by": graded_by,
+            "overridden": True,
+            "model": existing.get("model"),
+            "error": None,
+        }
+        self._persist()
+        return self._grading_view(project_id, exp_id) or {}
+
+    def list_submissions(self, resolve_display_name=None) -> list[dict[str, Any]]:
+        submissions: list[dict[str, Any]] = []
+        for project_id, project in self.projects.items():
+            owner_id = project.get("owner_id")
+            display_name = None
+            if owner_id and resolve_display_name:
+                display_name = resolve_display_name(owner_id)
+            reports = project.get("experiment_reports", {})
+            for exp_id in sorted(self.EXPERIMENT_RUN_TYPE_MAP):
+                pdf = reports.get(exp_id, {})
+                if not pdf.get("filename"):
+                    continue
+                record = self.grading_records.get(
+                    self._grading_key(project_id, exp_id), {}
+                )
+                submissions.append(
+                    {
+                        "project_id": project_id,
+                        "project_name": project.get("name"),
+                        "owner_id": owner_id,
+                        "student_name": display_name,
+                        "exp_id": exp_id,
+                        "label": self.EXPERIMENT_LABELS[exp_id],
+                        "filename": pdf.get("filename"),
+                        "uploaded_at": pdf.get("uploaded_at"),
+                        "status": record.get("status", "ungraded"),
+                        "total": record.get("total"),
+                        "max_total": record.get("max_total"),
+                        "overridden": record.get("overridden", False),
+                        "graded_at": record.get("graded_at"),
+                        "error": record.get("error"),
+                    }
+                )
+        return submissions
 
     @staticmethod
     def _report_markdown(

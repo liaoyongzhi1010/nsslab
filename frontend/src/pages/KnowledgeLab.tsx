@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BookOpen, Box, Boxes, Check, ChevronDown, Code2, Database, Download, ExternalLink, FileCode2, FileText, FileType2, Info, LoaderCircle, Play, Search, Sparkles, UploadCloud, X } from "lucide-react";
+import { ArrowRight, Box, Check, Code2, Database, Download, ExternalLink, FileCode2, FileText, FileType2, Info, LoaderCircle, Play, Search, Sparkles, Trash2, UploadCloud, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, Metric, Pill, StepNav, Stepper, type StepMeta } from "../components/UI";
@@ -7,7 +7,6 @@ import { useApp } from "../context/AppContext";
 import type { Dict } from "../types";
 
 const evidenceDocumentIds = ["nist_fips203", "nist_ir8547", "nsa_cnsa20", "nist_hqc_2025", "nist_ir8610_2026", "hailan_crypto_manual"];
-const domesticEvidenceIds = ["cn_sm3_gbt32905", "cn_sm4_gbt32907", "cn_sm2_gbt35276", "cn_crypto_baseline_gbt39786", "gmit_2023_revision", "gmit_eval_2021", "kunpeng_secgear_dev", "kunpeng_secgear_attestation", "phytium_phytee_platform", "phytium_tee_architecture"];
 const defaultDocumentIds = ["aes", "rsa", "ecc", "sm4", "tee", "he", "mpc", ...evidenceDocumentIds];
 const exampleQueries = ["事件 CRYPTO-2026-04 的 KMS 批次和验证标签是什么？", "GM/T 0009—2023 何时实施，旧版何时废止？", "鲲鹏 secGear 的 ARM 构建参数和运行路径是什么？", "PhyTCM、PhyCrypto 与 PhyTEE 分别解决什么问题？"];
 
@@ -44,7 +43,6 @@ export function KnowledgeLab() {
   const [threshold, setThreshold] = useState(0.02);
   const [preview, setPreview] = useState<Dict | null>(null);
   const [activeChunk, setActiveChunk] = useState<Dict | null>(null);
-  const [manualOpen, setManualOpen] = useState(false);
   const [error, setError] = useState("");
   const selectionTouched = useRef(false);
   const paramsTouched = useRef(false);
@@ -77,18 +75,11 @@ export function KnowledgeLab() {
 
   if (!project) return <ProjectGate />;
 
-  const presetDocs = (bootstrap?.documents || []).filter((d: Dict) => d.source !== "upload");
-  const manualCategories = Array.from(new Set(presetDocs.map((d) => d.category)));
+  const allDocs = documents.length ? documents : (bootstrap?.documents || []);
+  const uploadedDocs = allDocs.filter((d: Dict) => d.source === "upload");
+  const presetGridDocs = allDocs.filter((d: Dict) => d.source !== "upload");
 
   const toggleDocument = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-  const togglePack = (ids: string[]) => setSelected((current) => {
-    const allSelected = ids.every((id) => current.includes(id));
-    return allSelected ? current.filter((id) => !ids.includes(id)) : [...new Set([...current, ...ids])];
-  });
-  const evidencePackSelected = evidenceDocumentIds.every((id) => selected.includes(id));
-  const evidencePackPartial = !evidencePackSelected && evidenceDocumentIds.some((id) => selected.includes(id));
-  const domesticPackSelected = domesticEvidenceIds.every((id) => selected.includes(id));
-  const domesticPackPartial = !domesticPackSelected && domesticEvidenceIds.some((id) => selected.includes(id));
 
   const uploadFiles = async (files: FileList | File[]) => {
     const queue = Array.from(files);
@@ -110,6 +101,15 @@ export function KnowledgeLab() {
       setUploading(false); setDragging(false);
       if (fileInput.current) fileInput.current.value = "";
     }
+  };
+
+  const deleteDocument = async (documentId: string) => {
+    setError("");
+    try {
+      await api.deleteDocument(project.id, documentId);
+      setDocuments((current) => current.filter((item) => item.id !== documentId));
+      setSelected((current) => current.filter((id) => id !== documentId));
+    } catch (err) { setError((err as Error).message); }
   };
 
   const runParse = async () => {
@@ -161,25 +161,6 @@ export function KnowledgeLab() {
           <StepHead kicker="STEP 01 / 06" title="选择或上传密码学资料"
             why="RAG 的一切都建立在语料之上。这一步不做任何计算，只决定“知识边界”——知识库里没有的内容，后面再强的检索也找不出来。" badge={<Pill tone="blue">{selected.length} 份已选</Pill>} />
 
-          <section className={`manual-inline ${manualOpen ? "open" : ""}`} style={{ marginBottom: 16 }}>
-            <button className="manual-inline-head" type="button" onClick={() => setManualOpen((v) => !v)}>
-              <BookOpen size={18} />
-              <div><strong>预置知识手册</strong><small>{presetDocs.length} 篇密码学基础文档 — 知识库、RAG 与智能体实验的领域知识来源</small></div>
-              <ChevronDown size={18} className={`chevron ${manualOpen ? "open" : ""}`} />
-            </button>
-            {manualOpen && <div className="manual-inline-body">
-              {manualCategories.map((cat) => <div key={cat} className="manual-inline-cat">
-                <span className="manual-inline-cat-label">{cat}</span>
-                <div className="manual-grid compact">
-                  {presetDocs.filter((d) => d.category === cat).map((doc) => <button className="manual-card compact" key={doc.id} onClick={() => api.document(doc.id, project.id).then(setPreview)} style={{ ["--doc-accent" as string]: doc.accent }}>
-                    <i><FileText size={16} /></i>
-                    <div><strong>{doc.title}</strong><small>{doc.filename} · {doc.level} · {doc.chars} 字</small></div>
-                  </button>)}
-                </div>
-              </div>)}
-            </div>}
-          </section>
-
           <div
             className={`upload-zone ${dragging ? "dragging" : ""}`}
             onDragEnter={(event) => { event.preventDefault(); setDragging(true); }}
@@ -193,14 +174,27 @@ export function KnowledgeLab() {
             <button className="btn ghost compact" disabled={uploading} onClick={() => fileInput.current?.click()}>{uploading ? "解析中…" : "选择文件"}</button>
           </div>
           {uploadMessage && <div className="upload-success"><Check size={14} />{uploadMessage}</div>}
-          <div className="evidence-pack-banner"><Sparkles size={17} /><div><strong>RAG 证据挑战包</strong><span>已预选 5 份 NIST / NSA 权威摘编 + 1 份课程私域手册，专门用于放大 Base LLM 与 RAG 的可测差异。</span></div><button className={`btn ghost compact pack-toggle ${evidencePackSelected ? "is-selected" : ""}`} aria-pressed={evidencePackSelected} onClick={() => togglePack(evidenceDocumentIds)}>{evidencePackSelected ? <><X size={16} />取消选中挑战包</> : <><Check size={16} />{evidencePackPartial ? "补全挑战包" : "选中挑战包"}</>}</button></div>
-          <div className="evidence-pack-banner domestic-pack"><Boxes size={17} /><div><strong>国产密码与 TEE 专题包</strong><span>10 份国家标准、密码行业规范、鲲鹏 secGear 与飞腾 PhyTEE/PSPA 官方资料；原文和教学摘编均已同步到本地。</span></div><button className={`btn ghost compact pack-toggle ${domesticPackSelected ? "is-selected" : ""}`} aria-pressed={domesticPackSelected} onClick={() => togglePack(domesticEvidenceIds)}>{domesticPackSelected ? <><X size={16} />取消选中专题包</> : <><Check size={16} />{domesticPackPartial ? "补全专题包" : "选中专题包"}</>}</button></div>
-          <div className="document-grid">
-            {(documents.length ? documents : bootstrap?.documents || []).map((document) => <article className={`document-card ${selected.includes(document.id) ? "selected" : ""} ${document.source === "upload" ? "user-document" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
-              <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
-              <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level}{document.source === "upload" ? " · 已上传" : ""}</small>{document.source_type && <em>{document.source_type}{document.source_date ? ` · ${document.source_date}` : ""}</em>}</div>
-              <button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button>
-            </article>)}
+
+          {uploadedDocs.length > 0 && <div className="doc-section">
+            <div className="doc-section-head"><span className="doc-section-title">我的上传</span><small>{uploadedDocs.length} 份 · 可删除</small></div>
+            <div className="document-grid">
+              {uploadedDocs.map((document) => <article className={`document-card user-document ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
+                <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
+                <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level} · 已上传</small></div>
+                <div className="doc-actions"><button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button><button className="doc-delete" onClick={() => deleteDocument(document.id)} aria-label={`删除 ${document.title}`}><Trash2 size={15} /></button></div>
+              </article>)}
+            </div>
+          </div>}
+
+          <div className="doc-section">
+            <div className="doc-section-head"><span className="doc-section-title">课程语料</span><small>{presetGridDocs.length} 篇预置密码学资料 · 供实验 06 基准评分使用</small></div>
+            <div className="document-grid">
+              {presetGridDocs.map((document) => <article className={`document-card ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
+                <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
+                <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level}</small>{document.source_type && <em>{document.source_type}{document.source_date ? ` · ${document.source_date}` : ""}</em>}</div>
+                <button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button>
+              </article>)}
+            </div>
           </div>
           <StepNav onNext={goNext} nextDisabled={selected.length === 0} nextHint={selected.length === 0 ? "至少选择一份资料才能继续" : `已选 ${selected.length} 份，进入解析`} backDisabled />
         </section>

@@ -42,6 +42,9 @@ export const api = {
     form.append("file", file);
     return request<Dict>("/api/documents/upload", { method: "POST", body: form });
   },
+  deleteDocument: (projectId: string, documentId: string) => request<Dict>(`/api/documents/${documentId}`, {
+    method: "DELETE", headers: jsonHeaders, body: JSON.stringify({ project_id: projectId }),
+  }),
   buildKb: (payload: Dict) => request<Dict>("/api/kb/build", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
   kbParse: (payload: Dict) => request<Dict>("/api/kb/parse", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
   kbChunk: (payload: Dict) => request<Dict>("/api/kb/chunk", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
@@ -84,4 +87,16 @@ export const api = {
   },
   experimentReportPdfUrl: (id: string, expId: string) => `/api/reports/${id}/experiments/${expId}/pdf?t=${Date.now()}`,
   deleteExperimentReportPdf: (id: string, expId: string) => request<Dict>(`/api/reports/${id}/experiments/${expId}/pdf`, { method: "DELETE" }),
+  adminRubrics: () => request<Dict[]>("/api/admin/rubrics"),
+  adminRubric: (expId: string) => request<Dict>(`/api/admin/rubrics/${expId}`),
+  updateRubric: (expId: string, payload: Dict) => request<Dict>(`/api/admin/rubrics/${expId}`, {
+    method: "PUT", headers: jsonHeaders, body: JSON.stringify(payload),
+  }),
+  vlmStatus: () => request<Dict>("/api/admin/vlm"),
+  updateVlmProvider: (payload: Dict) => request<Dict>("/api/admin/vlm", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
+  adminSubmissions: () => request<Dict[]>("/api/admin/submissions"),
+  gradeSubmission: (projectId: string, expId: string) => request<Dict>(`/api/admin/submissions/${projectId}/${expId}/grade`, { method: "POST" }),
+  overrideGrading: (projectId: string, expId: string, payload: Dict) => request<Dict>(`/api/admin/submissions/${projectId}/${expId}/override`, {
+    method: "PUT", headers: jsonHeaders, body: JSON.stringify(payload),
+  }),
 };

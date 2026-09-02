@@ -313,6 +313,20 @@ class ToolRecord(Base):
     payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
 
 
+class GradingRubricRecord(Base):
+    __tablename__ = "grading_rubrics"
+
+    id: Mapped[str] = mapped_column(String(8), primary_key=True)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+
+
+class GradingRecord(Base):
+    __tablename__ = "grading_records"
+
+    id: Mapped[str] = mapped_column(String(80), primary_key=True)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+
+
 def _as_datetime(value: Any) -> datetime:
     if isinstance(value, datetime):
         return value
@@ -439,6 +453,8 @@ class StateRepository:
             )
             skills = list(session.scalars(select(SkillRecord)))
             tools = list(session.scalars(select(ToolRecord)))
+            rubrics = list(session.scalars(select(GradingRubricRecord)))
+            gradings = list(session.scalars(select(GradingRecord)))
             state: dict[str, Any] = {
                 "projects": {},
                 "runs": {},
@@ -446,6 +462,8 @@ class StateRepository:
                 or {row["id"]: deepcopy(row) for row in SKILLS},
                 "tools": {row.id: deepcopy(row.payload) for row in tools}
                 or {row["id"]: deepcopy(row) for row in TOOLS},
+                "grading_rubrics": {row.id: deepcopy(row.payload) for row in rubrics},
+                "grading_records": {row.id: deepcopy(row.payload) for row in gradings},
             }
             for row in projects:
                 documents: dict[str, Any] = {}
@@ -716,6 +734,16 @@ class StateRepository:
                 ToolRecord(id=key, payload=deepcopy(value))
                 for key, value in state.get("tools", {}).items()
             )
+            session.execute(delete(GradingRubricRecord))
+            session.execute(delete(GradingRecord))
+            session.add_all(
+                GradingRubricRecord(id=key, payload=deepcopy(value))
+                for key, value in state.get("grading_rubrics", {}).items()
+            )
+            session.add_all(
+                GradingRecord(id=key, payload=deepcopy(value))
+                for key, value in state.get("grading_records", {}).items()
+            )
 
     def update_report_observation(
         self, project_id: str, html: str, updated_at: str
@@ -742,6 +770,8 @@ class StateRepository:
                 ProjectRecord,
                 SkillRecord,
                 ToolRecord,
+                GradingRubricRecord,
+                GradingRecord,
             ]:
                 session.execute(delete(model))
 
