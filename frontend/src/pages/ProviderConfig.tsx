@@ -6,7 +6,13 @@ import { useApp } from "../context/AppContext";
 import type { Dict } from "../types";
 
 export function ProviderConfig() {
-  const { bootstrap, refreshBootstrap, user } = useApp();
+  const { user } = useApp();
+  if (user?.role === "admin") return <VlmProviderPage />;
+  return <LlmProviderPage />;
+}
+
+function LlmProviderPage() {
+  const { bootstrap, refreshBootstrap } = useApp();
   const providers: Dict = bootstrap?.providers || {};
   const llm: Dict = providers.llm_status || {};
   const configured = Boolean(llm.configured);
@@ -62,12 +68,10 @@ export function ProviderConfig() {
         <small>在线配置在服务运行期间生效；后端重启后回到环境变量 <code>LLM_BASE_URL</code> / <code>LLM_MODEL</code> / <code>LLM_API_KEY</code> 的默认配置。</small>
       </div>
     </section>
-
-    {user?.role === "admin" && <VlmCard />}
   </div>;
 }
 
-function VlmCard() {
+function VlmProviderPage() {
   const [status, setStatus] = useState<Dict | null>(null);
   const [apiKey, setApiKey] = useState("");
   const [baseUrl, setBaseUrl] = useState("https://api.deepseek.com");
@@ -92,28 +96,35 @@ function VlmCard() {
     finally { setSaving(false); }
   };
 
-  return <section className="panel provider-card">
-    <div className="panel-head"><div><h2><ShieldCheck size={18} /> 阅卷视觉大模型（VLM）</h2><p>仅管理员可见。用于给学生报告 PDF 自动评分：PDF 逐页转为图片送入该多模态模型（不做 OCR）。与实验对话模型相互独立。</p></div></div>
-    <div className="provider-current">
-      <div className="provider-current-item"><i><Server size={16} /></i><div><small>Provider</small><strong>{status?.provider || "未配置"}</strong></div></div>
-      <div className="provider-current-item"><i><Cpu size={16} /></i><div><small>模型</small><strong>{status?.model || "未配置"}</strong></div></div>
-      <div className="provider-current-item"><i><Radio size={16} /></i><div><small>接入点</small><strong>{status?.endpoint_host || "未配置"}</strong></div></div>
+  return <div className="lab-page">
+    <div className="page-title">
+      <div><Pill tone="blue">管理员 · Provider 配置</Pill><h1>阅卷<span>视觉大模型</span></h1><p>管理员用于给学生实验报告 PDF 自动评分的多模态模型。报告逐页转为图片送入模型（不做 OCR），与学生端实验对话模型相互独立。</p></div>
+      <div className="page-title-badges"><Pill tone={configured ? "mint" : "amber"}><Radio size={13} /> {configured ? "阅卷模型已连接" : "未配置阅卷模型"}</Pill></div>
     </div>
-    <div className={`provider-health ${configured ? "ok" : "warn"}`}>
-      {configured ? <><CheckCircle2 size={16} /> 已连接，上传报告后将自动触发 VLM 评分。</> : <><ShieldCheck size={16} /> 尚未配置阅卷模型，学生报告将标记为“待处理”，可稍后重新评分。</>}
-      {status?.last_error && <span className="provider-error">最近错误：{status.last_error}</span>}
-    </div>
-    <div className="provider-divider" />
-    <div className="provider-form-head"><h2>切换阅卷模型</h2><p>填写任意 OpenAI 兼容的多模态服务，保存后立即热切换。API Key 仅用于后台调用，不会回显。</p></div>
-    <div className="provider-form">
-      <label><span>Base URL</span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://api.deepseek.com" maxLength={512} /></label>
-      <label><span>模型名称</span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="deepseek-v4-flash-vision-exp" maxLength={128} /></label>
-      <label className="provider-form-full"><span>API Key</span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={configured ? "留空则不修改（已配置）· 输入新 Key 覆盖" : "sk-..."} autoComplete="off" maxLength={512} /></label>
-    </div>
-    {msg && <div className={`provider-msg ${msg.ok ? "ok" : "err"}`}>{msg.text}</div>}
-    <div className="provider-form-foot">
-      <button className={`btn primary ${saving ? "is-running" : ""}`} onClick={save} disabled={saving} aria-busy={saving}>{saving ? "正在保存并切换…" : <>保存并切换<Save size={16} /></>}</button>
-      <small>在线配置在服务运行期间生效；后端重启后回到环境变量 <code>VLM_BASE_URL</code> / <code>VLM_MODEL</code> / <code>VLM_API_KEY</code> 的默认配置。</small>
-    </div>
-  </section>;
+
+    <section className="panel provider-card">
+      <div className="panel-head"><div><h2><ShieldCheck size={18} /> 阅卷视觉大模型（VLM）</h2><p>用于自动评分：将学生报告 PDF 逐页转为图片送入该多模态模型。</p></div></div>
+      <div className="provider-current">
+        <div className="provider-current-item"><i><Server size={16} /></i><div><small>Provider</small><strong>{status?.provider || "未配置"}</strong></div></div>
+        <div className="provider-current-item"><i><Cpu size={16} /></i><div><small>模型</small><strong>{status?.model || "未配置"}</strong></div></div>
+        <div className="provider-current-item"><i><Radio size={16} /></i><div><small>接入点</small><strong>{status?.endpoint_host || "未配置"}</strong></div></div>
+      </div>
+      <div className={`provider-health ${configured ? "ok" : "warn"}`}>
+        {configured ? <><CheckCircle2 size={16} /> 已连接，上传报告后将自动触发 VLM 评分。</> : <><ShieldCheck size={16} /> 尚未配置阅卷模型，学生报告将标记为“待处理”，可稍后重新评分。</>}
+        {status?.last_error && <span className="provider-error">最近错误：{status.last_error}</span>}
+      </div>
+      <div className="provider-divider" />
+      <div className="provider-form-head"><h2>切换阅卷模型</h2><p>填写任意 OpenAI 兼容的多模态服务，保存后立即热切换。API Key 仅用于后台调用，不会回显。</p></div>
+      <div className="provider-form">
+        <label><span>Base URL</span><input value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} placeholder="https://api.deepseek.com" maxLength={512} /></label>
+        <label><span>模型名称</span><input value={model} onChange={(e) => setModel(e.target.value)} placeholder="deepseek-v4-flash-vision-exp" maxLength={128} /></label>
+        <label className="provider-form-full"><span>API Key</span><input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder={configured ? "留空则不修改（已配置）· 输入新 Key 覆盖" : "sk-..."} autoComplete="off" maxLength={512} /></label>
+      </div>
+      {msg && <div className={`provider-msg ${msg.ok ? "ok" : "err"}`}>{msg.text}</div>}
+      <div className="provider-form-foot">
+        <button className={`btn primary ${saving ? "is-running" : ""}`} onClick={save} disabled={saving} aria-busy={saving}>{saving ? "正在保存并切换…" : <>保存并切换<Save size={16} /></>}</button>
+        <small>在线配置在服务运行期间生效；后端重启后回到环境变量 <code>VLM_BASE_URL</code> / <code>VLM_MODEL</code> / <code>VLM_API_KEY</code> 的默认配置。</small>
+      </div>
+    </section>
+  </div>;
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ClipboardCheck, Filter, RefreshCw, Save, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ClipboardCheck, Clock, Filter, Gauge, RefreshCw, Save, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, LoadingBlock, Pill } from "../components/UI";
@@ -122,9 +122,27 @@ function SubmissionQueue() {
     return true;
   }), [rows, expFilter, studentFilter]);
 
+  const stats = useMemo(() => {
+    const list = rows || [];
+    const graded = list.filter((r) => r.status === "graded");
+    const pending = list.filter((r) => r.status === "pending" || r.status === "ungraded");
+    const failed = list.filter((r) => r.status === "failed");
+    const scored = graded.filter((r) => r.total != null && r.max_total);
+    const avg = scored.length ? Math.round((scored.reduce((s, r) => s + (Number(r.total) / Number(r.max_total)) * 100, 0) / scored.length)) : null;
+    return { total: list.length, graded: graded.length, pending: pending.length, failed: failed.length, avg };
+  }, [rows]);
+
   if (!rows) return <section className="panel"><LoadingBlock label="正在加载提交队列…" /></section>;
 
-  return <section className="panel grading-queue">
+  return <>
+    <section className="grading-stats">
+      <div className="grading-stat"><i className="grading-stat-icon total"><ClipboardCheck size={18} /></i><div><strong>{stats.total}</strong><small>报告提交</small></div></div>
+      <div className="grading-stat"><i className="grading-stat-icon graded"><CheckCircle2 size={18} /></i><div><strong>{stats.graded}</strong><small>已评分</small></div></div>
+      <div className="grading-stat"><i className="grading-stat-icon pending"><Clock size={18} /></i><div><strong>{stats.pending}</strong><small>待处理</small></div></div>
+      <div className="grading-stat"><i className="grading-stat-icon failed"><AlertTriangle size={18} /></i><div><strong>{stats.failed}</strong><small>评分失败</small></div></div>
+      <div className="grading-stat"><i className="grading-stat-icon avg"><Gauge size={18} /></i><div><strong>{stats.avg != null ? `${stats.avg}%` : "—"}</strong><small>平均得分率</small></div></div>
+    </section>
+    <section className="panel grading-queue">
     <div className="panel-head"><div><h2><ClipboardCheck size={18} /> 提交与评分队列</h2><p>所有学生的实验报告提交。可重新触发自动评分或人工复核每一项分数。</p></div>
       <button className="btn ghost compact" type="button" onClick={load}><RefreshCw size={14} /> 刷新</button></div>
     <div className="grading-filters">
@@ -143,7 +161,7 @@ function SubmissionQueue() {
       {(expFilter || studentFilter) && <button className="btn ghost compact" type="button" onClick={() => { setExpFilter(""); setStudentFilter(""); }}>清除筛选</button>}
       <span className="grading-filter-count">共 {filtered.length} / {rows.length} 条</span>
     </div>
-    {filtered.length === 0 ? <EmptyState title="暂无提交">{rows.length === 0 ? "学生上传实验报告 PDF 后会自动出现在这里。" : "没有符合当前筛选条件的提交。"}</EmptyState> : <div className="grading-table">
+    {filtered.length === 0 ? <EmptyState title={rows.length === 0 ? "暂无提交" : "没有匹配的提交"}>{rows.length === 0 ? "学生在实验页上传实验报告 PDF 后，会自动进入此队列并触发阅卷模型评分。" : "没有符合当前筛选条件的提交，试试调整实验或学生筛选。"}</EmptyState> : <div className="grading-table">
       <div className="grading-table-head"><span>学生</span><span>实验</span><span>报告</span><span>状态</span><span>总分</span><span>操作</span></div>
       {filtered.map((row) => {
         const key = `${row.project_id}:${row.exp_id}`;
@@ -161,7 +179,8 @@ function SubmissionQueue() {
       })}
     </div>}
     {active && <OverrideEditor submission={active} onClose={() => setActive(null)} onSaved={load} />}
-  </section>;
+  </section>
+  </>;
 }
 
 export function GradingConsole() {

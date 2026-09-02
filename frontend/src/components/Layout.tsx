@@ -75,7 +75,12 @@ export function Layout() {
   const navigate = useNavigate();
   const groups = user?.role === "admin"
     ? baseGroups.map((group) => group.label === "RESOURCES"
-        ? { ...group, items: [...group.items.filter((item) => item.to !== "/report"), { to: "/admin/grading", label: "成绩管理", icon: ClipboardCheck } as NavItem] }
+        ? { ...group, items: [
+            ...group.items
+              .filter((item) => item.to !== "/report")
+              .map((item) => item.to === "/provider" ? { ...item, label: "阅卷模型配置" } as NavItem : item),
+            { to: "/admin/grading", label: "成绩管理", icon: ClipboardCheck } as NavItem,
+          ] }
         : group)
     : baseGroups;
   const [theme, setTheme] = useState<"dark" | "light">(() => document.documentElement.dataset.theme === "light" ? "light" : "dark");
@@ -124,15 +129,19 @@ export function Layout() {
             <span className="topbar-project-name" title={project?.name || "尚未开始当前实验"}>{project?.name || "尚未开始当前实验"}</span>
           </div>
           <div className="topbar-actions">
-            <button
-              className={`llm-status ${bootstrap?.providers.llm_status?.configured ? "ok" : "off"}`}
-              type="button"
-              title={bootstrap?.providers.llm_status?.configured ? "LLM 已连接，点击查看 Provider 配置" : "未配置云端 LLM，点击前往配置"}
-              onClick={() => navigate("/provider")}
-            >
-              <i />
-              <span>{bootstrap?.providers.llm_status?.configured ? (bootstrap.providers.llm_status.model || "LLM 已连接") : "LLM 未连接"}</span>
-            </button>
+            {(() => {
+              const isAdmin = user?.role === "admin";
+              const status = isAdmin ? bootstrap?.providers.vlm_status : bootstrap?.providers.llm_status;
+              const ok = Boolean(status?.configured);
+              const label = ok ? (status?.model || (isAdmin ? "阅卷模型已连接" : "LLM 已连接")) : (isAdmin ? "阅卷模型未连接" : "LLM 未连接");
+              const title = isAdmin
+                ? (ok ? "阅卷视觉大模型已连接，点击查看配置" : "未配置阅卷视觉大模型，点击前往配置")
+                : (ok ? "LLM 已连接，点击查看 Provider 配置" : "未配置云端 LLM，点击前往配置");
+              return <button className={`llm-status ${ok ? "ok" : "off"}`} type="button" title={title} onClick={() => navigate("/provider")}>
+                <i />
+                <span>{label}</span>
+              </button>;
+            })()}
             <div className="topbar-divider" />
             <div className="font-size-control" role="group" aria-label="调整文字大小">
               {fontSizes.map((option) => (
