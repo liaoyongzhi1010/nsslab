@@ -105,12 +105,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 
 .app-shell { min-height: 100vh; }
 .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; width: var(--sidebar); display: flex; flex-direction: column; padding: 24px 14px 18px; border-right: 1px solid var(--line); background: rgba(7, 12, 17, .95); backdrop-filter: blur(18px); }
-.brand { display: flex; align-items: center; gap: 12px; padding: 0 10px 28px; }
-.brand-mark { position: relative; display: grid; width: 38px; height: 38px; place-items: center; color: var(--mint); }
-.brand-mark svg { position: absolute; width: 38px; height: 38px; stroke-width: 1.2; }
-.brand-mark span { font: 600 10px "IBM Plex Mono"; letter-spacing: -.5px; }
-.brand strong { display: block; font-size: 18px; letter-spacing: -.4px; }
-.brand small { display: block; margin-top: 3px; color: var(--faint); font: 500 9px "IBM Plex Mono"; letter-spacing: 1.3px; }
+.brand { display: flex; align-items: center; gap: 11px; padding: 0 10px 24px; }
+.brand-mark { position: relative; display: grid; width: 34px; height: 34px; place-items: center; color: var(--mint); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--mint) 16%, transparent)); }
+.brand-mark svg { position: absolute; width: 34px; height: 34px; stroke-width: 1.5; }
+.brand-mark span { font: 700 9px "IBM Plex Mono"; letter-spacing: -.3px; }
+.brand strong { display: block; font-size: 17px; line-height: 1.05; letter-spacing: -.45px; }
+.brand small { display: block; margin-top: 5px; color: var(--faint); font: 600 8px "IBM Plex Mono"; letter-spacing: 1.6px; }
 .sidebar nav { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; scrollbar-width: thin; scrollbar-color: #263946 transparent; }
 .sidebar nav::-webkit-scrollbar { width: 6px; }
 .sidebar nav::-webkit-scrollbar-thumb { background: #263946; border-radius: 3px; }
@@ -263,7 +263,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .orbit-one { width: 380px; height: 220px; }.orbit-two { width: 275px; height: 335px; transform: translate(-50%,-50%) rotate(55deg); border-color: rgba(114,149,255,.13); }
 .core-orb { position: absolute; left: 50%; top: 50%; display: flex; width: 152px; height: 152px; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1px solid rgba(73,220,177,.4); border-radius: 50%; background: radial-gradient(circle at 40% 30%, #18372e, #0c161a 64%); box-shadow: 0 0 60px rgba(73,220,177,.14), inset 0 0 26px rgba(73,220,177,.06); transform: translate(-50%,-50%); }
 .core-orb svg { width: 34px; height: 34px; color: var(--mint); }.core-orb strong { font-size: 16px; }.core-orb small { color: var(--mint); font: 500 9px "IBM Plex Mono"; letter-spacing: 1.2px; }
-.sat { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 7px; color: #667985; font: 500 9px "IBM Plex Mono"; letter-spacing: .8px; }.sat svg { width: 30px; height: 30px; padding: 6px; border: 1px solid #273b43; border-radius: 50%; background: #0b1419; color: var(--mint); box-sizing: content-box; }.sat-a { left: 8px; top: 166px; }.sat-b { right: 8px; top: 82px; }.sat-c { right: 16px; bottom: 48px; }.sat-d { left: 84px; bottom: 22px; }
+.sat { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #667985; font: 600 11px "IBM Plex Mono"; letter-spacing: 1px; }.sat svg { width: 36px; height: 36px; padding: 7px; border: 1px solid #273b43; border-radius: 50%; background: #0b1419; color: var(--mint); box-sizing: content-box; }.sat-a { left: 0; top: 162px; }.sat-b { right: 0; top: 72px; }.sat-c { right: 8px; bottom: 42px; }.sat-d { left: 70px; bottom: 14px; }
 .journey-section { padding: 41px 0; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 21px; }.section-heading span, .status-title > div > span, .capability-card > span, .report-hero > div > span { color: var(--mint); font: 600 11px "IBM Plex Mono"; letter-spacing: 1.5px; }.section-heading > div > span, .report-hero > div > span, .conclusion > div > span { display: none; }.section-heading h2 { margin: 6px 0 0; font-size: 24px; letter-spacing: -.6px; }.section-heading p { max-width: 355px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .lab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
