@@ -72,12 +72,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .sidebar nav::-webkit-scrollbar-thumb { background: #263946; border-radius: 3px; }
 .nav-section { display: flex; align-items: center; gap: 8px; padding: 8px 12px 7px; color: #52656f; font: 600 10px "IBM Plex Mono"; letter-spacing: 1.6px; }
 .nav-section.secondary { margin-top: 20px; }
-.nav-section-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: currentColor; box-shadow: 0 0 9px currentColor; }
+.nav-section-dot { width: 9px; height: 9px; flex: none; border-radius: 50%; background: currentColor; box-shadow: 0 0 9px currentColor; }
 .nav-group.tone-mint { --nav-tone: var(--mint); }
 .nav-group.tone-blue { --nav-tone: var(--blue); }
 .nav-group.tone-purple { --nav-tone: var(--purple); }
 .nav-group.tone-amber { --nav-tone: var(--amber); }
-.nav-group[class*="tone-"] > .nav-section { margin-top: 15px; color: var(--nav-tone); font-family: Inter, "Noto Sans SC", sans-serif; font-size: 15px; font-weight: 800; letter-spacing: .3px; }
+.nav-group[class*="tone-"] > .nav-section { margin-top: 15px; color: var(--nav-tone); font-family: Inter, "Noto Sans SC", sans-serif; font-size: 16px; font-weight: 850; letter-spacing: .2px; }
 .nav-link { min-height: 48px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid transparent; border-radius: 7px; color: #869aa4; text-decoration: none; transition: .2s ease; cursor: pointer; }
 .nav-link:hover { color: #bdc9ce; background: rgba(255,255,255,.018); }
 .nav-link.active { color: var(--mint); border-color: rgba(73,220,177,.14); background: linear-gradient(90deg, rgba(73,220,177,.12), rgba(73,220,177,.025)); box-shadow: inset 2px 0 0 var(--mint); }
@@ -351,6 +351,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 :root[data-theme="light"] .topbar-context-icon { border-color: rgba(8,127,99,.2); background: rgba(8,127,99,.055); }
 :root[data-theme="light"] .topbar-project-name { color: #2f463e; }
 :root[data-theme="light"] .nav-section { color: #9aaca5; }
+:root[data-theme="light"] .nav-group[class*="tone-"] > .nav-section { color: var(--nav-tone); }
 :root[data-theme="light"] .nav-link { color: #687d75; }
 :root[data-theme="light"] .nav-link:hover { color: #23483e; background: rgba(8, 127, 99, .045); }
 :root[data-theme="light"] .nav-link.active { color: var(--mint); border-color: rgba(8,127,99,.17); background: linear-gradient(90deg, rgba(8,127,99,.11), rgba(8,127,99,.025)); }
@@ -683,11 +684,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 /* ── 新实验通用 ────────────────────────────────────────── */
 .compare-grid .answer-card .path-badge { width: auto; min-width: 44px; height: 26px; padding: 0 10px; border-radius: 6px; font-size: 11px; letter-spacing: .5px; }
 .category-block { margin-bottom: 26px; }
-.category-label { display: flex; align-items: center; gap: 10px; margin: 22px 0 13px; }
-.category-label h3 { margin: 0; font-size: 15px; color: #b7c3c9; white-space: nowrap; }
+.category-label { display: flex; align-items: center; gap: 12px; margin: 30px 0 16px; }
+.category-label h3 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 850; letter-spacing: -.4px; color: #b7c3c9; white-space: nowrap; }
 .category-label i { flex: 1; height: 1px; background: var(--line); }
-.cat-dot { width: 9px; height: 9px; border-radius: 50%; }
-.cat-mint { background: var(--mint); } .cat-blue { background: var(--blue); } .cat-purple { background: var(--purple); } .cat-amber { background: var(--amber); }
+.cat-dot { width: 11px; height: 11px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+.cat-mint { color: var(--mint); background: var(--mint); } .cat-blue { color: var(--blue); background: var(--blue); } .cat-purple { color: var(--purple); background: var(--purple); } .cat-amber { color: var(--amber); background: var(--amber); }
+.cat-mint + h3 { color: var(--mint); }.cat-blue + h3 { color: var(--blue); }.cat-purple + h3 { color: var(--purple); }.cat-amber + h3 { color: var(--amber); }
 .ab-preview { display: flex; align-items: center; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
 .ab-preview span { padding: 4px 9px; border-radius: 5px; font-size: 11px; line-height: 1.4; }
 .ab-preview .ab-off { border: 1px solid var(--line-light); color: #8a99a2; background: rgba(255,255,255,.02); }
