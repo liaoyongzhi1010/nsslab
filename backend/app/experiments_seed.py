@@ -420,7 +420,7 @@ EXPERIMENT_CATEGORIES = [
                 "title": "Tools 工具调用",
                 "route": "/lab/tools",
                 "mode": "真实",
-                "off": "无工具口算",
+                "off": "无工具调用",
                 "on": "调用安全工具",
                 "objectives": [
                     "理解为什么大模型「口算」不可靠、需要调用确定性工具",

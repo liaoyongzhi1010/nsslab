@@ -34,11 +34,11 @@ export function ToolLab() {
 
   return <div className="lab-page tool-page">
     <div className="page-title">
-      <div><Pill tone="blue">实验 · TOOLS</Pill><h1>工具调用：<span>会推理 vs 会执行</span></h1><p>同一道密码学计算题，对比大模型“纯口算”与“调用安全工具精确计算”的差异，直观看到工具为智能体带来的可靠执行能力。</p></div>
+      <div><Pill tone="blue">实验 · TOOLS</Pill><h1>工具调用：<span>会推理 vs 会执行</span></h1><p>同一道密码学计算题，对比大模型“无工具调用”与“调用安全工具精确计算”的差异，直观看到工具为智能体带来的可靠执行能力。</p></div>
       <div className="page-title-badges"><Pill tone="blue">{bootstrap?.providers?.llm_status?.model || "DeepSeek"} · 每次运行 2 次生成</Pill><Pill tone="mint"><ShieldCheck size={13} /> 白名单安全工具</Pill></div>
     </div>
 
-    <Flow steps={["选择计算题", "PATH A 无工具口算", "PATH B 调用安全工具", "正确性对比", "结论"]} active={running ? 2 : run ? 4 : 0} />
+    <Flow steps={["选择计算题", "PATH A 无工具调用", "PATH B 调用安全工具", "正确性对比", "结论"]} active={running ? 2 : run ? 4 : 0} />
 
     <div className="tool-task-panel panel">
       <div className="question-label"><Calculator size={18} /><div><strong>密码学计算任务</strong><small>无工具路径与有工具路径将各生成一次回答并自动判分</small></div></div>
@@ -89,6 +89,6 @@ export function ToolLab() {
       </div>
     </>}
 
-    {!run && !running && <EmptyState title="等待运行">选择一道密码学计算题并点击“运行 A/B 对比”，即可并排看到无工具口算与安全工具精确计算的差异。</EmptyState>}
+    {!run && !running && <EmptyState title="等待运行">选择一道密码学计算题并点击“运行 A/B 对比”，即可并排看到无工具调用与安全工具精确计算的差异。</EmptyState>}
   </div>;
 }
