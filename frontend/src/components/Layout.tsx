@@ -12,7 +12,7 @@ interface NavItem {
   exact?: boolean;
 }
 
-const groups: Array<{ label: string; items: NavItem[] }> = [
+const groups: Array<{ label: string; tone?: string; items: NavItem[] }> = [
   {
     label: "WORKSPACE",
     items: [
@@ -21,12 +21,14 @@ const groups: Array<{ label: string; items: NavItem[] }> = [
   },
   {
     label: "数据工程",
+    tone: "mint",
     items: [
       { to: "/lab/data", label: "密码语料构建", eyebrow: "实验 01", icon: Database },
     ],
   },
   {
     label: "模型训练与对齐",
+    tone: "blue",
     items: [
       { to: "/lab/cpt", label: "继续预训练 CPT", eyebrow: "实验 02", icon: BrainCircuit },
       { to: "/lab/sft", label: "监督微调 SFT", eyebrow: "实验 03", icon: Wand2 },
@@ -35,13 +37,15 @@ const groups: Array<{ label: string; items: NavItem[] }> = [
   },
   {
     label: "知识工程",
+    tone: "purple",
     items: [
       { to: "/lab/knowledge", label: "向量知识库", eyebrow: "实验 05", icon: LibraryBig },
       { to: "/lab/rag", label: "RAG 检索增强", eyebrow: "实验 06", icon: GitCompareArrows },
     ],
   },
   {
-    label: "HARNESS",
+    label: "Harness",
+    tone: "amber",
     items: [
       { to: "/lab/skills", label: "Skills 技能封装", eyebrow: "实验 07", icon: ListChecks },
       { to: "/lab/tools", label: "Tools 工具调用", eyebrow: "实验 08", icon: Wrench },
@@ -96,8 +100,8 @@ export function Layout() {
         </div>
         <nav>
           {groups.map((group) => (
-            <div className="nav-group" key={group.label}>
-              <span className="nav-section">{group.label}</span>
+            <div className={`nav-group${group.tone ? ` tone-${group.tone}` : ""}`} key={group.label}>
+              <span className="nav-section">{group.tone && <i className="nav-section-dot" />}{group.label}</span>
               {group.items.map(({ to, label, eyebrow, icon: Icon, exact }) => (
                 <NavLink key={to} to={to} end={exact} className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
                   <Icon size={18} />
