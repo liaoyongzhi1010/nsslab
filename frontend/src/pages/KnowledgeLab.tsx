@@ -25,6 +25,7 @@ export function KnowledgeLab() {
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<string[]>(defaultDocumentIds);
   const [documents, setDocuments] = useState<Dict[]>([]);
+  const [hiddenPresetIds, setHiddenPresetIds] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -77,7 +78,7 @@ export function KnowledgeLab() {
 
   const allDocs = documents.length ? documents : (bootstrap?.documents || []);
   const uploadedDocs = allDocs.filter((d: Dict) => d.source === "upload");
-  const presetGridDocs = allDocs.filter((d: Dict) => d.source !== "upload");
+  const presetGridDocs = allDocs.filter((d: Dict) => d.source !== "upload" && !hiddenPresetIds.includes(d.id));
 
   const toggleDocument = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
 
@@ -112,6 +113,11 @@ export function KnowledgeLab() {
     } catch (err) { setError((err as Error).message); }
   };
 
+  const removePresetDocument = (documentId: string) => {
+    setHiddenPresetIds((current) => current.includes(documentId) ? current : [...current, documentId]);
+    setSelected((current) => current.filter((id) => id !== documentId));
+  };
+
   const bulkDeleteUploaded = async () => {
     const ids = uploadedDocs.map((d) => d.id);
     if (!ids.length) return;
@@ -123,7 +129,7 @@ export function KnowledgeLab() {
     } catch (err) { setError((err as Error).message); }
   };
 
-  const allVisibleIds = allDocs.map((d: Dict) => d.id);
+  const allVisibleIds = [...uploadedDocs, ...presetGridDocs].map((d: Dict) => d.id);
   const allSelected = allVisibleIds.length > 0 && allVisibleIds.every((id: string) => selected.includes(id));
   const toggleSelectAll = () => setSelected(allSelected ? [] : allVisibleIds);
 
@@ -165,6 +171,8 @@ export function KnowledgeLab() {
     try {
       await api.resetKb(project.id);
       setKb(null); setParseResult(null); setChunkResult(null); setEmbedResult(null); setSearchResult(null);
+      setHiddenPresetIds([]);
+      setSelected(defaultDocumentIds);
       setStep(0);
       await refreshProject();
     } catch (err) { setError((err as Error).message); }
@@ -212,12 +220,12 @@ export function KnowledgeLab() {
           </div>}
 
           <div className="doc-section">
-            <div className="doc-section-head"><span className="doc-section-title">课程语料</span><small>{presetGridDocs.length} 篇预置密码学资料 · 供实验 06 基准评分使用</small><div className="doc-section-spacer" /><label className="corpus-check"><input type="checkbox" checked={allSelected} onChange={toggleSelectAll} aria-label="全选" /><span>{allSelected ? "取消全选" : "全选"}</span></label></div>
+            <div className="doc-section-head"><span className="doc-section-title">课程语料</span><div className="doc-section-spacer" /><label className="corpus-check"><input type="checkbox" checked={allSelected} onChange={toggleSelectAll} aria-label="全选" /><span>{allSelected ? "取消全选" : "全选"}</span></label></div>
             <div className="document-grid">
-              {presetGridDocs.map((document) => <article className={`document-card ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
+              {presetGridDocs.map((document) => <article className={`document-card user-document ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
                 <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
                 <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level}</small>{document.source_type && <em>{document.source_type}{document.source_date ? ` · ${document.source_date}` : ""}</em>}</div>
-                <button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button>
+                <div className="doc-actions"><button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button><button className="doc-delete" onClick={() => removePresetDocument(document.id)} aria-label={`移除 ${document.title}`}><Trash2 size={15} /></button></div>
               </article>)}
             </div>
           </div>
