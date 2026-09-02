@@ -190,7 +190,7 @@ export function KnowledgeLab() {
           <div className="parameter-title"><SlidersHorizontal size={18} /><div><strong>实验参数</strong><small>修改后重新构建</small></div></div>
           <label>Chunk Size <b>{chunkSize}</b><input type="range" min="128" max="1024" step="128" value={chunkSize} onChange={(event) => setChunkSize(Number(event.target.value))} /><span className="range-ends"><small>128</small><small>1024</small></span></label>
           <label>Chunk Overlap <b>{overlap}</b><input type="range" min="0" max="128" step="32" value={overlap} onChange={(event) => setOverlap(Number(event.target.value))} /><span className="range-ends"><small>0</small><small>128</small></span></label>
-          <label>Embedding Model<select value={bootstrap?.providers.embedding || ""} disabled><option>{bootstrap?.providers.embedding}</option></select><small className="field-help">确定性离线教学向量，便于零配置运行。</small></label>
+          <label>Embedding Model<select value={bootstrap?.providers.embedding || ""} disabled><option>{bootstrap?.providers.embedding}</option></select><small className="field-help">确定性向量算法，便于零配置运行与结果复现。</small></label>
           <div className="parameter-divider" />
           <label>Search Top-K <b>{topK}</b><input type="range" min="1" max="20" value={topK} onChange={(event) => setTopK(Number(event.target.value))} /></label>
           <label>Similarity Threshold <b>{threshold.toFixed(2)}</b><input type="range" min="-0.1" max="0.8" step="0.02" value={threshold} onChange={(event) => setThreshold(Number(event.target.value))} /><span className="range-ends"><small>噪声更多</small><small>过滤严格</small></span></label>

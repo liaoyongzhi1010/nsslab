@@ -37,13 +37,13 @@ export function ProviderConfig() {
 
     <section className="panel provider-card">
       <div className="provider-current">
-        <div className="provider-current-item"><i><Server size={16} /></i><div><small>Provider</small><strong>{llm.provider || providers.llm || "Local"}</strong></div></div>
-        <div className="provider-current-item"><i><Cpu size={16} /></i><div><small>模型</small><strong>{llm.model || "离线教学模型"}</strong></div></div>
-        <div className="provider-current-item"><i><Radio size={16} /></i><div><small>接入点</small><strong>{llm.endpoint_host || "本地"}</strong></div></div>
+        <div className="provider-current-item"><i><Server size={16} /></i><div><small>Provider</small><strong>{llm.provider || providers.llm || "未配置"}</strong></div></div>
+        <div className="provider-current-item"><i><Cpu size={16} /></i><div><small>模型</small><strong>{llm.model || "未配置"}</strong></div></div>
+        <div className="provider-current-item"><i><Radio size={16} /></i><div><small>接入点</small><strong>{llm.endpoint_host || "未配置"}</strong></div></div>
       </div>
 
       <div className={`provider-health ${configured ? "ok" : "warn"}`}>
-        {configured ? <><CheckCircle2 size={16} /> 连接正常，实验将使用真实模型推理。</> : <><ShieldCheck size={16} /> 当前使用本地离线模型，回答质量有限，仅用于教学演示。填写下方配置后可获得真实模型能力。</>}
+        {configured ? <><CheckCircle2 size={16} /> 连接正常，实验将使用真实模型推理。</> : <><ShieldCheck size={16} /> 尚未配置模型服务，应用类实验暂不可用。请在下方填写 API Key、Base URL 与模型名称后即可接入。</>}
         {llm.last_error && <span className="provider-error">最近错误：{llm.last_error}</span>}
       </div>
 
