@@ -1946,6 +1946,7 @@ class PlatformService:
             raise KeyError(f"未知实验编号: {exp_id}")
         runs = [r for r in self.runs.get(project_id, []) if r["type"] == run_type]
         obs = project.get("experiment_observations", {}).get(exp_id, {})
+        pdf = project.get("experiment_reports", {}).get(exp_id, {})
         latest_run = runs[-1] if runs else None
         return {
             "exp_id": exp_id,
@@ -1958,12 +1959,20 @@ class PlatformService:
                 "text": rich_text_plain(obs.get("html", "")),
                 "updated_at": obs.get("updated_at"),
             },
+            "report_pdf": {
+                "filename": pdf.get("filename"),
+                "size_bytes": pdf.get("size_bytes"),
+                "uploaded_at": pdf.get("uploaded_at"),
+            }
+            if pdf.get("filename")
+            else None,
         }
 
     def experiment_reports_summary(self, project_id: str) -> list[dict[str, Any]]:
         project = self.get_project(project_id)
         all_runs = self.runs.get(project_id, [])
         observations = project.get("experiment_observations", {})
+        reports = project.get("experiment_reports", {})
         result: list[dict[str, Any]] = []
         for exp_id in sorted(self.EXPERIMENT_RUN_TYPE_MAP):
             run_type = self.EXPERIMENT_RUN_TYPE_MAP[exp_id]
@@ -1976,6 +1985,7 @@ class PlatformService:
                     "label": self.EXPERIMENT_LABELS[exp_id],
                     "run_count": len(runs),
                     "has_observation": bool(obs.get("html")),
+                    "has_report_pdf": bool(reports.get(exp_id, {}).get("filename")),
                     "latest_run_at": latest["created_at"] if latest else None,
                     "observation_updated_at": obs.get("updated_at"),
                 }
@@ -1994,6 +2004,61 @@ class PlatformService:
             raise ValueError("观察和感想不能超过 20000 个字符")
         observations = project.setdefault("experiment_observations", {})
         observations[exp_id] = {"html": sanitized, "updated_at": now_iso()}
+        self._persist()
+        return self.experiment_report(project_id, exp_id)
+
+    @synchronized
+    def upload_experiment_report_pdf(
+        self, project_id: str, exp_id: str, filename: str, data: bytes
+    ) -> dict[str, Any]:
+        project = self.get_project(project_id)
+        if exp_id not in self.EXPERIMENT_RUN_TYPE_MAP:
+            raise KeyError(f"未知实验编号: {exp_id}")
+        if not data:
+            raise ValueError("上传文件为空")
+        if not data.startswith(b"%PDF-"):
+            raise ValueError("报告必须是有效的 PDF 文件")
+        if len(data) > self.max_upload_bytes:
+            raise ValueError("报告 PDF 不能超过 10 MB")
+        safe_name = self._safe_filename(filename)
+        if Path(safe_name).suffix.lower() != ".pdf":
+            raise ValueError("报告文件必须是 PDF 格式")
+        reports_dir = self.upload_root / project_id / "reports"
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        storage_path = reports_dir / f"{exp_id}.pdf"
+        storage_path.write_bytes(data)
+        reports = project.setdefault("experiment_reports", {})
+        reports[exp_id] = {
+            "filename": safe_name,
+            "size_bytes": len(data),
+            "uploaded_at": now_iso(),
+            "storage_path": str(storage_path),
+        }
+        self._persist()
+        return self.experiment_report(project_id, exp_id)
+
+    def experiment_report_pdf_path(
+        self, project_id: str, exp_id: str
+    ) -> tuple[str, str]:
+        project = self.get_project(project_id)
+        pdf = project.get("experiment_reports", {}).get(exp_id, {})
+        storage_path = pdf.get("storage_path")
+        if not storage_path or not Path(storage_path).exists():
+            raise KeyError("该实验尚未上传报告 PDF")
+        return storage_path, pdf.get("filename", f"{exp_id}.pdf")
+
+    @synchronized
+    def delete_experiment_report_pdf(
+        self, project_id: str, exp_id: str
+    ) -> dict[str, Any]:
+        project = self.get_project(project_id)
+        reports = project.get("experiment_reports", {})
+        pdf = reports.pop(exp_id, None)
+        if pdf and pdf.get("storage_path"):
+            try:
+                Path(pdf["storage_path"]).unlink(missing_ok=True)
+            except OSError:
+                pass
         self._persist()
         return self.experiment_report(project_id, exp_id)
 

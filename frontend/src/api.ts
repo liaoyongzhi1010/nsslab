@@ -71,4 +71,11 @@ export const api = {
   saveExperimentObservation: (id: string, expId: string, html: string) => request<Dict>(`/api/reports/${id}/experiments/${expId}/observation`, {
     method: "PUT", headers: jsonHeaders, body: JSON.stringify({ html }),
   }),
+  uploadExperimentReportPdf: async (id: string, expId: string, file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return request<Dict>(`/api/reports/${id}/experiments/${expId}/pdf`, { method: "POST", body: form });
+  },
+  experimentReportPdfUrl: (id: string, expId: string) => `/api/reports/${id}/experiments/${expId}/pdf?t=${Date.now()}`,
+  deleteExperimentReportPdf: (id: string, expId: string) => request<Dict>(`/api/reports/${id}/experiments/${expId}/pdf`, { method: "DELETE" }),
 };

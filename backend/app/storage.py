@@ -319,6 +319,17 @@ def _as_datetime(value: Any) -> datetime:
     return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
 
 
+def _exp_json_section(raw: Any, section: str) -> dict:
+    """读取 experiment_observations_json；兼容旧的扁平结构（直接是 observations）。"""
+    if not isinstance(raw, dict):
+        return {}
+    if "observations" in raw or "reports" in raw:
+        value = raw.get(section)
+        return value if isinstance(value, dict) else {}
+    # 旧结构：整个 JSON 就是 observations
+    return raw if section == "observations" else {}
+
+
 class StateRepository:
     """结构化 SQLAlchemy 持久层；正式环境使用 PostgreSQL + pgvector。"""
 
@@ -516,9 +527,13 @@ class StateRepository:
                     if row.observation_updated_at
                     else None,
                     "experiment_observations": deepcopy(
-                        row.experiment_observations_json
-                    )
-                    or {},
+                        _exp_json_section(
+                            row.experiment_observations_json, "observations"
+                        )
+                    ),
+                    "experiment_reports": deepcopy(
+                        _exp_json_section(row.experiment_observations_json, "reports")
+                    ),
                     "current_stage": row.current_stage,
                     "kb": kb,
                     "rag": rag,
@@ -562,10 +577,14 @@ class StateRepository:
                         )
                         if project.get("observation_updated_at")
                         else None,
-                        experiment_observations_json=deepcopy(
-                            project.get("experiment_observations")
-                        )
-                        or None,
+                        experiment_observations_json={
+                            "observations": deepcopy(
+                                project.get("experiment_observations") or {}
+                            ),
+                            "reports": deepcopy(
+                                project.get("experiment_reports") or {}
+                            ),
+                        },
                         current_stage=project.get("current_stage", 1),
                         owner_id=project.get("owner_id"),
                     )

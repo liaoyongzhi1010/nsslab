@@ -623,3 +623,51 @@ def save_experiment_observation(
         )
     except Exception as error:
         handle_error(error)
+
+
+@app.post("/api/reports/{project_id}/experiments/{exp_id}/pdf", status_code=201)
+async def upload_experiment_report_pdf(
+    project_id: str,
+    exp_id: str,
+    user: Annotated[dict[str, Any], Depends(current_user)],
+    file: UploadFile = File(...),
+):
+    try:
+        authorize_project(project_id, user)
+        data = await file.read(platform_service.max_upload_bytes + 1)
+        return platform_service.upload_experiment_report_pdf(
+            project_id, exp_id, file.filename or "report.pdf", data
+        )
+    except Exception as error:
+        handle_error(error)
+    finally:
+        await file.close()
+
+
+@app.get("/api/reports/{project_id}/experiments/{exp_id}/pdf")
+def get_experiment_report_pdf(
+    project_id: str, exp_id: str, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(project_id, user)
+        path, filename = platform_service.experiment_report_pdf_path(project_id, exp_id)
+        return FileResponse(
+            path,
+            media_type="application/pdf",
+            filename=filename,
+            content_disposition_type="inline",
+            headers={"Cache-Control": "no-store"},
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.delete("/api/reports/{project_id}/experiments/{exp_id}/pdf")
+def delete_experiment_report_pdf(
+    project_id: str, exp_id: str, user: Annotated[dict[str, Any], Depends(current_user)]
+):
+    try:
+        authorize_project(project_id, user)
+        return platform_service.delete_experiment_report_pdf(project_id, exp_id)
+    except Exception as error:
+        handle_error(error)

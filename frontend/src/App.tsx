@@ -6,6 +6,7 @@ import { AgentLoopLab } from "./pages/AgentLoopLab";
 import { CptLab } from "./pages/CptLab";
 import { Dashboard } from "./pages/Dashboard";
 import { DataLab } from "./pages/DataLab";
+import { ExperimentReportPage } from "./pages/ExperimentReportPage";
 import { KnowledgeLab } from "./pages/KnowledgeLab";
 import { LoginPage } from "./pages/LoginPage";
 import { MultiAgentLab } from "./pages/MultiAgentLab";
@@ -37,6 +38,7 @@ function AuthenticatedApp() {
     <Route path="/lab/multi-agent" element={<MultiAgentLab />} />
     <Route path="/lab/agent-legacy" element={<AgentLab />} />
     <Route path="/provider" element={<ProviderConfig />} />
+    <Route path="/report/experiment/:expId" element={<ExperimentReportPage />} />
     <Route path="/report/:projectId?" element={<ReportPage />} />
   </Route></Routes>;
 }

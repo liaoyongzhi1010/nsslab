@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Check, Clipboard, Download, FileJson, FileText, Gauge, GitCompareArrows, LoaderCircle, NotebookPen, Sparkles } from "lucide-react";
+import { Check, Clipboard, Download, FileJson, FileText, Gauge, GitCompareArrows, LoaderCircle, Sparkles } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, LoadingBlock, Pill } from "../components/UI";
@@ -110,7 +110,7 @@ export function ReportPage() {
     }
   };
 
-  return <div className="report-page"><div className="page-title"><div><Pill tone="mint">REPORT CENTER</Pill><h1>实验报告<span>中心</span></h1><p>10 个实验各自独立成卡；点击卡片进入对应实验查看 A/B 结果并撰写观察。下方可导出完整报告。</p></div><div><div className="report-actions"><button className="btn ghost compact" onClick={() => void download("json")}><FileJson size={15} /> JSON</button><button className="btn ghost compact" onClick={() => void download("md")}><Download size={15} /> Markdown</button><button className="btn ghost compact" disabled={exporting !== null} onClick={() => void downloadDocument("pdf")}><FileText size={15} /> {exporting === "pdf" ? "正在生成…" : "导出 PDF"}</button><button className="btn primary compact" disabled={exporting !== null} onClick={() => void downloadDocument("docx")}><FileText size={15} /> {exporting === "docx" ? "正在生成…" : "导出 Word (.docx)"}</button></div>{exportError && <p className="export-error" role="alert">{exportError}</p>}</div></div>
+  return <div className="report-page"><div className="page-title"><div><Pill tone="mint">REPORT CENTER</Pill><h1>实验报告<span>中心</span></h1><p>顶部是本项目总记录；下面 10 个实验各自成卡，点击进入该实验的报告页查看 A/B 摘要、撰写 LaTeX 报告并上传 PDF。</p></div><div><div className="report-actions"><button className="btn ghost compact" onClick={() => void download("json")}><FileJson size={15} /> JSON</button><button className="btn ghost compact" onClick={() => void download("md")}><Download size={15} /> Markdown</button><button className="btn ghost compact" disabled={exporting !== null} onClick={() => void downloadDocument("pdf")}><FileText size={15} /> {exporting === "pdf" ? "正在生成…" : "导出 PDF"}</button><button className="btn primary compact" disabled={exporting !== null} onClick={() => void downloadDocument("docx")}><FileText size={15} /> {exporting === "docx" ? "正在生成…" : "导出 Word (.docx)"}</button></div>{exportError && <p className="export-error" role="alert">{exportError}</p>}</div></div>
 
     <section className="report-hero panel"><div><span>CRYPTO LAB PROGRESS</span><h2>{project.name}</h2><p>{completedCount} / 10 个实验已运行 · {observedCount} 篇实验观察{project.is_ended ? " · 历史实验（只读）" : ""}</p></div><div className="overall-score"><Gauge /><strong>{Math.round(completedCount / 10 * 100)}<small>%</small></strong><span>实验完成度</span></div></section>
 
@@ -121,14 +121,13 @@ export function ReportPage() {
           const expId = String(exp.index).padStart(2, "0");
           const s = summaryById[expId];
           const ran = s && s.run_count > 0;
-          const observed = s && s.has_observation;
-          return <button className={`report-exp-card ${ran ? "ran" : ""}`} key={expId} onClick={() => navigate(exp.route)}>
+          return <button className={`report-exp-card ${ran ? "ran" : ""}`} key={expId} onClick={() => navigate(`/report/experiment/${expId}`)}>
             <div className="report-exp-top"><span className="exp-index">实验 {expId}</span><Pill tone={exp.mode === "真实" ? "mint" : exp.mode === "仿真" ? "neutral" : "blue"}>{exp.mode}</Pill></div>
             <strong>{exp.title}</strong>
             <div className="report-exp-ab"><span className="ab-off">{exp.off}</span><GitCompareArrows size={13} /><span className="ab-on">{exp.on}</span></div>
             <div className="report-exp-foot">
               <span className={ran ? "status ok" : "status idle"}>{ran ? <><Check size={12} /> 已运行 {s.run_count} 次</> : "尚未运行"}</span>
-              <span className={observed ? "status ok" : "status idle"}>{observed ? <><NotebookPen size={12} /> 已写观察</> : "无观察"}</span>
+              <span className={s?.has_report_pdf ? "status ok" : "status idle"}>{s?.has_report_pdf ? <><FileText size={12} /> 已交报告</> : "未交报告"}</span>
             </div>
           </button>;
         })}
