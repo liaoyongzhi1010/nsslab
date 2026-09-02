@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, ClipboardCheck, Clock, Filter, Gauge, RefreshCw, Save, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ClipboardCheck, Clock, Download, Filter, Gauge, RefreshCw, Save, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, LoadingBlock, Pill } from "../components/UI";
@@ -68,6 +68,7 @@ function OverrideEditor({ submission, onClose, onSaved }: { submission: Dict; on
     <div className="grading-override-head">
       <div><strong>{submission.student_name || submission.owner_id || "未知学生"} · 实验 {submission.exp_id}</strong><small>{submission.filename}</small></div>
       <div className="grading-override-actions">
+        <a className="btn ghost compact" href={api.experimentReportPdfUrl(submission.project_id, submission.exp_id)} target="_blank" rel="noreferrer"><Download size={14} /> 下载 PDF</a>
         <button className="btn ghost compact" type="button" onClick={regrade} disabled={saving}><RefreshCw size={14} /> 重新评分</button>
         <button className="btn ghost compact" type="button" onClick={onClose}>关闭</button>
       </div>
@@ -75,9 +76,11 @@ function OverrideEditor({ submission, onClose, onSaved }: { submission: Dict; on
     {grading?.error && <div className="provider-msg err">评分状态：{STATUS_LABEL[grading.status] || grading.status} · {grading.error}</div>}
     <div className="grading-override-items">
       {items.map((it, i) => <div className="grading-override-row" key={it.rubric_item_id}>
-        <div className="grading-override-desc"><span>{i + 1}. {it.description}</span><small>满分 {it.max} 分</small></div>
-        <div className="grading-override-score"><input type="number" min={0} max={it.max} value={it.score} onChange={(e) => updateItem(i, { score: Number(e.target.value) })} /><small>/ {it.max}</small></div>
-        <input className="grading-override-comment" value={it.comment} placeholder="点评（可选）" maxLength={2000} onChange={(e) => updateItem(i, { comment: e.target.value })} />
+        <div className="grading-override-top">
+          <div className="grading-override-desc"><span>{i + 1}. {it.description}</span><small>满分 {it.max} 分</small></div>
+          <div className="grading-override-score"><input type="number" min={0} max={it.max} value={it.score} onChange={(e) => updateItem(i, { score: Number(e.target.value) })} /><small>/ {it.max}</small></div>
+        </div>
+        <textarea className="grading-override-comment" rows={2} value={it.comment} placeholder="点评（可选）" maxLength={2000} onChange={(e) => updateItem(i, { comment: e.target.value })} />
       </div>)}
     </div>
     <div className="grading-override-total">最终总分 <strong>{total}</strong> / {items.reduce((s, it) => s + it.max, 0)}</div>
@@ -172,6 +175,7 @@ function SubmissionQueue() {
           <span><Pill tone={STATUS_TONE[row.status] || "neutral"}>{STATUS_LABEL[row.status] || row.status}{row.overridden ? " · 已复核" : ""}</Pill></span>
           <span className="grading-cell-total">{row.total != null ? `${row.total} / ${row.max_total ?? "—"}` : "—"}</span>
           <span className="grading-cell-actions">
+            <a className="btn ghost compact" href={api.experimentReportPdfUrl(row.project_id, row.exp_id)} target="_blank" rel="noreferrer"><Download size={13} /></a>
             <button className="btn ghost compact" type="button" disabled={busy === key} onClick={() => regrade(row)}><RefreshCw size={13} /> 重新评分</button>
             <button className="btn ghost compact" type="button" onClick={() => setActive(row)}>复核</button>
           </span>

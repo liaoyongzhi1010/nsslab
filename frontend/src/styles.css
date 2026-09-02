@@ -1033,14 +1033,15 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .grading-override-head strong { display: block; color: var(--text); font-size: calc(14px * var(--font-scale)); }
 .grading-override-head small { color: var(--faint); font-size: calc(12px * var(--font-scale)); }
 .grading-override-actions { display: flex; gap: 6px; }
-.grading-override-items { display: flex; flex-direction: column; gap: 10px; }
-.grading-override-row { display: grid; grid-template-columns: 1.4fr auto 1.6fr; align-items: center; gap: 10px; }
-.grading-override-desc span { color: var(--text); font-size: calc(13px * var(--font-scale)); }
-.grading-override-desc small { display: block; color: var(--faint); font-size: calc(11px * var(--font-scale)); }
+.grading-override-items { display: flex; flex-direction: column; gap: 14px; }
+.grading-override-row { display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.grading-override-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.grading-override-desc span { color: var(--text); font-size: calc(13px * var(--font-scale)); line-height: 1.6; }
+.grading-override-desc small { display: block; color: var(--faint); font-size: calc(11px * var(--font-scale)); margin-top: 2px; }
 .grading-override-score { display: flex; align-items: center; gap: 5px; }
 .grading-override-score input { width: 70px; padding: calc(8px * var(--font-scale)) 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); text-align: center; font-size: calc(13px * var(--font-scale)); }
 .grading-override-score small { color: var(--faint); font-size: calc(12px * var(--font-scale)); }
-.grading-override-comment { padding: calc(8px * var(--font-scale)) 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: calc(12px * var(--font-scale)); }
+.grading-override-comment { width: 100%; padding: calc(8px * var(--font-scale)) 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); color: var(--text); font-size: calc(12px * var(--font-scale)); line-height: 1.6; resize: vertical; }
 .grading-override-total { margin: 14px 0 4px; color: var(--muted); font-size: calc(13px * var(--font-scale)); }
 .grading-override-total strong { color: var(--mint); font: 600 16px "IBM Plex Mono"; }
 
