@@ -882,6 +882,49 @@ def test_delete_uploaded_document_removes_it_and_rejects_presets():
     assert preset.status_code in (400, 404)
 
 
+def test_bulk_delete_and_reset_knowledge_base():
+    project = client.post("/api/projects", json={"name": "批量删除与重做"}).json()
+    pid = project["id"]
+    ids = []
+    for i in range(3):
+        up = client.post(
+            "/api/documents/upload",
+            data={"project_id": pid},
+            files={"file": (f"note{i}.txt", f"上传资料 {i}", "text/plain")},
+        )
+        assert up.status_code == 201
+        ids.append(up.json()["id"])
+
+    bulk = client.post(
+        "/api/documents/bulk-delete",
+        json={"project_id": pid, "document_ids": ids[:2]},
+    )
+    assert bulk.status_code == 200
+    assert set(bulk.json()["deleted"]) == set(ids[:2])
+    remaining = [d["id"] for d in client.get(f"/api/projects/{pid}/documents").json()]
+    assert ids[2] in remaining and ids[0] not in remaining
+
+    build = client.post(
+        "/api/kb/build",
+        json={
+            "project_id": pid,
+            "document_ids": ["aes", "rsa"],
+            "chunk_size": 256,
+            "overlap": 32,
+        },
+    )
+    assert build.status_code == 200
+    assert client.get(f"/api/projects/{pid}").json()["stats"]["knowledge_base"]
+
+    reset = client.post("/api/kb/reset", json={"project_id": pid})
+    assert reset.status_code == 200
+    assert not reset.json()["stats"]["knowledge_base"]
+    # 重做不会删除已上传资料
+    assert ids[2] in [
+        d["id"] for d in client.get(f"/api/projects/{pid}/documents").json()
+    ]
+
+
 def test_upload_rejects_unsupported_binary_and_oversize():
     project = client.post("/api/projects", json={"name": "上传安全测试"}).json()
     unsupported = client.post(

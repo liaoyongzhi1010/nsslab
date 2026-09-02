@@ -157,6 +157,13 @@ class ProjectScopedRequest(BaseModel):
     project_id: str
 
 
+class DocumentBulkDeleteRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    project_id: str
+    document_ids: list[str] = Field(min_length=1, max_length=200)
+
+
 class TaskScopedRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

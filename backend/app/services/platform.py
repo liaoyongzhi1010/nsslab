@@ -496,7 +496,8 @@ class PlatformService:
         if suffix == ".pdf":
             if not data.startswith(b"%PDF-"):
                 raise ValueError("文件扩展名为 PDF，但内容不是有效 PDF")
-            parsed_text, parser_meta = self._parse_pdf(data)
+            parsed_text, parser_meta = self._parse_pdf(data, allow_empty=True)
+            parser_meta = {**parser_meta, "parse_method": "pypdf", "vlm_parsed": False}
             file_kind, accent = "pdf", "#ff7285"
         else:
             parsed_text = self._decode_text(data)
@@ -564,6 +565,33 @@ class PlatformService:
                 pass
         return {"deleted": document_id}
 
+    @synchronized
+    def delete_documents(
+        self, project_id: str, document_ids: list[str]
+    ) -> dict[str, Any]:
+        """批量删除学生上传的资料；忽略预置文档与不存在项。"""
+        project = self.get_project(project_id)
+        self._require_current_project(project)
+        documents = project.get("documents", {})
+        removed: list[str] = []
+        paths: list[str] = []
+        for document_id in document_ids:
+            document = documents.get(document_id)
+            if document is None or document.get("source") != "upload":
+                continue
+            if document.get("storage_path"):
+                paths.append(document["storage_path"])
+            documents.pop(document_id, None)
+            removed.append(document_id)
+        if removed:
+            self._persist()
+        for path in paths:
+            try:
+                Path(path).unlink(missing_ok=True)
+            except OSError:
+                pass
+        return {"deleted": removed}
+
     @staticmethod
     def _safe_filename(filename: str) -> str:
         name = Path(filename.replace("\\", "/")).name
@@ -588,7 +616,9 @@ class PlatformService:
         return text.replace("\r\n", "\n").replace("\r", "\n")
 
     @staticmethod
-    def _parse_pdf(data: bytes) -> tuple[str, dict[str, Any]]:
+    def _parse_pdf(
+        data: bytes, allow_empty: bool = False
+    ) -> tuple[str, dict[str, Any]]:
         try:
             reader = PdfReader(BytesIO(data), strict=True)
             if reader.is_encrypted:
@@ -605,6 +635,13 @@ class PlatformService:
         except Exception as error:
             raise ValueError("PDF 文件损坏或格式无法解析") from error
         if not pages:
+            if allow_empty:
+                placeholder = "（本 PDF 未提取到文字层，可能是扫描件；请在“解析文本”步用 VLM 转换为 Markdown。）"
+                return placeholder, {
+                    "parsed_format": "PDF Scan",
+                    "pages": len(reader.pages),
+                    "needs_vlm": True,
+                }
             raise ValueError("PDF 未检测到可提取文字；扫描版 PDF 需要先进行 OCR")
         content = "\n\n".join(pages)
         return content, {"parsed_format": "PDF Text", "pages": len(reader.pages)}
@@ -748,12 +785,52 @@ class PlatformService:
         return documents
 
     def kb_parse(self, project_id: str, document_ids: list[str]) -> dict[str, Any]:
-        """实验步骤：解析。把每份原始资料读成结构化文本，暴露格式、字数与标题树。"""
-        self._require_current_project(self.get_project(project_id))
+        """实验步骤：解析。把每份原始资料读成结构化文本；上传的 PDF 优先用 VLM 转 Markdown，未配置 VLM 时回退 pypdf。"""
+        project = self.get_project(project_id)
+        self._require_current_project(project)
         started = time.perf_counter()
         documents = self._resolve_documents(project_id, document_ids)
+        vlm = self.vlm if isinstance(self.vlm, VLMProvider) else None
+        vlm_ready = vlm is not None and vlm.settings.remote_configured
+        stored = project.get("documents", {})
         parsed: list[dict[str, Any]] = []
+        dirty = False
         for document in documents:
+            parse_method = document.get("parse_method")
+            parse_note = None
+            is_upload_pdf = (
+                document.get("source") == "upload"
+                and document.get("file_kind") == "pdf"
+            )
+            if (
+                is_upload_pdf
+                and vlm is not None
+                and vlm_ready
+                and not document.get("vlm_parsed")
+            ):
+                storage_path = document.get("storage_path")
+                try:
+                    if not storage_path or not Path(storage_path).exists():
+                        raise ValueError("找不到原始 PDF 文件")
+                    images = self.rasterize_pdf(Path(storage_path).read_bytes())
+                    markdown = vlm.to_markdown(images)
+                    document["content"] = markdown[:1_500_000]
+                    document["parsed_format"] = "VLM Markdown"
+                    document["parse_method"] = parse_method = "vlm"
+                    document["vlm_parsed"] = True
+                    document["needs_vlm"] = False
+                    if document["id"] in stored:
+                        dirty = True
+                    parse_note = f"已用 {vlm.settings.model} 转换为 Markdown"
+                except Exception as error:
+                    parse_method = document.get("parse_method", "pypdf")
+                    parse_note = f"VLM 解析失败，回退 pypdf：{error}"
+            elif is_upload_pdf and not vlm_ready:
+                parse_method = document.get("parse_method", "pypdf")
+                if document.get("needs_vlm"):
+                    parse_note = "未配置 VLM，扫描件无法提取文字；配置后可重新解析"
+                else:
+                    parse_note = "未配置 VLM，使用 pypdf 文本抽取"
             content = document["content"].strip()
             headings = [
                 line.removeprefix("#").strip()
@@ -768,6 +845,9 @@ class PlatformService:
                     "filename": document["filename"],
                     "file_kind": document.get("file_kind", "markdown"),
                     "format": document.get("parsed_format", "Markdown"),
+                    "parse_method": parse_method
+                    or ("markdown" if document.get("file_kind") != "pdf" else "pypdf"),
+                    "parse_note": parse_note,
                     "accent": document["accent"],
                     "chars": len(content),
                     "tokens": estimate_tokens(content),
@@ -784,11 +864,14 @@ class PlatformService:
                     "preview": preview,
                 }
             )
+        if dirty:
+            self._persist()
         elapsed = round((time.perf_counter() - started) * 1000, 2)
         return {
             "document_count": len(parsed),
             "total_chars": sum(row["chars"] for row in parsed),
             "total_sections": sum(row["section_count"] for row in parsed),
+            "vlm_ready": vlm_ready,
             "latency_ms": elapsed,
             "documents": parsed,
         }
@@ -853,6 +936,21 @@ class PlatformService:
             "latency_ms": elapsed,
             "chunks": embedded,
         }
+
+    @synchronized
+    def reset_knowledge_base(self, project_id: str) -> dict[str, Any]:
+        """重做本实验：清空已建知识库与 RAG 结果，向导回到起点；不删除已上传资料。"""
+        project = self.get_project(project_id)
+        self._require_current_project(project)
+        project["kb"] = None
+        project["rag"] = None
+        project["current_stage"] = 1
+        runs = self.runs.get(project_id, [])
+        self.runs[project_id] = [
+            run for run in runs if run["type"] not in {"knowledge_base", "rag"}
+        ]
+        self._persist()
+        return self.project_status(project_id)
 
     @synchronized
     def build_kb(

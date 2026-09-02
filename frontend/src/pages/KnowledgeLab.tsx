@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Box, Check, Code2, Database, Download, ExternalLink, FileCode2, FileText, FileType2, Info, LoaderCircle, Play, Search, Sparkles, Trash2, UploadCloud, X } from "lucide-react";
+import { ArrowRight, Box, Check, ChevronRight, Code2, Database, Download, ExternalLink, FileCode2, FileText, FileType2, Info, LoaderCircle, Play, RotateCcw, Search, Sparkles, Trash2, UploadCloud, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { EmptyState, Metric, Pill, StepNav, Stepper, type StepMeta } from "../components/UI";
@@ -43,6 +43,7 @@ export function KnowledgeLab() {
   const [threshold, setThreshold] = useState(0.02);
   const [preview, setPreview] = useState<Dict | null>(null);
   const [activeChunk, setActiveChunk] = useState<Dict | null>(null);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [error, setError] = useState("");
   const selectionTouched = useRef(false);
   const paramsTouched = useRef(false);
@@ -112,6 +113,25 @@ export function KnowledgeLab() {
     } catch (err) { setError((err as Error).message); }
   };
 
+  const bulkDeleteUploaded = async () => {
+    const ids = uploadedDocs.map((d) => d.id);
+    if (!ids.length) return;
+    setError("");
+    try {
+      await api.bulkDeleteDocuments(project.id, ids);
+      setDocuments((current) => current.filter((item) => item.source !== "upload"));
+      setSelected((current) => current.filter((id) => !ids.includes(id)));
+    } catch (err) { setError((err as Error).message); }
+  };
+
+  const allVisibleIds = allDocs.map((d: Dict) => d.id);
+  const allSelected = allVisibleIds.length > 0 && allVisibleIds.every((id: string) => selected.includes(id));
+  const toggleSelectAll = () => setSelected(allSelected ? [] : allVisibleIds);
+  const toggleGroup = (ids: string[]) => setSelected((current) => {
+    const on = ids.every((id) => current.includes(id));
+    return on ? current.filter((id) => !ids.includes(id)) : [...new Set([...current, ...ids])];
+  });
+
   const runParse = async () => {
     setError(""); setBusy(true);
     try { setParseResult(await api.kbParse({ project_id: project.id, document_ids: selected })); }
@@ -145,12 +165,22 @@ export function KnowledgeLab() {
     finally { setBusy(false); }
   };
 
+  const resetExperiment = async () => {
+    setError("");
+    try {
+      await api.resetKb(project.id);
+      setKb(null); setParseResult(null); setChunkResult(null); setEmbedResult(null); setSearchResult(null);
+      setStep(0);
+      await refreshProject();
+    } catch (err) { setError((err as Error).message); }
+  };
+
   const goNext = () => setStep((s) => Math.min(s + 1, 5));
   const goBack = () => setStep((s) => Math.max(s - 1, 0));
 
   return (
     <div className="lab-page">
-      <div className="page-title"><div><Pill tone="blue">实验 05 · 知识工程</Pill><h1>从密码学资料到<span>向量知识库</span></h1><p>把文档加工为可检索知识。每一步都是一个独立小实验：先看清这一步做什么，再亲手运行、观察它真实的中间产物。</p></div></div>
+      <div className="page-title"><div><Pill tone="blue">实验 05 · 知识工程</Pill><h1>从密码学资料到<span>向量知识库</span></h1><p>把文档加工为可检索知识。每一步都是一个独立小实验：先看清这一步做什么，再亲手运行、观察它真实的中间产物。</p></div>{(kb || completed > 0) && <button className="btn ghost compact reset-exp" onClick={resetExperiment} title="清空已建知识库并回到第一步"><RotateCcw size={14} />重新开始本实验</button>}</div>
 
       <Stepper steps={steps} current={step} furthest={completed} onSelect={setStep} />
 
@@ -170,31 +200,33 @@ export function KnowledgeLab() {
           >
             <input ref={fileInput} type="file" multiple hidden aria-label="上传密码学资料" accept=".txt,.md,.markdown,.pdf,.py,.js,.jsx,.ts,.tsx,.java,.c,.h,.cpp,.hpp,.cc,.go,.rs,.sol,.json,.yaml,.yml,.toml,.sh,.sql,.html,.css" onChange={(event) => event.target.files && void uploadFiles(event.target.files)} />
             <div className="upload-icon"><UploadCloud size={22} /></div>
-            <div><strong>{uploading ? "正在安全解析资料…" : "拖拽资料到这里，或选择文件"}</strong><span>TXT / Markdown / PDF / Code · 单文件不超过 10 MB · 代码只解析，不执行</span></div>
+            <div><strong>{uploading ? "正在安全解析资料…" : "拖拽资料到这里，或选择文件"}</strong><span>支持 TXT / Markdown / PDF / Code · 单文件 ≤ 10 MB · PDF 将在下一步用 VLM 转 Markdown</span></div>
             <button className="btn ghost compact" disabled={uploading} onClick={() => fileInput.current?.click()}>{uploading ? "解析中…" : "选择文件"}</button>
           </div>
           {uploadMessage && <div className="upload-success"><Check size={14} />{uploadMessage}</div>}
 
-          {uploadedDocs.length > 0 && <div className="doc-section">
-            <div className="doc-section-head"><span className="doc-section-title">我的上传</span><small>{uploadedDocs.length} 份 · 可删除</small></div>
-            <div className="document-grid">
-              {uploadedDocs.map((document) => <article className={`document-card user-document ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
-                <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
-                <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level} · 已上传</small></div>
-                <div className="doc-actions"><button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button><button className="doc-delete" onClick={() => deleteDocument(document.id)} aria-label={`删除 ${document.title}`}><Trash2 size={15} /></button></div>
-              </article>)}
-            </div>
-          </div>}
+          <div className="corpus-toolbar">
+            <label className="corpus-check"><input type="checkbox" checked={allSelected} onChange={toggleSelectAll} aria-label="全选" /><span>{allSelected ? "取消全选" : "全选"}</span></label>
+            <span className="corpus-count">已选 <b>{selected.length}</b> / {allDocs.length} 份</span>
+            <div className="corpus-toolbar-spacer" />
+            {uploadedDocs.length > 0 && <button className="btn ghost compact danger" onClick={bulkDeleteUploaded}><Trash2 size={14} />清空我的上传（{uploadedDocs.length}）</button>}
+          </div>
 
-          <div className="doc-section">
-            <div className="doc-section-head"><span className="doc-section-title">课程语料</span><small>{presetGridDocs.length} 篇预置密码学资料 · 供实验 06 基准评分使用</small></div>
-            <div className="document-grid">
-              {presetGridDocs.map((document) => <article className={`document-card ${selected.includes(document.id) ? "selected" : ""}`} key={document.id} style={{ "--doc-color": document.accent } as React.CSSProperties}>
-                <button className="doc-select" aria-label={`选择 ${document.title}`} onClick={() => toggleDocument(document.id)}>{selected.includes(document.id) && <Check size={13} />}</button>
-                <div className="doc-file">{document.file_kind === "code" ? <Code2 size={21} /> : document.file_kind === "pdf" ? <FileType2 size={21} /> : <FileText size={21} />}</div><div className="doc-copy"><strong>{document.filename}</strong><span>{document.title}</span><small>{document.category} · {document.file_kind === "code" ? document.language : document.level}</small>{document.source_type && <em>{document.source_type}{document.source_date ? ` · ${document.source_date}` : ""}</em>}</div>
-                <button className="doc-preview" onClick={() => api.document(document.id, project.id).then(setPreview)} aria-label={`预览 ${document.title}`}><FileCode2 size={15} /></button>
-              </article>)}
-            </div>
+          {uploadedDocs.length > 0 && <CorpusGroup
+            title="我的上传" caption={`${uploadedDocs.length} 份 · 可删除`}
+            docs={uploadedDocs} collapsed={!!collapsed["__upload"]} onToggleCollapse={() => setCollapsed((c) => ({ ...c, __upload: !c.__upload }))}
+            selected={selected} onToggle={toggleDocument} onToggleGroup={toggleGroup}
+            onPreview={(id) => api.document(id, project.id).then(setPreview)} onDelete={deleteDocument} projectId={project.id} />}
+
+          <div className="corpus-groups">
+            {Array.from(new Set(presetGridDocs.map((d: Dict) => d.category))).map((cat) => {
+              const docs = presetGridDocs.filter((d: Dict) => d.category === cat);
+              return <CorpusGroup key={cat}
+                title={cat} caption={`${docs.length} 篇`}
+                docs={docs} collapsed={!!collapsed[cat]} onToggleCollapse={() => setCollapsed((c) => ({ ...c, [cat]: !c[cat] }))}
+                selected={selected} onToggle={toggleDocument} onToggleGroup={toggleGroup}
+                onPreview={(id) => api.document(id, project.id).then(setPreview)} projectId={project.id} />;
+            })}
           </div>
           <StepNav onNext={goNext} nextDisabled={selected.length === 0} nextHint={selected.length === 0 ? "至少选择一份资料才能继续" : `已选 ${selected.length} 份，进入解析`} backDisabled />
         </section>
@@ -203,9 +235,10 @@ export function KnowledgeLab() {
       {step === 1 && (
         <section className="panel step-panel">
           <StepHead kicker="STEP 02 / 06" title="解析文本"
-            why="不同格式（Markdown / PDF / 源码）需要先统一读成纯文本，并抽出标题结构。解析质量决定后面切分是否踩在语义边界上。" />
-          <RunBar label="解析所选资料" hint={`将读取 ${selected.length} 份资料的正文与标题树`} done={!!parseResult} busy={busy} onRun={runParse} runLabel={parseResult ? "重新解析" : "运行解析"} />
+            why="不同格式要先统一读成干净文本。TXT / Markdown / 代码直接读取；上传的 PDF 会逐页转成图片交给 VLM 还原为 Markdown（表格、公式、扫描件都能处理），未配置 VLM 时回退 pypdf 文本抽取。" />
+          <RunBar label="解析所选资料" hint={`将读取 ${selected.length} 份资料；PDF 优先走 VLM 转 Markdown`} done={!!parseResult} busy={busy} onRun={runParse} runLabel={parseResult ? "重新解析" : "运行解析"} />
           {parseResult && <>
+            {parseResult.vlm_ready === false && parseResult.documents.some((d: Dict) => d.file_kind === "pdf") && <div className="stale-note"><Info size={15} /><span>未配置阅卷/解析 VLM，PDF 使用 pypdf 文本抽取；扫描件可能无法提取文字。配置 VLM 后重新解析即可转为高质量 Markdown。</span></div>}
             <div className="step-stat-row">
               <Metric label="文档" value={parseResult.document_count} />
               <Metric label="总字符" value={parseResult.total_chars} tone="blue" />
@@ -215,11 +248,11 @@ export function KnowledgeLab() {
             <div className="parse-doc-list">
               {parseResult.documents.map((doc: Dict) => <button key={doc.id} className="parse-doc-card" style={{ "--doc-color": doc.accent } as React.CSSProperties} onClick={() => api.document(doc.id, project.id).then(setPreview)}>
                 <i>{doc.file_kind === "code" ? <Code2 size={17} /> : doc.file_kind === "pdf" ? <FileType2 size={17} /> : <FileText size={17} />}</i>
-                <div className="parse-doc-copy"><strong>{doc.title}</strong><small>{doc.format} · {doc.chars} 字 · {doc.section_count} 段{doc.pages ? ` · ${doc.pages} 页` : ""}</small><p>{doc.preview}</p></div>
-                <span className="parse-doc-badge">{doc.section_count} 段</span>
+                <div className="parse-doc-copy"><strong>{doc.title}</strong><small>{doc.format} · {doc.chars} 字 · {doc.section_count} 段{doc.pages ? ` · ${doc.pages} 页` : ""}</small>{doc.parse_note && <em className="parse-doc-note">{doc.parse_note}</em>}<p>{doc.preview}</p></div>
+                <span className={`parse-method-badge ${doc.parse_method === "vlm" ? "vlm" : ""}`}>{doc.parse_method === "vlm" ? "VLM · MD" : doc.parse_method === "pypdf" ? "pypdf" : doc.file_kind === "code" ? "Code" : "MD"}</span>
               </button>)}
             </div>
-            <div className="observer-note"><Info size={15} /><span>点击任意卡片可查看该文档的完整解析结果与标题树。解析只提取文本，不做任何语义理解。</span></div>
+            <div className="observer-note"><Info size={15} /><span>点击任意卡片可查看该文档的完整解析结果与标题树。绿色 VLM·MD 表示 PDF 已被视觉模型还原为结构化 Markdown。</span></div>
           </>}
           {!parseResult && <EmptyState title="尚未解析">点击上方“运行解析”，把原始资料读成结构化文本。</EmptyState>}
           <StepNav onBack={goBack} onNext={goNext} nextDisabled={!parseResult} nextHint={!parseResult ? "先运行解析" : "进入 Chunk 切分"} />
@@ -327,6 +360,40 @@ export function KnowledgeLab() {
       {activeChunk && <div className="drawer-backdrop" onMouseDown={() => setActiveChunk(null)}><aside className="drawer compact-drawer" onMouseDown={(event) => event.stopPropagation()}><button className="drawer-close" onClick={() => setActiveChunk(null)}><X /></button><Pill tone="mint">{activeChunk.id}</Pill><h2>{activeChunk.section}</h2><div className="parse-meta"><span>{activeChunk.document_title}</span><span>{activeChunk.chars} chars</span><span>{activeChunk.tokens} tokens</span></div><p className="chunk-full-text">{activeChunk.text}</p>{activeChunk.embedding_preview && <><h3>Embedding Preview</h3><code className="vector-code">[{activeChunk.embedding_preview.join(", ")}, …]</code><p className="dim-note">只展示前 8 维；完整向量为 {embedResult?.dimension || kb?.dimension} 维。</p></>}</aside></div>}
     </div>
   );
+}
+
+function DocCard({ document, selected, onToggle, onPreview, onDelete }: { document: Dict; selected: boolean; onToggle: () => void; onPreview: () => void; onDelete?: () => void }) {
+  return <article className={`corpus-card ${selected ? "selected" : ""} ${document.source === "upload" ? "user-document" : ""}`} style={{ "--doc-color": document.accent } as React.CSSProperties}>
+    <button className="corpus-card-select" aria-label={`选择 ${document.title}`} onClick={onToggle}>{selected && <Check size={12} />}</button>
+    <span className="corpus-card-icon">{document.file_kind === "code" ? <Code2 size={16} /> : document.file_kind === "pdf" ? <FileType2 size={16} /> : <FileText size={16} />}</span>
+    <button className="corpus-card-body" onClick={onToggle}>
+      <strong>{document.filename}</strong>
+      <small>{document.file_kind === "code" ? document.language : document.level}{document.source === "upload" ? " · 已上传" : ""}</small>
+    </button>
+    <span className="corpus-card-actions">
+      <button className="corpus-card-btn" onClick={onPreview} aria-label={`预览 ${document.title}`}><FileCode2 size={13} /></button>
+      {onDelete && <button className="corpus-card-btn danger" onClick={onDelete} aria-label={`删除 ${document.title}`}><Trash2 size={13} /></button>}
+    </span>
+  </article>;
+}
+
+function CorpusGroup({ title, caption, docs, collapsed, onToggleCollapse, selected, onToggle, onToggleGroup, onPreview, onDelete }: { title: string; caption: string; docs: Dict[]; collapsed: boolean; onToggleCollapse: () => void; selected: string[]; onToggle: (id: string) => void; onToggleGroup: (ids: string[]) => void; onPreview: (id: string) => void; onDelete?: (id: string) => void; projectId: string }) {
+  const ids = docs.map((d) => d.id);
+  const groupSelected = ids.filter((id) => selected.includes(id)).length;
+  const allOn = ids.length > 0 && groupSelected === ids.length;
+  return <section className="corpus-group">
+    <div className="corpus-group-head">
+      <button className="corpus-group-toggle" onClick={onToggleCollapse} aria-expanded={!collapsed}>
+        <ChevronRight size={15} className={`corpus-chevron ${collapsed ? "" : "open"}`} />
+        <strong>{title}</strong><small>{caption}</small>
+      </button>
+      <span className="corpus-group-meta">{groupSelected}/{ids.length}</span>
+      <button className="corpus-group-select" onClick={() => onToggleGroup(ids)}>{allOn ? "取消本组" : "选择本组"}</button>
+    </div>
+    {!collapsed && <div className="corpus-card-grid">
+      {docs.map((doc) => <DocCard key={doc.id} document={doc} selected={selected.includes(doc.id)} onToggle={() => onToggle(doc.id)} onPreview={() => onPreview(doc.id)} onDelete={onDelete ? () => onDelete(doc.id) : undefined} />)}
+    </div>}
+  </section>;
 }
 
 function StepHead({ kicker, title, why, badge }: { kicker: string; title: string; why: string; badge?: React.ReactNode }) {

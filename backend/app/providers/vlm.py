@@ -46,13 +46,7 @@ class VLMProvider:
             "last_error": self.last_error,
         }
 
-    def grade(
-        self, images: list[bytes], rubric: dict[str, Any], scoring_prompt: str
-    ) -> dict[str, Any]:
-        items = [item for item in rubric.get("items", []) if isinstance(item, dict)]
-        if not items:
-            raise ValueError("评分细则为空，无法评分")
-        prompt = self._build_prompt(items, scoring_prompt)
+    def _chat(self, prompt: str, images: list[bytes]) -> str:
         content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
         for image in images:
             encoded = base64.b64encode(image).decode("ascii")
@@ -88,9 +82,38 @@ class VLMProvider:
                 raise ValueError("模型返回了空内容")
             self.last_provider_name = self.name
             self.last_error = None
+            return raw
         except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError) as error:
             self.last_error = self._safe_error(error)
             raise RuntimeError(self.last_error) from error
+
+    def to_markdown(self, images: list[bytes]) -> str:
+        """把 PDF 逐页图片转成干净 markdown（结构化文本抽取，不做臆测）。"""
+        if not images:
+            raise ValueError("没有可解析的页面图片")
+        prompt = (
+            "以下是一份 PDF 文档的逐页图片。请把它转录为干净、结构化的 Markdown：\n"
+            "1. 用 # / ## 还原标题层级；正文按段落组织。\n"
+            "2. 表格用 Markdown 表格还原；公式用 LaTeX（$...$）。\n"
+            "3. 忠实转录可见内容，不要翻译、不要总结、不要臆测或补充图中没有的内容。\n"
+            "4. 只输出 Markdown 正文本身，不要用 ``` 代码块包裹整篇，也不要额外说明。"
+        )
+        markdown = self._chat(prompt, images).strip()
+        fence = re.match(r"^```(?:markdown)?\s*(.+?)```$", markdown, re.DOTALL)
+        if fence:
+            markdown = fence.group(1).strip()
+        if not markdown:
+            raise ValueError("VLM 未返回可用的 Markdown")
+        return markdown
+
+    def grade(
+        self, images: list[bytes], rubric: dict[str, Any], scoring_prompt: str
+    ) -> dict[str, Any]:
+        items = [item for item in rubric.get("items", []) if isinstance(item, dict)]
+        if not items:
+            raise ValueError("评分细则为空，无法评分")
+        prompt = self._build_prompt(items, scoring_prompt)
+        raw = self._chat(prompt, images)
         return self.parse_grading(raw, items, model=self.settings.model)
 
     @staticmethod

@@ -21,6 +21,7 @@ from fastapi.responses import FileResponse
 
 from app.schemas import (
     AgentRunRequest,
+    DocumentBulkDeleteRequest,
     GradingOverrideRequest,
     KBBuildRequest,
     KBChunkRequest,
@@ -461,6 +462,32 @@ def delete_document(
     try:
         authorize_project(payload.project_id, user)
         return platform_service.delete_document(payload.project_id, document_id)
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/documents/bulk-delete")
+def bulk_delete_documents(
+    payload: DocumentBulkDeleteRequest,
+    user: Annotated[dict[str, Any], Depends(current_user)],
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.delete_documents(
+            payload.project_id, payload.document_ids
+        )
+    except Exception as error:
+        handle_error(error)
+
+
+@app.post("/api/kb/reset")
+def reset_knowledge_base(
+    payload: ProjectScopedRequest,
+    user: Annotated[dict[str, Any], Depends(current_user)],
+):
+    try:
+        authorize_project(payload.project_id, user)
+        return platform_service.reset_knowledge_base(payload.project_id)
     except Exception as error:
         handle_error(error)
 

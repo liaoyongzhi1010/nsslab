@@ -436,6 +436,42 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .doc-section { margin-bottom: 18px; }
 .doc-section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 9px; }
 .doc-section-title { color: #9fb0b8; font: 600 12px "IBM Plex Mono"; letter-spacing: .4px; }
+.corpus-toolbar { display: flex; align-items: center; gap: 14px; margin: 14px 0 12px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.014); }
+.corpus-check { display: flex; align-items: center; gap: 7px; color: #a6b3ba; font-size: calc(12px * var(--font-scale)); cursor: pointer; }
+.corpus-check input { width: 15px; height: 15px; accent-color: var(--mint); cursor: pointer; }
+.corpus-count { color: #6d8079; font: 500 11px "IBM Plex Mono"; }
+.corpus-count b { color: var(--mint); }
+.corpus-toolbar-spacer { flex: 1; }
+.btn.ghost.compact.danger { border-color: rgba(255,114,133,.3); color: #ff9aa7; }
+.btn.ghost.compact.danger:hover { border-color: #ff7285; background: rgba(255,114,133,.08); }
+.corpus-groups { display: flex; flex-direction: column; gap: 10px; }
+.corpus-group { border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.01); overflow: hidden; }
+.corpus-group-head { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-bottom: 1px solid transparent; }
+.corpus-group-toggle { display: flex; flex: 1; align-items: center; gap: 8px; padding: 0; border: 0; background: transparent; color: #b0bdc3; cursor: pointer; text-align: left; }
+.corpus-group-toggle strong { font-size: calc(12.5px * var(--font-scale)); font-weight: 600; }
+.corpus-group-toggle small { color: #55686f; font: 500 10px "IBM Plex Mono"; }
+.corpus-chevron { flex: none; color: #5d7078; transition: transform .18s ease; }
+.corpus-chevron.open { transform: rotate(90deg); }
+.corpus-group-meta { color: #55686f; font: 500 10px "IBM Plex Mono"; }
+.corpus-group-select { padding: 3px 10px; border: 1px solid var(--line-light); border-radius: 20px; background: transparent; color: #8a9ba4; font: 500 10px "IBM Plex Mono"; cursor: pointer; }
+.corpus-group-select:hover { border-color: var(--mint); color: var(--mint); }
+.corpus-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 6px; padding: 10px 12px 12px; }
+.corpus-card { --doc-color: var(--mint); position: relative; display: flex; align-items: center; gap: 8px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.012); transition: border-color .15s ease, background .15s ease; }
+.corpus-card.selected { border-color: color-mix(in srgb, var(--doc-color) 45%, var(--line)); background: color-mix(in srgb, var(--doc-color) 6%, transparent); }
+.corpus-card-select { display: grid; width: 15px; height: 15px; flex: none; place-items: center; padding: 0; border: 1px solid #37505c; border-radius: 3px; background: #0b1319; color: #05100c; cursor: pointer; }
+.corpus-card.selected .corpus-card-select { border-color: var(--doc-color); background: var(--doc-color); }
+.corpus-card-icon { display: grid; place-items: center; flex: none; color: var(--doc-color); }
+.corpus-card-body { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 1px; padding: 0; border: 0; background: transparent; cursor: pointer; text-align: left; }
+.corpus-card-body strong { overflow: hidden; color: #b0bdc3; font: 500 11.5px "IBM Plex Mono"; text-overflow: ellipsis; white-space: nowrap; }
+.corpus-card-body small { overflow: hidden; color: #55686f; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.corpus-card-actions { display: flex; flex: none; gap: 1px; }
+.corpus-card-btn { display: grid; width: 20px; height: 20px; place-items: center; border: 0; background: transparent; color: #4f626c; cursor: pointer; }
+.corpus-card-btn:hover { color: var(--doc-color); }
+.corpus-card-btn.danger:hover { color: #ff7285; }
+.reset-exp { flex: none; align-self: flex-start; }
+.parse-doc-note { color: var(--amber); font-size: calc(10px * var(--font-scale)); font-style: normal; }
+.parse-method-badge { flex: none; align-self: center; padding: 3px 9px; border: 1px solid var(--line-light); border-radius: 20px; color: #7d8f99; font: 500 9px "IBM Plex Mono"; white-space: nowrap; }
+.parse-method-badge.vlm { border-color: #2c5a4d; color: var(--mint); background: color-mix(in srgb, var(--mint) 10%, transparent); }
 .doc-section-head small { color: #55686f; font: 500 10px "IBM Plex Mono"; }
 .document-card.user-document { padding-right: 62px; }
 .doc-actions { position: absolute; right: 8px; top: 8px; display: flex; gap: 2px; }

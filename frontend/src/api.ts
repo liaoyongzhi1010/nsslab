@@ -45,6 +45,10 @@ export const api = {
   deleteDocument: (projectId: string, documentId: string) => request<Dict>(`/api/documents/${documentId}`, {
     method: "DELETE", headers: jsonHeaders, body: JSON.stringify({ project_id: projectId }),
   }),
+  bulkDeleteDocuments: (projectId: string, documentIds: string[]) => request<Dict>("/api/documents/bulk-delete", {
+    method: "POST", headers: jsonHeaders, body: JSON.stringify({ project_id: projectId, document_ids: documentIds }),
+  }),
+  resetKb: (projectId: string) => request<Dict>("/api/kb/reset", { method: "POST", headers: jsonHeaders, body: JSON.stringify({ project_id: projectId }) }),
   buildKb: (payload: Dict) => request<Dict>("/api/kb/build", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
   kbParse: (payload: Dict) => request<Dict>("/api/kb/parse", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
   kbChunk: (payload: Dict) => request<Dict>("/api/kb/chunk", { method: "POST", headers: jsonHeaders, body: JSON.stringify(payload) }),
