@@ -1,8 +1,17 @@
 # CryptoLLMLab · AI 赋能密码学实验平台
 
-一个面向密码学教学的可运行 MVP，连续呈现：
+一个面向密码学教学的可运行平台，把「从数据到智能体」拆成 10 个循序渐进的实验：
 
-`密码学资料 → 向量知识库 → Crypto-RAG → Skills / Tools / Agent → 实验报告`
+```
+数据工程 → CPT → SFT → RLHF → 向量知识库 → RAG → Skills → Tools → Agent 闭环 → 多智能体
+```
+
+采用 **单页应用（SPA）+ FastAPI + PostgreSQL(pgvector)**，按登录角色在同一套 URL 上渲染：
+
+- **学生**：逐个做实验、写观察、上传实验报告 PDF、导出报告。
+- **管理员**：不做实验；进任意实验页只见「标题 + 实验要点(只读) + 评分 rubric + 打分 prompt」；另有「成绩管理」阅卷台与「阅卷视觉大模型(VLM)」配置。
+
+> 🛠 **接手开发请先读 [`DEVELOPMENT.md`](DEVELOPMENT.md)**：架构、目录、数据流、10 个实验现状（05/06 已完整，其余 8 个前端占位待接后端）、如何按样板实现剩余实验、以及推送到 Gitee 的步骤。本 README 只讲运行、部署、数据库与真实模型接入。
 
 ## 推荐：容器化运行
 
@@ -147,18 +156,18 @@ cd frontend && E2E_BASE_URL=http://127.0.0.1:8080 E2E_USERNAME=student E2E_PASSW
 
 报告页支持导出 JSON、Markdown、PDF 和 Word（`.docx`）。页面中的“写下你的观察和感想”是项目级持久化富文本编辑器，支持标题、粗体、斜体、下划线、删除线、列表、引用和安全链接，并自动保存到 PostgreSQL；刷新页面或从历史实验重新进入时仍可恢复。后端会对白名单标签与链接协议再次清洗，PDF/Word 会保留可表达的富文本格式，Markdown/JSON 则包含对应的 Markdown、纯文本和安全 HTML。
 
-PDF/Word 由后端根据真实实验记录生成，包含三项实验的配置与最近结果、能力评分、运行历史，以及用户填写的观察和感想。
+PDF/Word 由后端根据真实实验记录生成，包含各实验的配置与最近结果、能力评分、运行历史，以及用户填写的观察和感想。
 
 ## 目录
 
-- `backend/app/providers`：LLM / Embedding / Rerank Provider 抽象及离线实现
+- `backend/app/providers`：LLM / Embedding / Rerank / VLM Provider 抽象及离线实现
 - `backend/app/storage.py`：SQLAlchemy 结构化关系模型与 PostgreSQL/pgvector 持久层
+- `backend/app/experiments_seed.py`：10 个实验的预置数据与目录（前端实验列表来源）
 - `backend/alembic`：数据库增量迁移
-- `backend/app/services`：文档切分、向量检索、RAG、Agent 与报告
-- `frontend/src/pages`：Dashboard、三项连续实验与报告
+- `backend/app/services`：文档切分、向量检索、RAG、各实验、评分与报告
+- `frontend/src/pages`：Dashboard、10 个实验页、成绩管理、报告与登录
 - `compose.yaml`：数据库、API、Web 前端的一键部署栈
 - `DEVELOPMENT.md`：开发交接文档（架构、目录、如何实现剩余实验、推送 Gitee）
-- `AI赋能密码学实验平台_Codex开发说明.md`：产品需求原文
 
 ## 用户资料上传
 
