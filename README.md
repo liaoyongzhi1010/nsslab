@@ -157,6 +157,7 @@ PDF/Word 由后端根据真实实验记录生成，包含三项实验的配置�
 - `backend/app/services`：文档切分、向量检索、RAG、Agent 与报告
 - `frontend/src/pages`：Dashboard、三项连续实验与报告
 - `compose.yaml`：数据库、API、Web 前端的一键部署栈
+- `DEVELOPMENT.md`：开发交接文档（架构、目录、如何实现剩余实验、推送 Gitee）
 - `AI赋能密码学实验平台_Codex开发说明.md`：产品需求原文
 
 ## 用户资料上传
