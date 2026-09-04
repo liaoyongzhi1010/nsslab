@@ -139,6 +139,18 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .provider-name { margin: 9px 0 4px; color: #a4b4bd; font-size: 12px; line-height: 1.45; }
 .sidebar-foot small { color: #526e64; font-size: 10px; line-height: 1.5; }
 .main-shell { min-height: 100vh; margin-left: var(--sidebar); }
+.sidebar-toggle { position: absolute; top: 50%; right: -13px; z-index: 30; display: grid; width: 26px; height: 40px; place-items: center; transform: translateY(-50%); border: 1px solid var(--line); border-radius: 13px; color: #8aa69d; background: var(--panel, #0c141b); box-shadow: 0 2px 8px rgba(0,0,0,.28); cursor: pointer; transition: .18s ease; }
+.sidebar-toggle:hover { color: var(--mint); border-color: color-mix(in srgb, var(--mint) 45%, transparent); background: color-mix(in srgb, var(--mint) 10%, var(--panel, #0c141b)); }
+.app-shell.sidebar-collapsed { --sidebar: 74px; }
+.app-shell.sidebar-collapsed .sidebar { padding: 20px 10px; }
+.app-shell.sidebar-collapsed .brand { justify-content: center; padding: 0 0 20px; }
+.app-shell.sidebar-collapsed .brand > div:last-of-type,
+.app-shell.sidebar-collapsed .nav-link > span,
+.app-shell.sidebar-collapsed .nav-section,
+.app-shell.sidebar-collapsed .sidebar-foot { display: none; }
+.app-shell.sidebar-collapsed .brand-mark { margin: 0 auto; }
+.app-shell.sidebar-collapsed .nav-link { justify-content: center; padding: 8px; }
+.app-shell.sidebar-collapsed .nav-group { display: flex; flex-direction: column; align-items: stretch; }
 .topbar { position: sticky; top: 0; z-index: 15; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 34px; border-bottom: 1px solid rgba(29,43,54,.85); background: rgba(7,11,16,.84); backdrop-filter: blur(18px); }
 .topbar-context { min-width: 0; display: flex; flex: 1; align-items: center; gap: 10px; margin-right: 18px; color: #87a198; }
 .topbar-context-icon { display: grid; width: 30px; height: 30px; flex: none; place-items: center; border: 1px solid rgba(73,220,177,.2); border-radius: 6px; color: var(--mint); background: rgba(73,220,177,.055); }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bot, BrainCircuit, Boxes, ClipboardCheck, Database, FileText, FlaskConical, Gauge, GitCompareArrows, Hexagon, Layers, LibraryBig, ListChecks, LogOut, Moon, Network, Route, Scale, Settings2, Sun, UserRound, Wand2, Wrench } from "lucide-react";
+import { Bot, BrainCircuit, Boxes, ChevronLeft, ChevronRight, ClipboardCheck, Database, FileText, FlaskConical, Gauge, GitCompareArrows, Hexagon, Layers, LibraryBig, ListChecks, LogOut, Moon, Network, Route, Scale, Settings2, Sun, UserRound, Wand2, Wrench } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import { useApp } from "../context/AppContext";
@@ -88,6 +88,11 @@ export function Layout() {
     const saved = document.documentElement.dataset.fontSize;
     return saved === "compact" || saved === "large" ? saved : "standard";
   });
+  const [collapsed, setCollapsed] = useState<boolean>(() => localStorage.getItem("cryptolab_sidebar_collapsed") === "1");
+
+  useEffect(() => {
+    localStorage.setItem("cryptolab_sidebar_collapsed", collapsed ? "1" : "0");
+  }, [collapsed]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -102,8 +107,18 @@ export function Layout() {
   }, [fontSize]);
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell${collapsed ? " sidebar-collapsed" : ""}`}>
       <aside className="sidebar">
+        <button
+          className="sidebar-toggle"
+          type="button"
+          aria-label={collapsed ? "展开导航栏" : "折叠导航栏"}
+          aria-expanded={!collapsed}
+          title={collapsed ? "展开导航栏" : "折叠导航栏"}
+          onClick={() => setCollapsed((c) => !c)}
+        >
+          {collapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
+        </button>
         <div className="brand">
           <div className="brand-mark"><Hexagon size={29} /><span>CL</span></div>
           <div><strong>CryptoLLMLab</strong><small>AI × CRYPTOGRAPHY</small></div>
@@ -113,7 +128,7 @@ export function Layout() {
             <div className={`nav-group${group.tone ? ` tone-${group.tone}` : ""}`} key={group.label}>
               <span className="nav-section">{group.tone && <i className="nav-section-dot" />}{group.label}</span>
               {group.items.map(({ to, label, eyebrow, icon: Icon, exact }) => (
-                <NavLink key={to} to={to} end={exact} className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+                <NavLink key={to} to={to} end={exact} title={collapsed ? label : undefined} className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
                   <Icon size={18} />
                   <span>{eyebrow && <small>{eyebrow}</small>}{label}</span>
                 </NavLink>
